@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <navbar/>
     <div class='d-flex justify-content-center'>
       <div class="card shadow-lg bg-white rounded" style="margin: 25%; width: 30%">
         <div class="card-body">
@@ -32,10 +33,14 @@
 </template>
 
 <script>
+import navbar from "../components/Navbar.vue"
 export default {
   data() {
     return {};
   },
+  components:{
+    navbar
+  }
 };
 </script>
 

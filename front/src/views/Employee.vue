@@ -1,7 +1,7 @@
 <template>
    <div class="container">
     <navbar />
-    <h1 class="title" style="margin-top: 2%">ค้นหาพนักานที่คุณต้องการ</h1>
+    <h1 class="title" style="margin-top: 2%">ค้นหาพนักงานที่คุณต้องการ</h1>
     <form class="box" style="padding-top: 3%">
       <div class="field">
         <label class="label">ชื่อพนักงาน</label>

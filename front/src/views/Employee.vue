@@ -1,7 +1,7 @@
 <template>
-   <div class="container">
+  <div class="container">
     <navbar />
-    <h1 class="title" style="margin-top: 2%">ค้นหาพนักานที่คุณต้องการ</h1>
+    <h1 class="title" style="margin-top: 2%">ค้นหาพนักงานที่คุณต้องการ</h1>
     <form class="box" style="padding-top: 3%">
       <div class="field">
         <label class="label">ชื่อพนักงาน</label>
@@ -78,8 +78,9 @@
         </div>
       </div>
     </div>
-    <!--Modal-->
-    <div class="modal" v-bind:class="{'is-active': check}">
+    <button class="button is-warning is-rounded">+Add New Employee</button>
+    <!--Modal with v-for-->
+    <div class="modal" v-bind:class="{ 'is-active': check }">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -88,6 +89,24 @@
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
+          <div class="container">
+            <div class="columns">
+              <div class="column is-6">
+                <img
+                  src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg"
+                />
+              </div>
+              <div class="column is-6">
+                <u><h3 class="title is-4">Profile</h3></u>
+                <div class="content" style="padding-top: 3%">
+                  <h4>"Data Engineer"</h4>
+                  <p>Name :</p>
+                  <p>Tel :</p>
+                  <p>Email :</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success">Save changes</button>
@@ -103,7 +122,7 @@ import navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
-        check: false
+      check: false,
     };
   },
   components: {

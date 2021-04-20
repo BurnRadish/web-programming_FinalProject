@@ -12,8 +12,10 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 // routers
 const empRouter = require('./routes/employees')
 const partnerRouter = require('./routes/partner')
+const invRouter = require('./routes/inventory')
 app.use(empRouter.router)
 app.use(partnerRouter.router)
+app.use(invRouter.router)
 
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:3000`)

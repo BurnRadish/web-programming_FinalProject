@@ -78,7 +78,8 @@
         </div>
       </div>
     </div>
-    <!--Modal-->
+    <button class="button is-warning is-rounded" v-on:click="checkadd = !checkadd">+Add New Partner</button>
+    <!--Modal with v-for-->
     <div class="modal" v-bind:class="{'is-active': check}">
       <div class="modal-background"></div>
       <div class="modal-card">
@@ -95,6 +96,23 @@
         </footer>
       </div>
     </div>
+    <!--Modal For Add Partner-->
+    <div class="modal" v-bind:class="{'is-active': checkadd}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Modal title</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Save changes</button>
+          <button class="button" v-on:click="checkadd = !checkadd">Cancel</button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -103,7 +121,8 @@ import navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
-        check: false
+        check: false,
+        checkadd: false
     };
   },
   components: {

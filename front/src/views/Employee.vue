@@ -26,6 +26,7 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item" v-on:click="check = !check">Profile</a>
+            <a class="card-footer-item">Edit</a>
           </footer>
         </div>
       </div>
@@ -42,6 +43,7 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item">Profile</a>
+            <a class="card-footer-item">Edit</a>
           </footer>
         </div>
       </div>
@@ -58,6 +60,7 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item">Profile</a>
+            <a class="card-footer-item">Edit</a>
           </footer>
         </div>
       </div>
@@ -74,11 +77,17 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item">Profile</a>
+            <a class="card-footer-item">Edit</a>
           </footer>
         </div>
       </div>
     </div>
-    <button class="button is-warning is-rounded" v-on:click="checkadd = !checkadd">+Add New Employee</button>
+    <button
+      class="button is-warning is-rounded"
+      v-on:click="checkadd = !checkadd"
+    >
+      +Add New Employee
+    </button>
     <!--Modal with v-for-->
     <div class="modal" v-bind:class="{ 'is-active': check }">
       <div class="modal-background"></div>
@@ -124,10 +133,95 @@
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
+          <div class="container">
+            <div class="columns">
+              <div class="column is-6">
+                <div class="field">
+                  <label class="label">Name</label>
+                  <div class="control">
+                    <input class="input" type="text" placeholder="Text input" />
+                  </div>
+                </div>
+              </div>
+              <div class="column is-6">
+                <div class="field">
+                  <label class="label">Surname</label>
+                  <div class="control">
+                    <input class="input" type="text" placeholder="Text input" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column is-4">
+                <div class="field">
+                  <label class="label">Gender</label>
+                </div>
+                <div class="select">
+                  <select>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </div>
+              <div class="column is-4">
+                <div class="field">
+                  <label class="label">Birth</label>
+                </div>
+                <input class="input" type="date">
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column is-12">
+                <div class="field">
+                  <label class="label">Position</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Data Engineer"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Email</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="aaa@aaa.com"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Address</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="Bangkok Mailbox 10200"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tel.</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      placeholder="0800000000"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success">Save changes</button>
-          <button class="button" v-on:click="checkadd = !checkadd">Cancel</button>
+          <button class="button" v-on:click="checkadd = !checkadd">
+            Cancel
+          </button>
         </footer>
       </div>
     </div>

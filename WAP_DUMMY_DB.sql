@@ -96,6 +96,7 @@ CREATE TABLE `product` (
 	`mfd` DATE,
 	`brand` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`type` ENUM('MACHINE', 'SPARE_PART') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
+	`amount` INT(10),
 	PRIMARY KEY (`pro_id`)
 );
 
@@ -157,28 +158,28 @@ VALUES
 ('3306525383066', 'มัธยมศึกษาตอนต้น', '1982-08-02', 'Accountant', 25000, '61/2 Soi Sai Nam Thip Sukhumvit Soi 22 Bangkok 10110', 'orakrawee42@hotmail.com', '0822597138', 'อรกวี', 'เมืองทอง', 'Female', 'orakrawee', '9QNUA5KzAt5N'),
 ('6034225190623', 'ปริญญาตรี', '1994-7-21', 'Mechanic', '27000' ,'Maha Ploed Tharam Bang Rak', 'pl_jom68l@gmail.com', '0827656649', 'ไพโรจน์', 'จอมดำสิงห์', 'Male', null, null);
 
-INSERT INTO product( `title`, `mfd`, `brand` ,`type`)
+INSERT INTO product( `title`, `mfd`, `brand` ,`type`, `amount`)
 VALUES
-('เครื่องตัดไม้ OPTIMIZING CUT OFF SIMPLE', '2020-09-24', 'CARPENTER', 'MACHINE' ),
-('เครื่องตัดไม้ OPTIMIZING CUT OFF PUSH', '2020-09-29', 'CARPENTER', 'MACHINE' ),
-('เครื่องเหลาไม้กลม DOWEL MILLING MACHINE', '2018-03-02', 'CHING FENG', 'MACHINE'),
-('เครื่องเหลาไม้กลม ROUND ROD MILLING', '2014-07-22', 'CHING FENG', 'MACHINE'),
-('เร้าเตอร์และเพลาตั้ง SINGLE SPINDLE SHAPER(RH-113)', '2003-04-12', 'RHSin',  'MACHINE' ),
-('เครื่องตัดไม้ INTEGRAL SALAD ADAPTER', '2013-09-24', 'CARPENTER',  'MACHINE'  ),
-('เครื่องเจาะไม้ Two unit boring machine', '2015-05-12', 'RHSin',  'MACHINE' ),
-('เครื่องเจาะไม้ Double End Multiple Spindle', '2019-01-30', 'RHSin', 'MACHINE' ),
-('เครื่องตัดหัวท้ายแบบแมนนวล RH-646ART', '2013-08-22', 'RHSin',  'MACHINE'  ),
-('เครื่องตัดหัวท้ายแบบอัตโนมัติ A-Economy', '2017-02-12', 'RHSin',  'MACHINE'  ),
-('ใบเลื่อยคาร์ไบด์ INDIVIDUAL EDGE TRIMMING SAW', '2020-08-02', null,  'SPARE_PART'  ),
-('ใบเลื่อยคาร์ไบด์ CROSS CUT SAW BLADE', '2020-05-15', null,  'SPARE_PART'  ),
-('ใบเลื่อยคาร์ไบด์ RIP CUT SAW BLADE WITH WING', '2021-01-02', null,  'SPARE_PART'  ),
-('ดอกเจาะ STRAIGHT SHANK SOLID MORTISING TOOL', '2021-03-12', null,  'SPARE_PART'),
-('ดอกเจาะ INTEGRAL SALAD ADAPTER', '2020-09-16', null,  'SPARE_PART'  ),
-('ดอกเร้าเตอร์ ROUTER BITS', '2020-11-04', null,  'SPARE_PART'  ),
-('หัวเกียร์ 2-Spindle Boring Head', '2019-01-01', null,  'SPARE_PART'  ),
-('หัวเกียร์ 3-Spindle (Circular) Boring Head', '2019-01-03', null,  'SPARE_PART'  ),
-('หัวเกียร์ 3-Spindle (Linear) Boring Head', '2021-02-14', null,  'SPARE_PART'  ),
-('หัวเกียร์ Quick Chucks for Line Boring Head', '2020-01-21', null,  'SPARE_PART'  );
+('เครื่องตัดไม้ OPTIMIZING CUT OFF SIMPLE', '2020-09-24', 'CARPENTER', 'MACHINE', 2),
+('เครื่องตัดไม้ OPTIMIZING CUT OFF PUSH', '2020-09-29', 'CARPENTER', 'MACHINE', 2 ),
+('เครื่องเหลาไม้กลม DOWEL MILLING MACHINE', '2018-03-02', 'CHING FENG', 'MACHINE', 2),
+('เครื่องเหลาไม้กลม ROUND ROD MILLING', '2014-07-22', 'CHING FENG', 'MACHINE', 2),
+('เร้าเตอร์และเพลาตั้ง SINGLE SPINDLE SHAPER(RH-113)', '2003-04-12', 'RHSin',  'MACHINE', 2 ),
+('เครื่องตัดไม้ INTEGRAL SALAD ADAPTER', '2013-09-24', 'CARPENTER',  'MACHINE', 2  ),
+('เครื่องเจาะไม้ Two unit boring machine', '2015-05-12', 'RHSin',  'MACHINE', 2 ),
+('เครื่องเจาะไม้ Double End Multiple Spindle', '2019-01-30', 'RHSin', 'MACHINE', 2 ),
+('เครื่องตัดหัวท้ายแบบแมนนวล RH-646ART', '2013-08-22', 'RHSin',  'MACHINE', 2  ),
+('เครื่องตัดหัวท้ายแบบอัตโนมัติ A-Economy', '2017-02-12', 'RHSin',  'MACHINE', 2  ),
+('ใบเลื่อยคาร์ไบด์ INDIVIDUAL EDGE TRIMMING SAW', '2020-08-02', null,  'SPARE_PART', 2  ),
+('ใบเลื่อยคาร์ไบด์ CROSS CUT SAW BLADE', '2020-05-15', null,  'SPARE_PART', 2  ),
+('ใบเลื่อยคาร์ไบด์ RIP CUT SAW BLADE WITH WING', '2021-01-02', null,  'SPARE_PART', 2  ),
+('ดอกเจาะ STRAIGHT SHANK SOLID MORTISING TOOL', '2021-03-12', null,  'SPARE_PART', 2),
+('ดอกเจาะ INTEGRAL SALAD ADAPTER', '2020-09-16', null,  'SPARE_PART', 2  ),
+('ดอกเร้าเตอร์ ROUTER BITS', '2020-11-04', null,  'SPARE_PART', 2  ),
+('หัวเกียร์ 2-Spindle Boring Head', '2019-01-01', null,  'SPARE_PART', 2  ),
+('หัวเกียร์ 3-Spindle (Circular) Boring Head', '2019-01-03', null,  'SPARE_PART', 2  ),
+('หัวเกียร์ 3-Spindle (Linear) Boring Head', '2021-02-14', null,  'SPARE_PART', 2  ),
+('หัวเกียร์ Quick Chucks for Line Boring Head', '2020-01-21', null,  'SPARE_PART', 2  );
 
 INSERT INTO machine( `mac_id`, `warranty_date`, `product_pro_id`)
 VALUES

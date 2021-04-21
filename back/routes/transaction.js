@@ -35,7 +35,8 @@ router.put("/trans", async function(req, res, next) {
                 partner_par_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [delivery_date, 
-                credit, payament_method, 
+                credit, 
+                payament_method, 
                 payament_status, 
                 credit_due_date, 
                 transaction_date, 

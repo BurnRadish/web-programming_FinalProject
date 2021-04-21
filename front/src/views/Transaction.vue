@@ -25,7 +25,6 @@
         <!-- header -->
         <thead class="has-text-centered">
             <tr>
-                <th>ลำดับ</th>
                 <th>หมายเลขธุรกรรม</th>
                 <th>ประเภทธุรกรรม</th>
                 <th>วันที่ดำเนินธุรกรรม</th>
@@ -42,50 +41,13 @@
         <!-- End footer table -->
         <!-- table body -->
         <tbody>
-            <tr>
-              <td>1</td>
-              <td>11</td>
-              <td>ซื้อ</td>
-              <td>2019-01-18</td>
-              <td>Cheque</td>
-              <td>Complete</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>11</td>
-              <td>ซื้อ</td>
-              <td>2019-01-18</td>
-              <td>Cheque</td>
-              <td>Complete</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>11</td>
-              <td>ซื้อ</td>
-              <td>2019-01-18</td>
-              <td>Cheque</td>
-              <td>Complete</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>11</td>
-              <td>ซื้อ</td>
-              <td>2019-01-18</td>
-              <td>Cheque</td>
-              <td>Complete</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>11</td>
-              <td>ซื้อ</td>
-              <td>2019-01-18</td>
-              <td>Cheque</td>
-              <td>Complete</td>
-              <td>0</td>
+            <tr v-for='(tran) in trans' :key='tran.tran_id'>
+              <td>{{tran.tran_id}}</td>
+              <td>{{tran.type}}</td>
+              <td>{{tran.transaction_date}}</td>
+              <td>{{tran.payment_method}}</td>
+              <td>{{tran.payment_status}}</td>
+              <td>{{tran.credit}}</td>
             </tr>
         </tbody>
         <!-- End tbody -->
@@ -172,14 +134,37 @@
 
 
 <script>
+import axios from "axios";
 import navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
         check: false,
         newTran: false,
-        selectMethod: false
+        selectMethod: false,
+        trans: [],
+        emp: [],
+        product: []
     };
+  },
+  mounted() {
+    this.getTrans();
+  },
+  methods: {
+      getTrans(){
+        axios
+        .get("http://localhost:3000/trans", {
+
+        })
+        .then((response) => {
+          this.trans = response.data;
+          console.log(response.data)
+          console.log(this.trans)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }
   },
   components: {
     navbar,

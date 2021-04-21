@@ -9,9 +9,7 @@ router.get("/products", async function(req, res, next) {
     await conn.beginTransaction();
     try {
         let info = await conn.query(`
-        SELECT * FROM product p
-        JOIN product_transaction pt
-        ON p.pro_id = pt.product_pro_id
+        SELECT title, amount, type, ifnull(brand, '-')brand FROM product p
         `
         )
         conn.commit()

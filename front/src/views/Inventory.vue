@@ -10,6 +10,8 @@
                 <th>ชื่อรายการสินค้า</th>
                 <th>ประเภท</th>
                 <th>ยี่ห้อ</th>
+                <th>ราคา</th>
+                <th>จำนวน</th>
             </tr>
         </thead>
         <!-- End header -->
@@ -20,30 +22,21 @@
                 <th>ชื่อรายการสินค้า</th>
                 <th>ประเภท</th>
                 <th>ยี่ห้อ</th>
+                <th>ราคา</th>
+                <th>จำนวน</th>
             </tr>
         </tfoot>
         <!-- End footer table -->
         <!-- table body -->
-        <tbody>
+        <tbody v-for="(product, index) in blog" v-bind:key="product.id">
             <tr>
-                <td>1</td>
-                <td>เครื่องตัดไม้ OPTIMIZING CUT OFF SIMPLE</td>
-                <td>เครื่องจักร</td>
-                <td>CARPENTER</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>เครื่องตัดไม้ OPTIMIZING CUT OFF SIMPLE</td>
-                <td>เครื่องจักร</td>
-                <td>CARPENTER</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>เครื่องตัดไม้ OPTIMIZING CUT OFF SIMPLE</td>
-                <td>เครื่องจักร</td>
-                <td>CARPENTER</td>
-            </tr>
-            
+                <td>{{ index + 1}}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.type}}</td>
+                <td>{{product.brand}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.count}}</td>
+            </tr> 
         </tbody>
         <!-- End tbody -->
     </table>
@@ -51,15 +44,36 @@
 </template>
 
 <script>
+import axios from "axios";
 import navbar from "../components/Navbar.vue";
 export default {
   data() {
     return {
-        check: false
+        check: false,
+        blog : []
     };
+  },
+  mounted() {
+    this.getProduct();
+  },
+  methods: {
+      getProduct(){
+        axios
+        .get("http://localhost:3000/products", {
+
+        })
+        .then((response) => {
+          this.blog = response.data;
+          console.log(response.data)
+          console.log(this.blog)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      }
   },
   components: {
     navbar,
-  },
+  }
 };
 </script>

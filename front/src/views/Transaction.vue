@@ -8,15 +8,23 @@
     </div>
 
     <!-- button -->
-    <label class="label">ค้นหารายการ</label>
-    <div class="field has-addons">
-      <div class="control is-expanded">
-        <input class="input" type="text" placeholder="หาอะไรใส่ไรดี">
-      </div>
-      <div class="control">
-        <a class="button is-info">
-          ค้นหา
-        </a>
+    <div class="columns">
+      <div class='column'>
+        <div class="field has-addons">
+          <div class="control">
+            <a class="button is-primary" @click="newTran = !newTran">
+              + เพิ่มรายการธุรกรรม
+            </a>
+          </div>
+          <div class="control is-expanded">
+            <input class="input" type="text" placeholder="ค้นหาประวัติธุรกรรม">
+          </div>
+          <div class="control">
+            <a class="button is-info">
+              ค้นหา
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <!--End button -->
@@ -42,7 +50,7 @@
         <!-- table body -->
         <tbody>
             <tr v-for='(tran) in trans' :key='tran.tran_id'>
-              <td>{{tran.tran_id}}</td>
+              <td><a>#{{tran.tran_id}}</a></td>
               <td>{{tran.type}}</td>
               <td>{{tran.transaction_date}}</td>
               <td>{{tran.payment_method}}</td>
@@ -54,8 +62,8 @@
     </table>
     <br>
     <progress class="progress is-small is-info" value='100' max="100"></progress>
-    <button class="button is-info is-large" @click="newTran = !newTran">+ เพิ่มรายการธุรกรรม</button>
-    <!-- Tran model -->
+
+    <!-- Tran modal -->
     <div class="modal" v-bind:class="{ 'is-active': newTran }">
       <div class="modal-background"></div>
       <div class="modal-card">

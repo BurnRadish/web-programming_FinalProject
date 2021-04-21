@@ -10,7 +10,6 @@
                 <th>ชื่อรายการสินค้า</th>
                 <th>ประเภท</th>
                 <th>ยี่ห้อ</th>
-                <th>ราคา</th>
                 <th>จำนวน</th>
             </tr>
         </thead>
@@ -22,7 +21,6 @@
                 <th>ชื่อรายการสินค้า</th>
                 <th>ประเภท</th>
                 <th>ยี่ห้อ</th>
-                <th>ราคา</th>
                 <th>จำนวน</th>
             </tr>
         </tfoot>
@@ -30,12 +28,11 @@
         <!-- table body -->
         <tbody v-for="(product, index) in blog" v-bind:key="product.id">
             <tr>
-                <td>{{ index + 1}}</td>
-                <td>{{ product.title }}</td>
+                <td><a>{{ index + 1}}</a></td>
+                <td><a>{{ product.title }}</a></td>
                 <td>{{ product.type}}</td>
-                <td>{{product.brand}}</td>
-                <td>{{product.price}}</td>
-                <td>{{product.count}}</td>
+                <td><a>{{product.brand}}</a></td>
+                <td>{{product.amount}}</td>
             </tr> 
         </tbody>
         <!-- End tbody -->

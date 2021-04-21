@@ -23,7 +23,13 @@ const routes = [
     path: '/partners',
     name: 'Partners',
     component: () => import('../views/Partner.vue')
-  }
+  },
+  {
+    path: '/transaction',
+    name: 'Transaction',
+    component: () => import('../views/Transaction.vue')
+  },
+  
 ]
 
 const router = new VueRouter({

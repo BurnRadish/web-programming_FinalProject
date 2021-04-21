@@ -25,7 +25,7 @@ const routes = [
     component: () => import('../views/Partner.vue')
   },
   {
-    path: '/transaction',
+    path: '/home',
     name: 'Transaction',
     component: () => import('../views/Transaction.vue')
   },

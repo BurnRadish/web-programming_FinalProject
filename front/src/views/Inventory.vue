@@ -14,17 +14,6 @@
             </tr>
         </thead>
         <!-- End header -->
-        <!-- footer -->
-        <tfoot>
-            <tr>
-                <th>ลำดับ</th>
-                <th>ชื่อรายการสินค้า</th>
-                <th>ประเภท</th>
-                <th>ยี่ห้อ</th>
-                <th>จำนวน</th>
-            </tr>
-        </tfoot>
-        <!-- End footer table -->
         <!-- table body -->
         <tbody v-for="(product, index) in blog" v-bind:key="product.id">
             <tr>

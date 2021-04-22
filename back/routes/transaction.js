@@ -88,14 +88,26 @@ router.put("/trans", async function(req, res, next) {
     }
 });
 
-//get all transaction 
+//get all transaction or search transation
 router.get("/trans", async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
+    let search = req.query.search || ''
     try {
-        let info = await conn.query("SELECT * FROM transaction")
-        conn.commit()
-        res.send(info[0]);
+        /* ยิง Postman ด้วย param ผ่านแล้ว!!! */
+        if(search.length > 0){
+            let sql = `SELECT * FROM transaction WHERE tran_id LIKE ? OR type LIKE ? OR payment_method LIKE ? OR payment_status LIKE ?`
+            let cond = [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
+            let info = await pool.query(sql, cond);
+            res.json({
+                info : info[0]
+            })
+        } else {
+            let info = await conn.query("SELECT * FROM product")
+            conn.commit()
+            res.send(info[0])
+        }
+
     } catch (err) {
         await conn.rollback();
         return next(err)

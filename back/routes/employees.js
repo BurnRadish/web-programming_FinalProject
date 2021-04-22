@@ -20,12 +20,10 @@ router.get("/employees", async function(req, res, next) {
         } else {
             let info = await conn.query("SELECT * FROM employee")
             conn.commit()
-            //res.send(info[0]);
             res.json({
                 blogs : info[0]
             })
         }
-        
     } catch (err) {
         await conn.rollback();
         return next(err)

@@ -56,5 +56,25 @@ router.get("/products/:id", async function(req, res, next) {
     }
 });
 
-
+//add new product
+router.put("/products", async function(req, res, next) {
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
+    let type = req.body.type
+    type = type.toUpperCase()
+    try {
+        await conn.query(`
+            INSERT INTO product(title, mfd, brand, type, amount) 
+            VALUES (?, ?, ?, ?, 0)
+            `, [req.body.title, req.body.mfd, req.body.brand, type])
+        conn.commit()
+        res.send('success!')
+    } catch (err) {
+        await conn.rollback();
+        return next(err)
+    } finally {
+        console.log('*-----END-----*')
+        conn.release();
+    }
+});
 exports.router = router;

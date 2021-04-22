@@ -58,6 +58,7 @@ router.post("/partner", async function(req, res, next) {
     let par_lname = req.body.par_lname
     let legal_address = req.body.legal_address
     let type = req.body.type
+    type = type.toUpperCase()
     let email1 = req.body.email1
     let email2 = req.body.email2
     let phone1 = req.body.phone1

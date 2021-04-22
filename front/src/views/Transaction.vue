@@ -96,7 +96,6 @@
                 </div>
               </div>
             </div>
-            <!-- second colum -->
             <div class="column is-8"> 
               <label for="" class="label">วันที่ดำเนินธุรกรรม : 
                 <input type="date" style="margin-left: 15px;" v-model="transaction_date">
@@ -104,9 +103,11 @@
             </div>
           </div>
           <!-- End first column -->
+
+          <!-- second colum -->
           <div class="columns">
             <!-- Select method -->
-            <div class="column is-3">
+            <div class="column is-4">
               <label class="label">วิธีการชำระเงิน</label>
               <select v-model="payament_method">
                 <option disabled value="วิธีการชำระเงิน" selected>วิธีการชำระเงิน</option>
@@ -115,36 +116,73 @@
                 <option value="Cash">Cash</option>
               </select>
             </div>
-            <!--End Select -->
-            <div class="column is-4">
-              <label for="" style="margin-left: 15px;"><b>สถานะการชำระ</b></label>
-              <div class="control">
+            <div class="column is-4"> 
+              <label for="" class="label">วันครบกำหนดชำระ 
+                <input type="date" v-model="credit_due_date">
+              </label>
+            </div>
+          </div>
+          <!-- End second column -->
+          <!-- column 3 -->
+          <div class="columns">
+            <div class="column is-4"> <!-- payment status -->
+              <label for=""><b>สถานะการชำระ</b></label>
+              <div class="control" style="margin-left: 0.5em;">
                   <label class="radio">
                     <input type="radio" name="" v-model="payament_status" value="Complete">
                     ชำระครบถ้วน
                   </label>
-                  <label class="radio">
-                    <input type="radio" name="" v-model="payament_status" value="Incomplete">
+                  <label class="radio" style="margin-left: 0em;">
+                    <input type="radio" name="" v-model="payament_status" value="Incomplete" >
                     ยังชำระไม่ครบ
                   </label>
                 </div>
             </div>
             <!-- trigger if Incomplete -->
             <div class="column is-4" v-show="payament_status == 'Incomplete' "> 
-              <label for="" style="margin-left: 15px;">ยอดค้างการชำระ</label>
-              <input type="number" style="margin-left: 15px;" v-model="credit"><br>
+              <label for="">ยอดค้างการชำระ</label>
+              <input type="number" v-model="credit"><br>
             </div>
           </div>
-          
-
-          
-
-          <div class="field">
-            <label class="label">พนักงานผู้ดำเนินการ</label>
-            <div class="control">
-              <input class="input" type="text" placeholder="">
+          <!-- End column 3 -->
+          <!-- column 4 -->
+          <div class="columns">
+            <div class="column is-4"> <!-- deliverly status -->
+              <label for=""><b>สถานะการจัดส่ง</b></label>
+              <div class="control" style="margin-left: 0.5em;">
+                  <label class="radio">
+                    <input type="radio" name="" v-model="delivery_status" value="1">
+                    จัดส่งสำเร็จ
+                  </label>
+                  <label class="radio" style="margin-left: 0em;">
+                    <input type="radio" name="" v-model="delivery_status" value="0" >
+                    ยังไม่ได้ทำการจัดส่ง
+                  </label>
+                </div>
+            </div>
+            <div class="column is-4"> 
+              <label for="" class="label">วันที่จัดส่งสินค้า
+                <input type="date" v-model="delivery_date">
+              </label>
             </div>
           </div>
+          <!-- End column 4 -->
+          <!-- colum 5 -->
+          <div class="columns">
+            <div class="field column is-4">
+              <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="" v-model="employee_emp_id">
+              </div>
+            </div>
+            <div class="field column is-4">
+              <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="" v-model="partner_par_id">
+              </div>
+            </div>
+          </div>
+          <!-- End column 5  -->
         </section>
         <!--End comtent Body -->
         <footer class="modal-card-foot">
@@ -212,7 +250,7 @@ export default {
           payament_status: this.payament_status,
           credit_due_date: this.credit_due_date,
           transaction_date: this.transaction_date,
-          delivery_status: this.delivery_status,
+          delivery_status: parseInt(this.delivery_status),
           type: this.type,
           employee_emp_id: this.employee_emp_id,
           partner_par_id: this.partner_par_id,

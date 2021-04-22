@@ -10,7 +10,7 @@
       <div class='column'>
         <div class="field has-addons">
           <div class="control">
-            <a class="button is-primary" @click="newTran = !newTran">
+            <a class="button is-primary" @click="newInven = !newInven">
               + เพิ่มรายการสินค้าลงคลัง
             </a>
           </div>
@@ -52,6 +52,85 @@
         <!-- End tbody -->
     </table>
     <!-- End table -->
+    <!-- Tran modal -->
+    <div class="modal" v-bind:class="{ 'is-active': newInven }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head has-text-centered">
+          <p class="modal-card-title">เพิ่มสินค้า</p>
+          <button class="delete" aria-label="close" @click="newInven = false"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          <div class="columns">
+            <!-- first column -->
+            <div class="column is-4">
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">ประเภท</label>
+                </div>
+                <div class="field-body" >
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <label class="radio">
+                        <input type="radio" name="member" v-model="type" value="MACHINE">
+                        เครื่องจักร
+                      </label>
+                      <label class="radio" style="margin-left: 0px;">
+                        <input type="radio" name="member" v-model="type" value="SPARE_PART" >
+                        อะไหล่
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-8"> 
+              <label for="" class="label">
+                ชื่อสินค้า 
+                <input type="text" class="input">
+              </label>
+            </div>
+          </div>
+          <!-- End first column -->
+
+          <!-- second colum -->
+          <div class="columns">
+            <!-- Select method -->
+            <div class="column is-8"> 
+              <label for="" class="label">
+                ชื่อยี่ห้อสินค้า 
+                <input type="text" class="input">
+              </label>
+            </div>
+            <div class="column is-4"> 
+              <label for="" class="label">วันที่ผลิต 
+                <input type="date" v-model="credit_due_date">
+              </label>
+            </div>
+          </div>
+          <!-- End second column -->
+          <!-- column 3 -->
+          <div class="columns">
+            <div class="column is-4"> 
+              <label for="">จำนวน</label>
+              <input type="number" v-model="credit"><br>
+            </div>
+          </div>
+          <!-- End column 3 -->
+        </section>
+        <!--End comtent Body -->
+        <footer class="modal-card-foot columns">
+            <div class="column is-6">
+              <button class="button is-info is-fullwidth">เพิ่ม</button>
+            </div>
+            <div class="column is-6">
+              <button class="button is-fullwidth is-danger" @click="newInven = false">ยกเลิก</button>
+            </div>
+        </footer>
+      </div>
+    </div>
+    <!-- End Model -->
 </div>
 </template>
 
@@ -62,7 +141,8 @@ export default {
   data() {
     return {
         check: false,
-        blog : []
+        blog : [],
+        newInven: false
     };
   },
   mounted() {

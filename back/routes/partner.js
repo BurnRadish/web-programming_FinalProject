@@ -20,7 +20,9 @@ router.get("/partner", async function(req, res, next) {
         } else {
             let info = await conn.query("SELECT * FROM partner")
             conn.commit()
-            res.send(info[0])
+            res.send({
+                blogs: info[0]
+            })
         }
     } catch (err) {
         await conn.rollback();

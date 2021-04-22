@@ -104,8 +104,8 @@
               </label>
             </div>
             <div class="column is-4"> 
-              <label for="" class="label">วันที่ผลิต 
-                <input type="date" v-model="credit_due_date">
+              <label for="" class="label">ระยะเวลารับประกัน 
+                <input type="date" v-model="mfd">
               </label>
             </div>
           </div>

@@ -73,54 +73,71 @@
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
-          <div class="field is-horizontal">
-            <div class="field-label">
-              <label class="label">ประเภท</label>
-            </div>
-            <div class="field-body">
-              <div class="field is-narrow">
-                <div class="control">
-                  <label class="radio">
-                    <input type="radio" name="member">
-                    ซื้อ
-                  </label>
-                  <label class="radio">
-                    <input type="radio" name="member">
-                    ขาย
-                  </label>
+          <div class="columns">
+            <!-- first column -->
+            <div class="column is-4">
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">ประเภท</label>
+                </div>
+                <div class="field-body" >
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <label class="radio">
+                        <input type="radio" name="member" v-model="type" value="PURCHASE">
+                        ซื้อ
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="member" v-model="type" value="SALE">
+                        ขาย
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <label for="" class="label">วันที่ดำเนินธุรกรรม</label> <br>
-              <input type="date" style="margin-left: 15px;">
+            </div>
+            <!-- second colum -->
+            <div class="column is-8"> 
+              <label for="" class="label">วันที่ดำเนินธุรกรรม : 
+                <input type="date" style="margin-left: 15px;" v-model="transaction_date">
+              </label>
             </div>
           </div>
-          <!-- Dropdown -->
-          <div class="dropdown" v-bind:class="{ 'is-active': selectMethod }" @click="selectMethod = !selectMethod">
-            <div class="dropdown-trigger">
-              <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                <span>วิธีการชำระเงิน</span>
-                <span class="icon is-small">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
+          <!-- End first column -->
+          <div class="columns">
+            <!-- Select method -->
+            <div class="column is-3">
+              <label class="label">วิธีการชำระเงิน</label>
+              <select v-model="payament_method">
+                <option disabled value="วิธีการชำระเงิน" selected>วิธีการชำระเงิน</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Creditcard">Creditcard</option>
+                <option value="Cash">Cash</option>
+              </select>
             </div>
-            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-              <div class="dropdown-content">
-                <a href="#" class="dropdown-item">
-                  Cheque
-                </a>
-                <a class="dropdown-item">
-                  Cash
-                </a>
-                <a href="#" class="dropdown-item">
-                  Credit card
-                </a>
-              </div>
+            <!--End Select -->
+            <div class="column is-4">
+              <label for="" style="margin-left: 15px;"><b>สถานะการชำระ</b></label>
+              <div class="control">
+                  <label class="radio">
+                    <input type="radio" name="" v-model="payament_status" value="Complete">
+                    ชำระครบถ้วน
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="" v-model="payament_status" value="Incomplete">
+                    ยังชำระไม่ครบ
+                  </label>
+                </div>
+            </div>
+            <!-- trigger if Incomplete -->
+            <div class="column is-4" v-show="payament_status == 'Incomplete' "> 
+              <label for="" style="margin-left: 15px;">ยอดค้างการชำระ</label>
+              <input type="number" style="margin-left: 15px;" v-model="credit"><br>
             </div>
           </div>
-          <!--End dropdown -->
-          <label for="" style="margin-left: 15px;">ยอดค้างการชำระ</label>
-          <input type="number" style="margin-left: 15px;">
+          
+
+          
 
           <div class="field">
             <label class="label">พนักงานผู้ดำเนินการ</label>
@@ -152,7 +169,19 @@ export default {
         selectMethod: false,
         trans: [],
         emp: [],
-        product: []
+        product: [],
+        /* trans ins */
+        delivery_date: '',
+        credit: 0,
+        payament_method: '',
+        payament_status: '',
+        credit_due_date: '',
+        transaction_date: '',
+        delivery_status: '',
+        type: '',
+        employee_emp_id: 0,
+        partner_par_id: 0,
+        /* Ene Trans ins */
     };
   },
   mounted() {
@@ -172,6 +201,25 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      },
+      /*  creat Tran here  */
+      creatTran(){
+        /* set up data */
+        let tranData = {
+          delivery_date: this.delivery_date,
+          credit: this.credit,
+          payament_method: this.payament_method,
+          payament_status: this.payament_status,
+          credit_due_date: this.credit_due_date,
+          transaction_date: this.transaction_date,
+          delivery_status: this.delivery_status,
+          type: this.type,
+          employee_emp_id: this.employee_emp_id,
+          partner_par_id: this.partner_par_id,
+        }
+        /* Request axios */
+        axios
+        .put("http://localhost:3000/trans", tranData)
       }
   },
   components: {

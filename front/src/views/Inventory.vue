@@ -46,7 +46,6 @@ export default {
       getProduct(){
         axios
         .get("http://localhost:3000/products", {
-
         })
         .then((response) => {
           this.blog = response.data;
@@ -56,7 +55,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      }
+      },
   },
   components: {
     navbar,

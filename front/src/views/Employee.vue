@@ -1,8 +1,15 @@
 <template>
   <div class="container">
     <navbar />
-    <h1 class="title" style="margin-top: 2%">ค้นหาพนักงานที่คุณต้องการ</h1>
-    <form class="box" style="padding-top: 3%">
+    <h1 class="title" style="margin-top: 2%;display: inline">ค้นหาพนักงานที่คุณต้องการ</h1>
+    <button
+      class="button is-warning"
+      style="float:right"
+      v-on:click="checkadd = !checkadd"
+    >
+      +Add New Employee
+    </button>
+    <form class="box mt-3 pt-2">
       <div class="field">
         <label class="label">ชื่อพนักงาน</label>
         <div class="control">
@@ -33,12 +40,6 @@
         </div>
       </div>
     </div>
-    <button
-      class="button is-warning is-rounded"
-      v-on:click="checkadd = !checkadd"
-    >
-      +Add New Employee
-    </button>
     <!--Modal with v-for-->
     <div
       class="modal"

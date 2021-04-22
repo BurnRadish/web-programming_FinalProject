@@ -67,8 +67,8 @@
     <div class="modal" v-bind:class="{ 'is-active': newTran }">
       <div class="modal-background"></div>
       <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">เพิ่มประวัติธุรกรรม</p>
+        <header class="modal-card-head has-text-centered">
+          <p class="modal-card-title">เพิ่มรายการประวัติธุรกรรม</p>
           <button class="delete" aria-label="close" @click="newTran = false"></button>
         </header>
         <section class="modal-card-body">
@@ -185,9 +185,13 @@
           <!-- End column 5  -->
         </section>
         <!--End comtent Body -->
-        <footer class="modal-card-foot">
-          <button class="button is-info">เพิ่ม</button>
-          <button class="button is danger" @click="newTran = false">ยกเลิก</button>
+        <footer class="modal-card-foot columns">
+            <div class="column is-6">
+              <button class="button is-info is-fullwidth">เพิ่ม</button>
+            </div>
+            <div class="column is-6">
+              <button class="button is-fullwidth is-danger" @click="newTran = false">ยกเลิก</button>
+            </div>
         </footer>
       </div>
     </div>

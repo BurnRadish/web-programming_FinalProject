@@ -110,14 +110,6 @@
             </div>
           </div>
           <!-- End second column -->
-          <!-- column 3 -->
-          <div class="columns">
-            <div class="column is-4"> 
-              <label for="">จำนวน</label>
-              <input type="number" v-model="credit"><br>
-            </div>
-          </div>
-          <!-- End column 3 -->
         </section>
         <!--End comtent Body -->
         <footer class="modal-card-foot columns">

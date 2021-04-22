@@ -3,17 +3,29 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 
-//get all member details
+//get all member details or Search member
 router.get("/employees", async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
+    let search = req.query.search || ''
     try {
-        let info = await conn.query("SELECT * FROM employee")
-        conn.commit()
-        //res.send(info[0]);
-        res.json({
-            blogs : info[0]
-        })
+        /* ยิง Postman ด้วย param ผ่านแล้ว!!! */
+        if(search.length > 0){
+            let sql = "SELECT * FROM employee WHERE fname LIKE ? OR lname LIKE ?"
+            let cond = [`%${search}%`, `%${search}%`]
+            let info = await pool.query(sql, cond);
+            res.json({
+                blogs : info[0]
+            })
+        } else {
+            let info = await conn.query("SELECT * FROM employee")
+            conn.commit()
+            //res.send(info[0]);
+            res.json({
+                blogs : info[0]
+            })
+        }
+        
     } catch (err) {
         await conn.rollback();
         return next(err)

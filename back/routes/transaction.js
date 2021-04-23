@@ -10,14 +10,14 @@ router.put("/trans", async function(req, res, next) {
     let delivery_date = req.body.delivery_date
     let credit = req.body.credit
     let payament_method = req.body.payment_medthod
-    payament_method = payament_method.toUpperCase()
+    //payament_method = payament_method.toUpperCase()
     let payament_status = req.body.payament_status
-    payament_status = payament_status.toUpperCase()
+    //payament_status = payament_status.toUpperCase()
     let credit_due_date = req.body.credit_due_date
     let transaction_date = req.body.transaction_date
     let delivery_status = req.body.delivery_status
     let type = req.body.type
-    type = type.toUpperCase()
+    //type = type.toUpperCase()
     let employee_emp_id = req.body.employee_emp_id
     let partner_par_id = req.body.partner_par_id
     let price = req.body.price
@@ -52,7 +52,7 @@ router.put("/trans", async function(req, res, next) {
         let pro_id = await conn.query('SELECT pro_id FROM product WHERE title = ?', [title])
         let trann_id = await tran_id[0][0].tran_id
         let proo_id = await pro_id[0][0].pro_id
-        type = type.toUpperCase()
+        //type = type.toUpperCase()
         if(type === 'PURCHASE'){
             await conn.query(`
                 INSERT INTO product_transaction(product_pro_id, transaction_tran_id, price, count)

@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <navbar />
-    <h1 class="title" style="margin-top: 2%;display: inline">ค้นหาพนักงานที่คุณต้องการ</h1>
+    <h1 class="title" style="margin-top: 2%;display: inline">
+      ค้นหาพนักงานที่คุณต้องการ
+    </h1>
     <button
       class="button is-warning"
       style="float:right"
@@ -9,21 +11,30 @@
     >
       +Add New Employee
     </button>
-    <form class="box mt-3 pt-2">
+    <div class="box mt-3 pt-2">
       <div class="field">
         <label class="label">ชื่อพนักงาน</label>
         <div class="control">
-          <input class="input" type="email" placeholder="Sompong Chobhee" />
+          <input
+            class="input"
+            type="text"
+            v-model="search12"
+            placeholder="Sompong Chobhee"
+          />
         </div>
       </div>
-      <button class="button is-primary is-rounded">Find</button>
-    </form>
+      <button class="button is-primary is-rounded" v-on:click="search()">
+        Find
+      </button>
+    </div>
     <u><h1 class="title has-text-centered">รายชื่อพนักงาน</h1></u>
     <div class="columns is-multiline" style="padding-top: 5%">
       <div class="column is-3" v-for="emp in blog" :key="emp.id">
         <div class="card">
           <div class="card-image">
-            <img src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg" />
+            <img
+              src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg"
+            />
           </div>
           <div class="card-content">
             <div class="content">
@@ -35,7 +46,11 @@
             <a class="card-footer-item" v-on:click="emp.check = !emp.check"
               >Profile</a
             >
-            <a class="card-footer-item" v-on:click="emp.checkedit = !emp.checkedit">Edit</a>
+            <a
+              class="card-footer-item"
+              v-on:click="emp.checkedit = !emp.checkedit"
+              >Edit</a
+            >
           </footer>
         </div>
       </div>
@@ -83,7 +98,12 @@
       </div>
     </div>
     <!--Modal For Edit-->
-    <div class="modal" v-for="mod in blog" :key="mod.id" v-bind:class="{ 'is-active': mod.checkedit }">
+    <div
+      class="modal"
+      v-for="mod in blog"
+      :key="mod.id"
+      v-bind:class="{ 'is-active': mod.checkedit }"
+    >
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -289,6 +309,7 @@ export default {
     return {
       checkadd: false,
       blog: {},
+      search12: "",
     };
   },
   components: {
@@ -308,7 +329,21 @@ export default {
       //console.log(this.blog[0].check);
     });
   },
-  methods: {},
+  methods: {
+    search() {
+      if (this.search12 != " ") {
+        axios
+          .get("http://localhost:3000/employees?search=" + this.search12)
+          .then((response) => {
+            for (let comment of response.data.blogs) {
+              comment.check = false;
+              comment.checkedit = false;
+            }
+            this.blog = response.data.blogs;
+        });
+      }
+    },
+  },
 };
 </script>
 

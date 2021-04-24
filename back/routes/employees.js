@@ -65,12 +65,12 @@ router.post("/employees", async function(req, res, next) {
     let fname = req.body.fname
     let lname = req.body.lname
     let gender = req.body.gender
-    gender = gender.toUpperCase()
+    //gender = gender.toUpperCase()
     let pass = req.body.password
     try {
         await conn.query(`
         INSERT INTO employee(citizen_id, degree, dob, position, salary, address, email, phone, fname, lname, gender, password)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [citizen, degree, dob, pos, sal, address, email, phone, fname, lname, gender, pass])
         conn.commit()
         res.send('Success!');

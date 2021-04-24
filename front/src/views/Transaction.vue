@@ -187,7 +187,7 @@
         <!--End comtent Body -->
         <footer class="modal-card-foot columns">
             <div class="column is-6">
-              <button class="button is-info is-fullwidth">เพิ่ม</button>
+              <button class="button is-info is-fullwidth" @click="creatTran()">เพิ่ม</button>
             </div>
             <div class="column is-6">
               <button class="button is-fullwidth is-danger" @click="newTran = false">ยกเลิก</button>
@@ -262,6 +262,13 @@ export default {
         /* Request axios */
         axios
         .put("http://localhost:3000/trans", tranData)
+        .then((response => {
+          console.log("response: ", response)
+          console.log("Success")
+        }))
+        .catch(err => {
+          console.log(err)
+        })
       }
   },
   components: {

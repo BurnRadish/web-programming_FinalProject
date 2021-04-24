@@ -49,7 +49,7 @@
         <!-- End footer table -->
         <!-- table body -->
         <tbody>
-            <tr v-for='(tran) in trans' :key='tran.tran_id'>
+            <tr v-for='(tran) in trans' :key='tran.tran_id' v-on:click="editTran(tran_tran_id)">
               <td><a>#{{tran.tran_id}}</a></td>
               <td>{{tran.type}}</td>
               <td>{{tran.transaction_date}}</td>
@@ -63,7 +63,7 @@
     <br>
     <progress class="progress is-small is-info" value='100' max="100"></progress>
 
-    <!-- Tran modal -->
+    <!-- Tran modal --> <!-- for creat new transaction -->
     <div class="modal" v-bind:class="{ 'is-active': newTran }">
       <div class="modal-background"></div>
       <div class="modal-card">
@@ -196,6 +196,139 @@
       </div>
     </div>
     <!-- End Model -->
+    <!-- model for edit tran --> 
+        <div class="modal" v-bind:class="{ 'is-active': editModel }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head has-text-centered">
+          <p class="modal-card-title">THIS IS EDIT PROTOTYPE</p>
+          <button class="delete" aria-label="close" @click="editModel = false"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          <div class="columns">
+            <!-- first column -->
+            <div class="column is-4">
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">ประเภท</label>
+                </div>
+                <div class="field-body" >
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <label class="radio">
+                        <input type="radio" name="member" v-model="type" value="PURCHASE">
+                        ซื้อ
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="member" v-model="type" value="SALE">
+                        ขาย
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-8"> 
+              <label for="" class="label">วันที่ดำเนินธุรกรรม : 
+                <input type="date" style="margin-left: 15px;" v-model="transaction_date">
+              </label>
+            </div>
+          </div>
+          <!-- End first column -->
+
+          <!-- second colum -->
+          <div class="columns">
+            <!-- Select method -->
+            <div class="column is-4">
+              <label class="label">วิธีการชำระเงิน</label>
+              <select v-model="payament_method">
+                <option disabled value="วิธีการชำระเงิน" selected>วิธีการชำระเงิน</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Creditcard">Creditcard</option>
+                <option value="Cash">Cash</option>
+              </select>
+            </div>
+            <div class="column is-4"> 
+              <label for="" class="label">วันครบกำหนดชำระ 
+                <input type="date" v-model="credit_due_date">
+              </label>
+            </div>
+          </div>
+          <!-- End second column -->
+          <!-- column 3 -->
+          <div class="columns">
+            <div class="column is-4"> <!-- payment status -->
+              <label for=""><b>สถานะการชำระ</b></label>
+              <div class="control" style="margin-left: 0.5em;">
+                  <label class="radio">
+                    <input type="radio" name="" v-model="payament_status" value="Complete">
+                    ชำระครบถ้วน
+                  </label>
+                  <label class="radio" style="margin-left: 0em;">
+                    <input type="radio" name="" v-model="payament_status" value="Incomplete" >
+                    ยังชำระไม่ครบ
+                  </label>
+                </div>
+            </div>
+            <!-- trigger if Incomplete -->
+            <div class="column is-4" v-show="payament_status == 'Incomplete' "> 
+              <label for="">ยอดค้างการชำระ</label>
+              <input type="number" v-model="credit"><br>
+            </div>
+          </div>
+          <!-- End column 3 -->
+          <!-- column 4 -->
+          <div class="columns">
+            <div class="column is-4"> <!-- deliverly status -->
+              <label for=""><b>สถานะการจัดส่ง</b></label>
+              <div class="control" style="margin-left: 0.5em;">
+                  <label class="radio">
+                    <input type="radio" name="" v-model="delivery_status" value="1">
+                    จัดส่งสำเร็จ
+                  </label>
+                  <label class="radio" style="margin-left: 0em;">
+                    <input type="radio" name="" v-model="delivery_status" value="0" >
+                    ยังไม่ได้ทำการจัดส่ง
+                  </label>
+                </div>
+            </div>
+            <div class="column is-4"> 
+              <label for="" class="label">วันที่จัดส่งสินค้า
+                <input type="date" v-model="delivery_date">
+              </label>
+            </div>
+          </div>
+          <!-- End column 4 -->
+          <!-- colum 5 -->
+          <div class="columns">
+            <div class="field column is-4">
+              <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="" v-model="employee_emp_id">
+              </div>
+            </div>
+            <div class="field column is-4">
+              <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
+              <div class="control">
+                <input class="input" type="number" placeholder="" v-model="partner_par_id">
+              </div>
+            </div>
+          </div>
+          <!-- End column 5  -->
+        </section>
+        <!--End comtent Body -->
+        <footer class="modal-card-foot columns">
+            <div class="column is-6">
+              <button class="button is-info is-fullwidth" @click="creatTran()">เพิ่ม</button>
+            </div>
+            <div class="column is-6">
+              <button class="button is-fullwidth is-danger" @click="newTran = false">ยกเลิก</button>
+            </div>
+        </footer>
+      </div>
+    </div>
+    <!-- End edit tran model -->
   </div>
 </template>
 
@@ -224,6 +357,7 @@ export default {
         employee_emp_id: 0,
         partner_par_id: 0,
         /* Ene Trans ins */
+        editModel: false,
     };
   },
   mounted() {
@@ -269,7 +403,12 @@ export default {
         .catch(err => {
           console.log(err)
         })
+      },
+      editTran(){
+        this.editModel = true;
+
       }
+      
   },
   components: {
     navbar,

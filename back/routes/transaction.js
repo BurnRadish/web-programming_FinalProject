@@ -108,7 +108,7 @@ router.get("/trans", async function(req, res, next) {
                 info : info[0]
             })
         } else {
-            let info = await conn.query("SELECT * FROM product")
+            let info = await conn.query("SELECT * FROM transaction")
             conn.commit()
             res.send(info[0])
         }

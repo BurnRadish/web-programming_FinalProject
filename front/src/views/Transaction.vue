@@ -17,10 +17,10 @@
             </a>
           </div>
           <div class="control is-expanded">
-            <input class="input" type="text" placeholder="ค้นหาประวัติธุรกรรม">
+            <input class="input" type="text" placeholder="ค้นหาประวัติธุรกรรม" v-model="searchT">
           </div>
           <div class="control">
-            <a class="button is-info">
+            <a class="button is-info" @click="getTrans()">
               ค้นหา
             </a>
           </div>
@@ -105,12 +105,16 @@
             </div>
           </div>
           <!-- End first column -->
-
+          <div class="columns">
+            <label class="label">ชื่อสินค้า</label>
+            <input type="text" v-model="title">
+          </div>
           <!-- second colum -->
           <div class="columns">
             <!-- Select method -->
             <div class="column is-4">
               <label class="label">วิธีการชำระเงิน</label>
+              <!-- ENUM('Cash', 'Cheque', 'Creditcard') -->
               <select v-model="payament_method">
                 <option disabled value="วิธีการชำระเงิน" selected>วิธีการชำระเงิน</option>
                 <option value="Cheque">Cheque</option>
@@ -203,7 +207,7 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head has-text-centered">
-          <p class="modal-card-title">THIS IS EDIT PROTOTYPE</p>
+          <p class="modal-card-title">แก้ไขข้อมูลธุรกรรม</p>
           <button class="delete" aria-label="close" @click="editModel = false"></button>
         </header>
         <section class="modal-card-body">
@@ -322,7 +326,7 @@
         <!--End comtent Body -->
         <footer class="modal-card-foot columns">
             <div class="column is-6">
-              <button class="button is-info is-fullwidth" @click="creatTran()">เพิ่ม</button>
+              <button class="button is-success is-fullwidth" @click="saveEdit()">บันทึก</button>
             </div>
             <div class="column is-6">
               <button class="button is-fullwidth is-danger" @click="newTran = false">ยกเลิก</button>
@@ -347,6 +351,7 @@ export default {
         trans: [],
         emp: [],
         product: [],
+        searchT: '',
         /* trans ins */
         delivery_date: '',
         credit: 0,
@@ -358,6 +363,9 @@ export default {
         type: '',
         employee_emp_id: 0,
         partner_par_id: 0,
+        count: 0,
+        price: 0,
+        title: '',
         /* Ene Trans ins */
         edit_delivery_date: '',
         edit_credit: 0,
@@ -398,7 +406,7 @@ export default {
         let tranData = {
           delivery_date: this.delivery_date,
           credit: this.credit,
-          payament_method: this.payament_method,
+          payment_medthod: this.payament_method,
           payament_status: this.payament_status,
           credit_due_date: this.credit_due_date,
           transaction_date: this.transaction_date,
@@ -406,7 +414,11 @@ export default {
           type: this.type,
           employee_emp_id: this.employee_emp_id,
           partner_par_id: this.partner_par_id,
+          count: 0,
+          price: 0,
+          title: this.title,
         }
+        console.log(tranData)
         /* Request axios */
         axios
         .put("http://localhost:3000/trans", tranData)
@@ -438,8 +450,34 @@ export default {
         this.edit_type = selectedEdit.type
         this.edit_employee_emp_id = selectedEdit.employee_emp_id
         this.edit_partner_par_id = selectedEdit.partner_par_id
+      },
+      saveEdit(){
+        //set up data
+        /* let updateData ={
+           delivery_date: this.edit_delivery_date,
+          credit: this.edit_credit,
+          payament_method: this.edit_payament_method,
+          payament_status: this.edit_payament_status,
+          credit_due_date: this.edit_credit_due_date,
+          transaction_date: this.edit_transaction_date,
+          delivery_status: parseInt(this.edit_delivery_status),
+          type: this.edit_type,
+          employee_emp_id: this.edit_employee_emp_id,
+          partner_par_id: this.edit_partner_par_id,
+        } */
+      },
+      searchTran(){
+        axios
+        .get("http://localhost:3000/trans?search=", this.searchT)
+        .then((response) => {
+          this.trans = response.data;
+          console.log(response.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       }
-      
+        
   },
   components: {
     navbar,

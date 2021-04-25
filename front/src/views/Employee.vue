@@ -410,9 +410,9 @@ export default {
           fname: this.name,
           lname: this.surname,
           gender: this.gender,
-          pos: this.position,
-          sal: this.salary,
-          pass: this.password,
+          position: this.position,
+          salary: this.salary,
+          password: this.password,
           email: this.email,
           address: this.address,
           dob: this.birth,
@@ -463,7 +463,6 @@ export default {
         required: required
       },citizen:{
         required: required,
-        integer: integer
       }
     }
 };

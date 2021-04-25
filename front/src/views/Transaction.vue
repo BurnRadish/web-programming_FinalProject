@@ -106,11 +106,18 @@
           </div>
           <!-- End first column -->
           <div class="columns">
-            <label class="label">ชื่อสินค้า</label>
-            <input type="text" v-model="title">
+            <label class="label mr-2 ml-3">ชื่อสินค้า</label>
+            <select v-model="title">
+              <option v-for='item in product' :key="item.pro_id">{{item.title}}</option>
+            </select>
           </div>
           <!-- second colum -->
           <div class="columns">
+            <div class="column is-4"> 
+              <label for="" class="label">จำนวนสินค้า 
+                <input type="number" v-model="count">
+              </label>
+            </div>
             <!-- Select method -->
             <div class="column is-4">
               <label class="label">วิธีการชำระเงิน</label>
@@ -143,6 +150,10 @@
                     ยังชำระไม่ครบ
                   </label>
                 </div>
+            </div>
+            <div class="column is-4"> 
+              <label for="">ยอดการสั่งซื้อ(บาท)</label>
+              <input type="number" v-model="price"><br>
             </div>
             <!-- trigger if Incomplete -->
             <div class="column is-4" v-show="payament_status == 'Incomplete' "> 
@@ -320,6 +331,7 @@
                 <input class="input" type="number" placeholder="" v-model="edit_partner_par_id">
               </div>
             </div>
+            
           </div>
           <!-- End column 5  -->
         </section>
@@ -400,6 +412,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+        axios.get("http://localhost:3000/products").then((res) => {
+          this.product = res.data
+        })
       },
       /*  creat Tran here  */
       creatTran(){
@@ -489,7 +504,7 @@ export default {
           search : this.searchT
         }})
         .then((response) => {
-          this.trans = response.data;
+          this.trans = response.data.info;
           console.log(response.data)
         })
         .catch((err) => {

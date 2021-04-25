@@ -7,7 +7,7 @@
       style="float:right"
       v-on:click="checkadd = !checkadd"
     >
-      +Add New Employee
+      +Add New Partner
     </button>
     <form class="box mt-3 pt-2">
       <div class="field">
@@ -34,11 +34,11 @@
           <footer class="card-footer">
             <a class="card-footer-item" v-on:click="par.check = !par.check">Profile</a>
             <a class="card-footer-item" v-on:click="par.checkedit = !par.checkedit">Edit</a>
+            <a class="card-footer-item" v-on:click="DeletePar(par)">Delete</a>
           </footer>
         </div>
       </div>
     </div>
-    <button class="button is-warning is-rounded" v-on:click="checkadd = !checkadd">+Add New Partner</button>
     <!--Modal with v-for-->
     <div class="modal" v-for="mo in blog" :key="mo.id" v-bind:class="{'is-active': mo.check}">
       <div class="modal-background"></div>
@@ -90,7 +90,8 @@
                 <div class="field">
                   <label class="label">Name</label>
                   <div class="control">
-                    <input class="input" type="text" placeholder="Text input" />
+                    <input class="input" type="text" v-model="$v.name2.$model" placeholder="Text input" />
+                    <p class="help" v-if="$v.name2.$error == true" style="color: red">Please Fill Name</p>
                   </div>
                 </div>
               </div>
@@ -98,7 +99,8 @@
                 <div class="field">
                   <label class="label">Surname</label>
                   <div class="control">
-                    <input class="input" type="text" placeholder="Text input" />
+                    <input class="input" type="text" v-model="$v.surname2.$model" placeholder="Text input" />
+                    <p class="help" v-if="$v.surname2.$error == true" style="color: red">Please Fill Surname</p>
                   </div>
                 </div>
               </div>
@@ -106,58 +108,95 @@
             <div class="columns">
               <div class="column is-4">
                 <div class="field">
-                  <label class="label">Gender</label>
+                  <label class="label">Type</label>
                 </div>
                 <div class="select">
-                  <select>
-                    <option>Male</option>
-                    <option>Female</option>
+                  <select v-model="$v.type2.$model">
+                    <option>Customer</option>
+                    <option>Supplier</option>
                   </select>
+                  <p class="help" v-if="$v.type2.$error == true" style="color: red">Please Select Type</p>
                 </div>
-              </div>
-              <div class="column is-4">
-                <div class="field">
-                  <label class="label">Birth</label>
-                </div>
-                <input class="input" type="date" />
               </div>
             </div>
             <div class="columns">
               <div class="column is-12">
                 <div class="field">
-                  <label class="label">Position</label>
+                  <label class="label">Company Name</label>
                   <div class="control">
                     <input
                       class="input"
                       type="text"
-                      placeholder="Data Engineer"
+                      v-model="$v.company_name2.$model"
+                      placeholder="Stark Insdustry"
                     />
+                    <p class="help" v-if="$v.company_name2.$error == true" style="color: red">Please Fill Company Name</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Email</label>
+                  <label class="label">Email1</label>
                   <div class="control">
                     <input
                       class="input"
-                      type="text"
+                      type="email"
+                      v-model="$v.email12.$model"
+                      placeholder="aaa@aaa.com"
+                    />
+                    <p class="help" v-if="$v.email12.$error == true" style="color: red">Please Fill Email</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Email2</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="email"
+                      v-model="email22"
                       placeholder="aaa@aaa.com"
                     />
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Address</label>
+                  <label class="label">Legal Address</label>
                   <div class="control">
                     <input
                       class="input"
                       type="text"
+                      v-model="$v.legal_address2.$model"
                       placeholder="Bangkok Mailbox 10200"
                     />
+                    <p class="help" v-if="$v.legal_address2.$error == true" style="color: red">Please Fill Legal Address</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Tel.</label>
+                  <label class="label">Delivery Address</label>
                   <div class="control">
-                    <input class="input" type="text" placeholder="0800000000" />
+                    <input
+                      class="input"
+                      type="text"
+                      v-model="$v.delivery_address2.$model"
+                      placeholder="Bangkok Mailbox 10200"
+                    />
+                    <p class="help" v-if="$v.delivery_address2.$error == true" style="color: red">Please Fill Delivery Address</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tel1.</label>
+                  <div class="control">
+                    <input class="input" type="text" v-model="$v.tel12.$model" placeholder="0800000000" />
+                    <p class="help" v-if="$v.tel12.$error == true" style="color: red">Please Fill Phone Number</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tel2.</label>
+                  <div class="control">
+                    <input class="input" type="text" v-model="tel22" placeholder="0800000000" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Description</label>
+                  <div class="control">
+                    <input class="input" type="text" v-model="description2" placeholder="Anything you want to know" />
                   </div>
                 </div>
               </div>
@@ -165,7 +204,7 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Save changes</button>
+          <button class="button is-success" v-on:click="EditPar(mod)">Save changes</button>
           <button class="button" v-on:click="mod.checkedit = !mod.checkedit">
             Cancel
           </button>
@@ -206,103 +245,95 @@
             <div class="columns">
               <div class="column is-4">
                 <div class="field">
-                  <label class="label">Gender</label>
+                  <label class="label">Type</label>
                 </div>
                 <div class="select">
-                  <select v-model="$v.gender.$model">
-                    <option>Male</option>
-                    <option>Female</option>
+                  <select v-model="$v.type.$model">
+                    <option>Customer</option>
+                    <option>Supplier</option>
                   </select>
-                  <p class="help" v-if="$v.gender.$error == true" style="color: red">Please Select Gender</p>
+                  <p class="help" v-if="$v.type.$error == true" style="color: red">Please Select Type</p>
                 </div>
-              </div>
-              <div class="column is-4">
-                <div class="field">
-                  <label class="label">Birth</label>
-                </div>
-                <input class="input" v-model="$v.birth.$model" type="date" />
-                <p class="help" v-if="$v.birth.$error == true" style="color: red">Please Select Birth</p>
               </div>
             </div>
             <div class="columns">
               <div class="column is-12">
                 <div class="field">
-                  <label class="label">Position</label>
+                  <label class="label">Company Name</label>
                   <div class="control">
                     <input
                       class="input"
                       type="text"
-                      v-model="$v.position.$model"
-                      placeholder="Data Engineer"
+                      v-model="$v.company_name.$model"
+                      placeholder="Stark Insdustry"
                     />
-                    <p class="help" v-if="$v.position.$error == true" style="color: red">Please Fill Position</p>
+                    <p class="help" v-if="$v.company_name.$error == true" style="color: red">Please Fill Company Name</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Salary</label>
-                  <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      v-model="$v.salary.$model"
-                      placeholder="Data Engineer"
-                    />
-                    <template v-if="$v.salary.$error == true">
-                      <p class="help" v-if="$v.salary.required == false" style="color: red">Please Fill Salary</p>
-                      <p class="help" v-if="$v.salary.integer == false" style="color: red">Please Fill Integer</p>
-                    </template>
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Email</label>
+                  <label class="label">Email1</label>
                   <div class="control">
                     <input
                       class="input"
                       type="email"
-                      v-model="$v.email.$model"
+                      v-model="$v.email1.$model"
                       placeholder="aaa@aaa.com"
                     />
-                    <p class="help" v-if="$v.email.$error == true" style="color: red">Please Fill Email</p>
+                    <p class="help" v-if="$v.email1.$error == true" style="color: red">Please Fill Email</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Password</label>
+                  <label class="label">Email2</label>
                   <div class="control">
                     <input
                       class="input"
-                      type="password"
-                      v-model="$v.password.$model"
+                      type="email"
+                      v-model="email2"
+                      placeholder="aaa@aaa.com"
                     />
-                    <p class="help" v-if="$v.password.$error == true" style="color: red">Please Fill The Correct Password</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Address</label>
+                  <label class="label">Legal Address</label>
                   <div class="control">
                     <input
                       class="input"
                       type="text"
-                      v-model="$v.address.$model"
+                      v-model="$v.legal_address.$model"
                       placeholder="Bangkok Mailbox 10200"
                     />
-                    <p class="help" v-if="$v.address.$error == true" style="color: red">Please Fill Address</p>
+                    <p class="help" v-if="$v.legal_address.$error == true" style="color: red">Please Fill Legal Address</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Tel.</label>
+                  <label class="label">Delivery Address</label>
                   <div class="control">
-                    <input class="input" type="text" v-model="$v.tel.$model" placeholder="0800000000" />
-                    <p class="help" v-if="$v.tel.$error == true" style="color: red">Please Fill Phone Number</p>
+                    <input
+                      class="input"
+                      type="text"
+                      v-model="$v.delivery_address.$model"
+                      placeholder="Bangkok Mailbox 10200"
+                    />
+                    <p class="help" v-if="$v.delivery_address.$error == true" style="color: red">Please Fill Delivery Address</p>
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Citizen</label>
+                  <label class="label">Tel1.</label>
                   <div class="control">
-                    <input class="input" type="text" v-model="$v.citizen.$model" placeholder="0000000000" />
-                    <template v-if="$v.citizen.$error == true">
-                      <p class="help" v-if="$v.citizen.required == false" style="color: red">Please Fill Citizen</p>
-                      <p class="help" v-if="$v.citizen.integer == false" style="color: red">Please Fill Integer</p>
-                    </template>
+                    <input class="input" type="text" v-model="$v.tel1.$model" placeholder="0800000000" />
+                    <p class="help" v-if="$v.tel1.$error == true" style="color: red">Please Fill Phone Number</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Tel2.</label>
+                  <div class="control">
+                    <input class="input" type="text" v-model="tel2" placeholder="0800000000" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Description</label>
+                  <div class="control">
+                    <input class="input" type="text" v-model="description" placeholder="Anything you want to know" />
                   </div>
                 </div>
               </div>
@@ -323,7 +354,7 @@
 <script>
 import navbar from "../components/Navbar.vue";
 import axios from "axios"
-import {required, email, maxLength, integer} from 'vuelidate/lib/validators'
+import {required, email, maxLength} from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
@@ -333,15 +364,27 @@ export default {
         search12: "",
         name: "",
         surname: "",
-        gender: "",
-        birth: "",
-        position: "",
-        salary: "",
-        email: "",
-        address: "",
-        tel: "",
-        password: "",
-        citizen: ""
+        type: "",
+        company_name: "",
+        email1: "",
+        legal_address: "",
+        delivery_address: "",
+        tel1: "",
+        tel2: "",
+        email2: "",
+        description: "",
+        //
+        name2: "",
+        surname2: "",
+        type2: "",
+        company_name2: "",
+        email12: "",
+        legal_address2: "",
+        delivery_address2: "",
+        tel12: "",
+        tel22: "",
+        email22: "",
+        description2: ""
     };
   },
   components: {
@@ -376,22 +419,70 @@ export default {
       this.$v.$touch();
       if(this.$v.$invalid == false){
         let body = {
-          citizen: this.citizen,
-          fname: this.name,
-          lname: this.surname,
-          gender: this.gender,
-          pos: this.position,
-          sal: this.salary,
-          pass: this.password,
-          email: this.email,
-          address: this.address,
-          dob: this.birth,
-          phone: this.tel
+          description: this.description,
+          par_fname: this.name,
+          par_lname: this.surname,
+          type: this.type,
+          company_name: this.company_name,
+          email2: this.email2,
+          email1: this.email1,
+          legal_address: this.legal_address,
+          phone1: this.tel1,
+          phone2: this.tel2,
+          delivery_address: this.delivery_address
         }
         axios.post("http://localhost:3000/partner", body)
         .then(() =>{
-          this.checkadd = !this.checkadd;
-          alert("Add Finish");
+          axios.get("http://localhost:3000/partner")
+          .then((response) =>{
+            for (let comment of response.data.blogs) {
+              comment.check = false;
+              comment.checkedit = false;
+            }
+            this.blog = response.data.blogs
+            this.checkadd = !this.checkadd;
+          })
+        })
+      }
+    },
+    DeletePar(par){
+      let condel = confirm("Are you sure to delete "+par.par_fname);
+      if(condel == true){
+        axios.delete("http://localhost:3000/partner/"+par.par_id)
+        .then(() =>{
+          axios.get("http://localhost:3000/partner")
+          .then((response) =>{
+            for (let comment of response.data.blogs) {
+              comment.check = false;
+              comment.checkedit = false;
+            }
+            this.blog = response.data.blogs
+          })
+          /*alert("Delete Finish!");
+          this.blog.splice(par.par_id,1);*/
+        })
+      }
+    },
+    EditPar(mod){
+      this.$v.$touch();
+      if(this.$v.$invalid == false){
+        mod.checkedit = !mod.checkedit;
+        let body = {
+          description: this.description2,
+          par_fname: this.name2,
+          par_lname: this.surname2,
+          type: this.type2,
+          company_name: this.company_name2,
+          email2: this.email22,
+          email1: this.email12,
+          legal_address: this.legal_address2,
+          phone1: this.tel12,
+          phone2: this.tel22,
+          deliver_address: this.delivery_address2
+        }
+        axios.put("http://localhost:3000/partner/"+mod.par_id, body)
+        .then(() =>{
+          alert("Edit Finish");
         })
       }
     }
@@ -405,36 +496,55 @@ export default {
         requied: required,
         maxLength: maxLength(150)
       },
-      gender:{
+      type:{
         required: required
       },
-      birth:{
+      company_name:{
         required: required
       },
-      position:{
-        required: required
-      },
-      salary:{
-        required: required,
-        integer: integer
-      },
-      email:{
+      email1:{
         required: required,
         email: email
       },
-      address:{
+      legal_address:{
         required: required
       },
-      tel:{
+      delivery_address:{
+        required: required
+      },
+      tel1:{
         required: required,
         maxLength: maxLength(10)
       },
-      password:{
-        required: required
-      },citizen:{
+      //
+      name2:{
         required: required,
-        integer: integer
-      }
+        maxLength: maxLength(150)
+      },
+      surname2:{
+        requied: required,
+        maxLength: maxLength(150)
+      },
+      type2:{
+        required: required
+      },
+      company_name2:{
+        required: required
+      },
+      email12:{
+        required: required,
+        email: email
+      },
+      legal_address2:{
+        required: required
+      },
+      delivery_address2:{
+        required: required
+      },
+      tel12:{
+        required: required,
+        maxLength: maxLength(10)
+      },
     }
 };
 </script>

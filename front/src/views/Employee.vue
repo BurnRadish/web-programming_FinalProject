@@ -51,6 +51,11 @@
               v-on:click="emp.checkedit = !emp.checkedit"
               >Edit</a
             >
+            <a
+              class="card-footer-item"
+              v-on:click="DeleteEmp(emp)"
+              >Delete</a
+            >
           </footer>
         </div>
       </div>
@@ -405,6 +410,7 @@ export default {
     AddEmp(){
       this.$v.$touch();
       if(this.$v.$invalid == false){
+        this.checkadd = !this.checkadd;
         let body = {
           citizen: this.citizen,
           fname: this.name,
@@ -420,8 +426,17 @@ export default {
         }
         axios.post("http://localhost:3000/employees", body)
         .then(() =>{
-          this.checkadd = !this.checkadd;
           alert("Add Finish");
+        })
+      }
+    },
+    DeleteEmp(emp){
+      let condel = confirm("Are you sure to delete "+emp.fname);
+      if(condel == true){
+        axios.delete("http://localhost:3000/employees/"+emp.emp_id)
+        .then(() =>{
+          alert("Delete Finish!");
+          this.blog.splice(emp.emp_id,1);
         })
       }
     }

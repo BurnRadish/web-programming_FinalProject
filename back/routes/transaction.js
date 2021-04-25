@@ -11,13 +11,13 @@ const transSchema = Joi.object({
     payament_status: Joi.string().required(),
     credit_due_date: Joi.date().required(),
     transaction_date: Joi.date().required(),
-    delivery_status: Joi.boolean().required(),
+    delivery_status: Joi.boolean(),
     type: Joi.string().required(),
     employee_emp_id: Joi.string().required(),
     partner_par_id: Joi.string().required(),
     price: Joi.number().required(),
     count: Joi.number().required(),
-    title: Joi.number().required(),
+    title: Joi.string().required(),
 })
 //add new transaction
 router.put("/trans", async function(req, res, next) {
@@ -38,14 +38,13 @@ router.put("/trans", async function(req, res, next) {
     let transaction_date = req.body.transaction_date
     let delivery_status = req.body.delivery_status
     let type = req.body.type
-    //type = type.toUpperCase()
+    type = type.toUpperCase()
     let employee_emp_id = req.body.employee_emp_id
     let partner_par_id = req.body.partner_par_id
     let price = req.body.price
     let count = req.body.count
     let title = req.body.title
     try {
-        await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=0;')
         await conn.query(`
             INSERT INTO transaction(
                 delivery_date, 
@@ -73,36 +72,47 @@ router.put("/trans", async function(req, res, next) {
         let pro_id = await conn.query('SELECT pro_id FROM product WHERE title = ?', [title])
         let trann_id = await tran_id[0][0].tran_id
         let proo_id = await pro_id[0][0].pro_id
-        //type = type.toUpperCase()
+        type = type.toUpperCase()
         if(type === 'PURCHASE'){
+            
+            //create new product_transaction
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=0;')
             await conn.query(`
                 INSERT INTO product_transaction(product_pro_id, transaction_tran_id, price, count)
                 VALUES (?, ?, ?, ?)
                 `, [proo_id, trann_id, price, count])
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=1;')
             let currentAmount = await conn.query('SELECT amount FROM product WHERE title = ?', [title])
+
+            //update inventory
             currentAmount = parseInt(currentAmount[0][0].amount) + parseInt(count)
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=0;')
             await conn.query(`
                 UPDATE product
                 SET amount = ?
                 WHERE title = ?
                 `, [currentAmount, title])
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=1;')
         } else {
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=0;')
             await conn.query(`
                 INSERT INTO product_transaction(product_pro_id, transaction_tran_id, price, count)
                 VALUES (?, ?, ?, ?)
                 `, [proo_id, trann_id, price, count])
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=1;')
             let currentAmount = await conn.query('SELECT amount FROM product WHERE title = ?', [title])
             currentAmount = parseInt(currentAmount[0][0].amount) - parseInt(count)
             if(currentAmount <= 0){
                 currentAmount = 0
             }
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=0;')
             await conn.query(`
                 UPDATE product
                 SET amount = ?
                 WHERE title = ?
                 `, [currentAmount, title])
+            await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=1;')
         }
-        await conn.query('SET GLOBAL FOREIGN_KEY_CHECKS=1;')
         conn.commit()
         res.send('Success!')
     } catch (err) {

@@ -88,7 +88,7 @@
             <div class="column is-8"> 
               <label for="" class="label">
                 ชื่อสินค้า 
-                <input type="text" class="input">
+                <input type="text" class="input" v-model="title">
               </label>
             </div>
           </div>
@@ -100,7 +100,7 @@
             <div class="column is-8"> 
               <label for="" class="label">
                 ชื่อยี่ห้อสินค้า 
-                <input type="text" class="input">
+                <input type="text" class="input" v-model="brand">
               </label>
             </div>
             <div class="column is-4"> 
@@ -114,7 +114,7 @@
         <!--End comtent Body -->
         <footer class="modal-card-foot columns">
             <div class="column is-6">
-              <button class="button is-info is-fullwidth">เพิ่ม</button>
+              <button class="button is-info is-fullwidth" @click="createInven()">เพิ่ม</button>
             </div>
             <div class="column is-6">
               <button class="button is-fullwidth is-danger" @click="newInven = false">ยกเลิก</button>
@@ -134,7 +134,12 @@ export default {
     return {
         check: false,
         blog : [],
-        newInven: false
+        newInven: false,
+        /* inven ins */
+        type: '',
+        title: '',
+        brand: '',
+        mfd: '',
     };
   },
   mounted() {
@@ -154,6 +159,28 @@ export default {
           console.log(err);
         });
       },
+      createInven(){
+        /* set up data */
+        let productData = {
+          type : this.type,
+          mfd : this.mfd,
+          brand : this.brand,
+          title : this.title
+        }
+        console.log(productData)
+
+        axios
+        .put("http://localhost:3000/products", productData)
+        .then((response => {
+          console.log("response: ", response)
+          console.log("Success")
+        }))
+        .catch(err => {
+          console.log(err)
+        })
+
+
+      }
   },
   components: {
     navbar,

@@ -62,9 +62,15 @@ const passwordValidator = (value, helpers) => {
     return value
 }
 
+const citizenValidator = (value, helpers) => {
+    if (value.length !== 13) {
+        throw new Joi.ValidationError('citizen must contain at 13 number')
+    }
+    return value
+}
 
 const empSchema = Joi.object({
-    citizen: Joi.number().required(),
+    citizen: Joi.string().required().custom(citizenValidator),
     // degree: Joi.string().required(),
     dob: Joi.date().required(),
     pos: Joi.string().required(),
@@ -83,7 +89,7 @@ router.post("/employees", async function(req, res, next) {
     let citizen = req.body.citizen
     let degree = req.body.degree
     let dob = req.body.dob
-    let pos = req.body.position
+    let position = req.body.position
     let salary = req.body.salary
     let address = req.body.address
     let email = req.body.email
@@ -105,7 +111,7 @@ router.post("/employees", async function(req, res, next) {
         await conn.query(`
         INSERT INTO employee(citizen_id, degree, dob, position, salary, address, email, phone, fname, lname, gender, password)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [citizen, degree, dob, pos, salary, address, email, phone, fname, lname, gender, password])
+        `, [citizen, degree, dob, position, salary, address, email, phone, fname, lname, gender, password])
         conn.commit()
         res.send('Success!');
     } catch (err) {

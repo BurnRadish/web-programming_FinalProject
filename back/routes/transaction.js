@@ -1,10 +1,31 @@
 const express = require("express");
+const Joi = require("joi");
 const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 
+const transSchema = Joi.object({
+    delivery_date: Joi.date().required(),
+    credit: Joi.number().required(),
+    payament_method: Joi.string().required(),
+    payament_status: Joi.string().required(),
+    credit_due_date: Joi.date().required(),
+    transaction_date: Joi.date().required(),
+    delivery_status: Joi.boolean().required(),
+    type: Joi.string().required(),
+    employee_emp_id: Joi.string().required(),
+    partner_par_id: Joi.string().required(),
+    price: Joi.number().required(),
+    count: Joi.number().required(),
+    title: Joi.number().required(),
+})
 //add new transaction
 router.put("/trans", async function(req, res, next) {
+    try {
+        await transSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let delivery_date = req.body.delivery_date

@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path")
 const pool = require("../config");
 const router = express.Router();
+const Joi = require('joi')
 
 //get all items information or search item
 router.get("/products", async function(req, res, next) {
@@ -56,17 +57,34 @@ router.get("/products/:id", async function(req, res, next) {
     }
 });
 
+
+const productSchema = Joi.object({
+    title: Joi.string().required(),
+    mfd: Joi.date(),
+    brand: Joi.string(),
+    type: Joi.string().required(),
+})
+
 //add new product
 router.put("/products", async function(req, res, next) {
+    try {
+        await productSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }
+
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let type = req.body.type
+    let mfd = req.body.mfd
+    let brand = req.body.brand
+    let title = req.body.title
     type = type.toUpperCase()
     try {
         await conn.query(`
             INSERT INTO product(title, mfd, brand, type, amount) 
             VALUES (?, ?, ?, ?, 0)
-            `, [req.body.title, req.body.mfd, req.body.brand, type])
+            `, [title, mfd, brand, type])
         conn.commit()
         res.send('success!')
     } catch (err) {

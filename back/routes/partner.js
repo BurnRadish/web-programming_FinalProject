@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path")
 const pool = require("../config");
 const router = express.Router();
+const Joi = require('joi')
 
 //get all partner details or Search partner
 router.get("/partner", async function(req, res, next) {
@@ -50,8 +51,27 @@ router.get("/partner/:id", async function(req, res, next) {
     }
 });
 
+const partnerSchema = Joi.object({
+    deliverly_address: Joi.string().required(),
+    company_name: Joi.string().required(),
+    legal_address: Joi.string().required(),
+    type: Joi.string().required(),
+    par_fname: Joi.string().required(),
+    par_lname: Joi.string().required(),
+    email1: Joi.string().email(),
+    email2: Joi.string().email(),
+    phone1: Joi.string(),
+    phone2: Joi.string()
+})
+
 //add partner
 router.post("/partner", async function(req, res, next) {
+    try {
+        await partnerSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }
+
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let deliverly_address = req.body.delivery_address
@@ -103,6 +123,12 @@ router.delete("/partner/:id", async function(req, res, next) {
 
 //edit partner detail
 router.put("/partner/:id", async function(req, res, next) {
+    try {
+        await partnerSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }
+    
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let delivery_address = req.body.delivery_address

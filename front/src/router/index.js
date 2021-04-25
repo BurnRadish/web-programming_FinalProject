@@ -29,7 +29,6 @@ const routes = [
     name: 'Transaction',
     component: () => import('../views/Transaction.vue')
   },
-  
 ]
 
 const router = new VueRouter({

@@ -13,10 +13,10 @@
       <div class="field">
         <label class="label">ชื่อพาร์ทเนอร์</label>
         <div class="control">
-          <input class="input" type="email" placeholder="Sompong Chobhee" />
+          <input class="input" v-model="search12" type="email" placeholder="Sompong Chobhee" />
         </div>
       </div>
-      <button class="button is-primary is-rounded">Find</button>
+      <button class="button is-primary is-rounded" v-on:click="search()">Find</button>
     </form>
     <u><h1 class="title has-text-centered">รายชื่อพาร์ทเนอร์</h1></u>
     <div class="columns is-multiline" style="padding-top: 5%">
@@ -173,7 +173,7 @@
       </div>
     </div>
     <!--Modal For Add Partner-->
-    <div class="modal" v-bind:class="{'is-active': checkadd}">
+    <div class="modal" v-bind:class="{ 'is-active': checkadd }">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
@@ -188,7 +188,8 @@
                 <div class="field">
                   <label class="label">Name</label>
                   <div class="control">
-                    <input class="input" type="text" placeholder="Text input" />
+                    <input class="input" type="text" v-model="$v.name.$model" placeholder="Text input" />
+                    <p class="help" v-if="$v.name.$error == true" style="color: red">Please Fill Name</p>
                   </div>
                 </div>
               </div>
@@ -196,7 +197,8 @@
                 <div class="field">
                   <label class="label">Surname</label>
                   <div class="control">
-                    <input class="input" type="text" placeholder="Text input" />
+                    <input class="input" type="text" v-model="$v.surname.$model" placeholder="Text input" />
+                    <p class="help" v-if="$v.surname.$error == true" style="color: red">Please Fill Surname</p>
                   </div>
                 </div>
               </div>
@@ -207,17 +209,19 @@
                   <label class="label">Gender</label>
                 </div>
                 <div class="select">
-                  <select>
+                  <select v-model="$v.gender.$model">
                     <option>Male</option>
                     <option>Female</option>
                   </select>
+                  <p class="help" v-if="$v.gender.$error == true" style="color: red">Please Select Gender</p>
                 </div>
               </div>
               <div class="column is-4">
                 <div class="field">
                   <label class="label">Birth</label>
                 </div>
-                <input class="input" type="date">
+                <input class="input" v-model="$v.birth.$model" type="date" />
+                <p class="help" v-if="$v.birth.$error == true" style="color: red">Please Select Birth</p>
               </div>
             </div>
             <div class="columns">
@@ -228,8 +232,25 @@
                     <input
                       class="input"
                       type="text"
+                      v-model="$v.position.$model"
                       placeholder="Data Engineer"
                     />
+                    <p class="help" v-if="$v.position.$error == true" style="color: red">Please Fill Position</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Salary</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="text"
+                      v-model="$v.salary.$model"
+                      placeholder="Data Engineer"
+                    />
+                    <template v-if="$v.salary.$error == true">
+                      <p class="help" v-if="$v.salary.required == false" style="color: red">Please Fill Salary</p>
+                      <p class="help" v-if="$v.salary.integer == false" style="color: red">Please Fill Integer</p>
+                    </template>
                   </div>
                 </div>
                 <div class="field">
@@ -237,9 +258,22 @@
                   <div class="control">
                     <input
                       class="input"
-                      type="text"
+                      type="email"
+                      v-model="$v.email.$model"
                       placeholder="aaa@aaa.com"
                     />
+                    <p class="help" v-if="$v.email.$error == true" style="color: red">Please Fill Email</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Password</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      type="password"
+                      v-model="$v.password.$model"
+                    />
+                    <p class="help" v-if="$v.password.$error == true" style="color: red">Please Fill The Correct Password</p>
                   </div>
                 </div>
                 <div class="field">
@@ -248,18 +282,27 @@
                     <input
                       class="input"
                       type="text"
+                      v-model="$v.address.$model"
                       placeholder="Bangkok Mailbox 10200"
                     />
+                    <p class="help" v-if="$v.address.$error == true" style="color: red">Please Fill Address</p>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Tel.</label>
                   <div class="control">
-                    <input
-                      class="input"
-                      type="text"
-                      placeholder="0800000000"
-                    />
+                    <input class="input" type="text" v-model="$v.tel.$model" placeholder="0800000000" />
+                    <p class="help" v-if="$v.tel.$error == true" style="color: red">Please Fill Phone Number</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Citizen</label>
+                  <div class="control">
+                    <input class="input" type="text" v-model="$v.citizen.$model" placeholder="0000000000" />
+                    <template v-if="$v.citizen.$error == true">
+                      <p class="help" v-if="$v.citizen.required == false" style="color: red">Please Fill Citizen</p>
+                      <p class="help" v-if="$v.citizen.integer == false" style="color: red">Please Fill Integer</p>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -267,8 +310,10 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Save changes</button>
-          <button class="button" v-on:click="checkadd = !checkadd">Cancel</button>
+          <button class="button is-success" v-on:click="AddPar()">Save changes</button>
+          <button class="button" v-on:click="checkadd = !checkadd">
+            Cancel
+          </button>
         </footer>
       </div>
     </div>
@@ -278,12 +323,25 @@
 <script>
 import navbar from "../components/Navbar.vue";
 import axios from "axios"
+import {required, email, maxLength, integer} from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
         check: false,
         checkadd: false,
-        blog:{}
+        blog:{},
+        search12: "",
+        name: "",
+        surname: "",
+        gender: "",
+        birth: "",
+        position: "",
+        salary: "",
+        email: "",
+        address: "",
+        tel: "",
+        password: "",
+        citizen: ""
     };
   },
   components: {
@@ -299,7 +357,85 @@ export default {
       this.blog = response.data.blogs
       console.log(this.blog);
     })
-  }
+  },
+  methods:{
+    search(){
+      if (this.search12 != " ") {
+        axios
+          .get("http://localhost:3000/partner?search=" + this.search12)
+          .then((response) => {
+            for (let comment of response.data.blogs) {
+              comment.check = false;
+              comment.checkedit = false;
+            }
+            this.blog = response.data.blogs;
+        });
+      }
+    },
+    AddPar(){
+      this.$v.$touch();
+      if(this.$v.$invalid == false){
+        let body = {
+          citizen: this.citizen,
+          fname: this.name,
+          lname: this.surname,
+          gender: this.gender,
+          pos: this.position,
+          sal: this.salary,
+          pass: this.password,
+          email: this.email,
+          address: this.address,
+          dob: this.birth,
+          phone: this.tel
+        }
+        axios.post("http://localhost:3000/partner", body)
+        .then(() =>{
+          this.checkadd = !this.checkadd;
+          alert("Add Finish");
+        })
+      }
+    }
+  },
+  validations:{
+      name:{
+        required: required,
+        maxLength: maxLength(150)
+      },
+      surname:{
+        requied: required,
+        maxLength: maxLength(150)
+      },
+      gender:{
+        required: required
+      },
+      birth:{
+        required: required
+      },
+      position:{
+        required: required
+      },
+      salary:{
+        required: required,
+        integer: integer
+      },
+      email:{
+        required: required,
+        email: email
+      },
+      address:{
+        required: required
+      },
+      tel:{
+        required: required,
+        maxLength: maxLength(10)
+      },
+      password:{
+        required: required
+      },citizen:{
+        required: required,
+        integer: integer
+      }
+    }
 };
 </script>
 

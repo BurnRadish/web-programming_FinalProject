@@ -14,6 +14,7 @@ const empRouter = require('./routes/employees')
 const partnerRouter = require('./routes/partner')
 const invRouter = require('./routes/inventory')
 const transRouter = require('./routes/transaction')
+
 app.use(empRouter.router)
 app.use(partnerRouter.router)
 app.use(invRouter.router)

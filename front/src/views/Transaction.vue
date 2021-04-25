@@ -39,6 +39,7 @@
                 <th>วิธีการชำระเงิน</th>
                 <th>สถานะการชำระ</th>
                 <th>ยอดค้างการชำระ</th>
+                <th>พนักงานผู้ดูแลธุรกรรม</th>
             </tr>
         </thead>
         <!-- End header -->
@@ -49,13 +50,14 @@
         <!-- End footer table -->
         <!-- table body -->
         <tbody>
-            <tr v-for='(tran) in trans' :key='tran.tran_id' v-on:click="editTran(tran_tran_id)">
+            <tr v-for='(tran) in trans' :key='tran.tran_id' v-on:click="editTran(tran.tran_id)">
               <td><a>#{{tran.tran_id}}</a></td>
               <td>{{tran.type}}</td>
               <td>{{tran.transaction_date}}</td>
               <td>{{tran.payment_method}}</td>
               <td>{{tran.payment_status}}</td>
               <td>{{tran.credit}}</td>
+              <td>{{tran.fname}} {{tran.lname}} </td>
             </tr>
         </tbody>
         <!-- End tbody -->
@@ -217,11 +219,11 @@
                   <div class="field is-narrow">
                     <div class="control">
                       <label class="radio">
-                        <input type="radio" name="member" v-model="type" value="PURCHASE">
+                        <input type="radio" name="member" v-model="edit_type" value="PURCHASE">
                         ซื้อ
                       </label>
                       <label class="radio">
-                        <input type="radio" name="member" v-model="type" value="SALE">
+                        <input type="radio" name="member" v-model="edit_type" value="SALE">
                         ขาย
                       </label>
                     </div>
@@ -231,7 +233,7 @@
             </div>
             <div class="column is-8"> 
               <label for="" class="label">วันที่ดำเนินธุรกรรม : 
-                <input type="date" style="margin-left: 15px;" v-model="transaction_date">
+                <input type="date" style="margin-left: 15px;" v-model="edit_transaction_date">
               </label>
             </div>
           </div>
@@ -242,7 +244,7 @@
             <!-- Select method -->
             <div class="column is-4">
               <label class="label">วิธีการชำระเงิน</label>
-              <select v-model="payament_method">
+              <select v-model="edit_payament_method">
                 <option disabled value="วิธีการชำระเงิน" selected>วิธีการชำระเงิน</option>
                 <option value="Cheque">Cheque</option>
                 <option value="Creditcard">Creditcard</option>
@@ -251,7 +253,7 @@
             </div>
             <div class="column is-4"> 
               <label for="" class="label">วันครบกำหนดชำระ 
-                <input type="date" v-model="credit_due_date">
+                <input type="date" v-model="edit_credit_due_date">
               </label>
             </div>
           </div>
@@ -262,11 +264,11 @@
               <label for=""><b>สถานะการชำระ</b></label>
               <div class="control" style="margin-left: 0.5em;">
                   <label class="radio">
-                    <input type="radio" name="" v-model="payament_status" value="Complete">
+                    <input type="radio" name="" v-model="edit_payament_status" value="Complete">
                     ชำระครบถ้วน
                   </label>
                   <label class="radio" style="margin-left: 0em;">
-                    <input type="radio" name="" v-model="payament_status" value="Incomplete" >
+                    <input type="radio" name="" v-model="edit_payament_status" value="Incomplete" >
                     ยังชำระไม่ครบ
                   </label>
                 </div>
@@ -274,7 +276,7 @@
             <!-- trigger if Incomplete -->
             <div class="column is-4" v-show="payament_status == 'Incomplete' "> 
               <label for="">ยอดค้างการชำระ</label>
-              <input type="number" v-model="credit"><br>
+              <input type="number" v-model="edit_credit"><br>
             </div>
           </div>
           <!-- End column 3 -->
@@ -284,18 +286,18 @@
               <label for=""><b>สถานะการจัดส่ง</b></label>
               <div class="control" style="margin-left: 0.5em;">
                   <label class="radio">
-                    <input type="radio" name="" v-model="delivery_status" value="1">
+                    <input type="radio" name="" v-model="edit_delivery_status" value="1">
                     จัดส่งสำเร็จ
                   </label>
                   <label class="radio" style="margin-left: 0em;">
-                    <input type="radio" name="" v-model="delivery_status" value="0" >
+                    <input type="radio" name="" v-model="edit_delivery_status" value="0" >
                     ยังไม่ได้ทำการจัดส่ง
                   </label>
                 </div>
             </div>
             <div class="column is-4"> 
               <label for="" class="label">วันที่จัดส่งสินค้า
-                <input type="date" v-model="delivery_date">
+                <input type="date" v-model="edit_delivery_date">
               </label>
             </div>
           </div>
@@ -305,13 +307,13 @@
             <div class="field column is-4">
               <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
               <div class="control">
-                <input class="input" type="number" placeholder="" v-model="employee_emp_id">
+                <input class="input" type="number" placeholder="" v-model="edit_employee_emp_id">
               </div>
             </div>
             <div class="field column is-4">
               <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
               <div class="control">
-                <input class="input" type="number" placeholder="" v-model="partner_par_id">
+                <input class="input" type="number" placeholder="" v-model="edit_partner_par_id">
               </div>
             </div>
           </div>
@@ -357,7 +359,19 @@ export default {
         employee_emp_id: 0,
         partner_par_id: 0,
         /* Ene Trans ins */
+        edit_delivery_date: '',
+        edit_credit: 0,
+        edit_payament_method: '',
+        edit_payament_status: '',
+        edit_credit_due_date: '',
+        edit_transaction_date: '',
+        edit_delivery_status: '',
+        edit_type: '',
+        edit_employee_emp_id: 0,
+        edit_partner_par_id: 0,
+        /* for tran edit */
         editModel: false,
+        /* end tran edit */
     };
   },
   mounted() {
@@ -404,9 +418,26 @@ export default {
           console.log(err)
         })
       },
-      editTran(){
+      editTran(id){
         this.editModel = true;
 
+        //fine id
+        function findEdit(val){
+          return val.tran_id == id
+        }
+
+        let selectedEdit = this.trans.filter(findEdit)[0]
+        console.log(selectedEdit)
+        this.edit_delivery_date = selectedEdit.delivery_date
+        this.edit_credit = selectedEdit.credit
+        this.edit_payament_method = selectedEdit.payment_method
+        this.edit_payament_status = selectedEdit.payment_status
+        this.edit_credit_due_date = selectedEdit.credit_due_date
+        this.edit_transaction_date = selectedEdit.transaction_date
+        this.edit_delivery_status = selectedEdit.delivery_status
+        this.edit_type = selectedEdit.type
+        this.edit_employee_emp_id = selectedEdit.employee_emp_id
+        this.edit_partner_par_id = selectedEdit.partner_par_id
       }
       
   },

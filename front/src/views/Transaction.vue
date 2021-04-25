@@ -12,7 +12,7 @@
       <div class='column'>
         <div class="field has-addons">
           <div class="control">
-            <a class="button is-primary" @click="newTran = !newTran">
+            <a class="button is-primary" @click="newTran = true">
               + เพิ่มรายการธุรกรรม
             </a>
           </div>
@@ -20,7 +20,7 @@
             <input class="input" type="text" placeholder="ค้นหาประวัติธุรกรรม" v-model="searchT">
           </div>
           <div class="control">
-            <a class="button is-info" @click="getTrans()">
+            <a class="button is-info" @click="searchTran()">
               ค้นหา
             </a>
           </div>
@@ -363,10 +363,13 @@ export default {
         type: '',
         employee_emp_id: 0,
         partner_par_id: 0,
-        count: 0,
-        price: 0,
+        count: 1,
+        price: 10000,
         title: '',
         /* Ene Trans ins */
+        
+        /* for tran edit */
+        editModel: false,
         edit_delivery_date: '',
         edit_credit: 0,
         edit_payament_method: '',
@@ -377,8 +380,6 @@ export default {
         edit_type: '',
         edit_employee_emp_id: 0,
         edit_partner_par_id: 0,
-        /* for tran edit */
-        editModel: false,
         /* end tran edit */
     };
   },
@@ -406,7 +407,7 @@ export default {
         let tranData = {
           delivery_date: this.delivery_date,
           credit: this.credit,
-          payment_medthod: this.payament_method,
+          payament_method: this.payament_method,
           payament_status: this.payament_status,
           credit_due_date: this.credit_due_date,
           transaction_date: this.transaction_date,
@@ -414,8 +415,8 @@ export default {
           type: this.type,
           employee_emp_id: this.employee_emp_id,
           partner_par_id: this.partner_par_id,
-          count: 0,
-          price: 0,
+          count: this.count,
+          price: this.price,
           title: this.title,
         }
         console.log(tranData)
@@ -429,6 +430,21 @@ export default {
         .catch(err => {
           console.log(err)
         })
+        /* reset */
+        this.newTran = false
+        this.delivery_date = '',
+        this.credit = 0,
+        this.payament_method = '',
+        this.payament_status = '',
+        this.credit_due_date = '',
+        this.transaction_date = '',
+        this.delivery_status = '',
+        this.type = '',
+        this.employee_emp_id = 0,
+        this.partner_par_id = 0,
+        this.count = 0,
+        this.price = 0,
+        this.title = ''
       },
       editTran(id){
         this.editModel = true;
@@ -468,7 +484,10 @@ export default {
       },
       searchTran(){
         axios
-        .get("http://localhost:3000/trans?search=", this.searchT)
+        .get("http://localhost:3000/trans", 
+        { params: {
+          search : this.searchT
+        }})
         .then((response) => {
           this.trans = response.data;
           console.log(response.data)

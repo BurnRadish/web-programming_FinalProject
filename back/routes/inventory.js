@@ -17,9 +17,7 @@ router.get("/products", async function(req, res, next) {
                         WHERE title LIKE ? OR type LIKE ? OR brand LIKE ?`
             let cond = [`%${search}%`, `%${search}%`, `%${search}%`]
             let info = await pool.query(sql, cond);
-            res.json({
-                blogs : info[0]
-            })
+            res.send(info[0])
         } else {
             let info = await conn.query("SELECT * FROM product")
             conn.commit()
@@ -66,7 +64,7 @@ const productSchema = Joi.object({
 })
 
 //add new product
-router.put("/products", async function(req, res, next) {
+router.post("/products", async function(req, res, next) {
     try {
         await productSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {

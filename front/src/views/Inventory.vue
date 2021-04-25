@@ -15,10 +15,10 @@
             </a>
           </div>
           <div class="control is-expanded">
-            <input class="input" type="text" placeholder="ค้นหาสินค้า">
+            <input class="input" type="text" placeholder="ค้นหาสินค้า" v-model="search">
           </div>
           <div class="control">
-            <a class="button is-info">
+            <a class="button is-info" @click="searchProduct()">
               ค้นหา
             </a>
           </div>
@@ -40,7 +40,7 @@
         </thead>
         <!-- End header -->
         <!-- table body -->
-        <tbody v-for="(product, index) in blog" v-bind:key="product.id">
+        <tbody v-for="(product, index) in catalog" v-bind:key="product.id">
             <tr>
                 <td><b><a>{{ index + 1}}</a></b></td>
                 <td><a>{{ product.title }}</a></td>
@@ -52,7 +52,7 @@
         <!-- End tbody -->
     </table>
     <!-- End table -->
-    <!-- Tran modal -->
+    <!-- add modal -->
     <div class="modal" v-bind:class="{ 'is-active': newInven }">
       <div class="modal-background"></div>
       <div class="modal-card">
@@ -104,7 +104,7 @@
               </label>
             </div>
             <div class="column is-4"> 
-              <label for="" class="label">ระยะเวลารับประกัน 
+              <label for="" class="label">วันที่ผลิต 
                 <input type="date" v-model="mfd">
               </label>
             </div>
@@ -133,13 +133,14 @@ export default {
   data() {
     return {
         check: false,
-        blog : [],
+        catalog : [],
         newInven: false,
         /* inven ins */
         type: '',
         title: '',
         brand: '',
         mfd: '',
+        search: '',
     };
   },
   mounted() {
@@ -151,13 +152,18 @@ export default {
         .get("http://localhost:3000/products", {
         })
         .then((response) => {
-          this.blog = response.data;
+          this.catalog = response.data;
           console.log(response.data)
-          console.log(this.blog)
         })
         .catch((err) => {
           console.log(err);
         });
+        /* reset */
+        this.newInven = false
+        this.type = ''
+        this.title = ''
+        this.brand = ''
+        this.mfd = ''
       },
       createInven(){
         /* set up data */
@@ -170,16 +176,30 @@ export default {
         console.log(productData)
 
         axios
-        .put("http://localhost:3000/products", productData)
+        .post("http://localhost:3000/products", productData)
         .then((response => {
           console.log("response: ", response)
           console.log("Success")
+          //update web
+          this.getProduct()
         }))
         .catch(err => {
           console.log(err)
         })
-
-
+      },
+      searchProduct(){
+        axios
+        .get("http://localhost:3000/products", 
+        { params: {
+          search : this.search
+        }})
+        .then((response) => {
+          this.catalog = response.data;
+          console.log(response.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       }
   },
   components: {

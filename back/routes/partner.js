@@ -123,11 +123,11 @@ router.delete("/partner/:id", async function(req, res, next) {
 
 //edit partner detail
 router.put("/partner/:id", async function(req, res, next) {
-    try {
+    /*try {
         await partnerSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
-    }
+    }*/
     
     const conn = await pool.getConnection()
     await conn.beginTransaction();

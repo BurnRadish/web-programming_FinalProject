@@ -83,7 +83,6 @@
           <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
-          <!-- Content ... -->
           <div class="container">
             <div class="columns">
               <div class="column is-6">
@@ -416,8 +415,16 @@ export default {
       }
     },
     AddPar(){
-      this.$v.$touch();
-      if(this.$v.$invalid == false){
+      this.$v.name.$touch();
+      this.$v.surname.$touch();
+      this.$v.type.$touch();
+      this.$v.company_name.$touch();
+      this.$v.legal_address.$touch();
+      this.$v.delivery_address.$touch();
+      this.$v.email1.$touch();
+      this.$v.tel1.$touch();
+      if(this.$v.name.$invalid == false && this.$v.surname.$invalid == false && this.$v.type.$invalid == false && this.$v.company_name.$invalid == false
+      && this.$v.legal_address.$invalid == false && this.$v.delivery_address.$invalid == false && this.$v.email1.$invalid == false && this.$v.tel1.$invalid == false){
         let body = {
           description: this.description,
           par_fname: this.name,
@@ -464,8 +471,16 @@ export default {
       }
     },
     EditPar(mod){
-      this.$v.$touch();
-      if(this.$v.$invalid == false){
+      this.$v.name2.$touch();
+      this.$v.surname2.$touch();
+      this.$v.type2.$touch();
+      this.$v.company_name2.$touch();
+      this.$v.email12.$touch();
+      this.$v.legal_address2.$touch();
+      this.$v.delivery_address2.$touch();
+      this.$v.tel12.$touch();
+      if(this.$v.name2.$invalid == false && this.$v.surname2.$invalid == false && this.$v.type2.$invalid == false && this.$v.company_name2.$invalid == false
+      && this.$v.email12.$invalid == false && this.$v.legal_address2.$invalid == false && this.$v.delivery_address2.$invalid == false && this.$v.tel12.$invalid == false){
         mod.checkedit = !mod.checkedit;
         let body = {
           description: this.description2,
@@ -478,11 +493,18 @@ export default {
           legal_address: this.legal_address2,
           phone1: this.tel12,
           phone2: this.tel22,
-          deliver_address: this.delivery_address2
+          delivery_address: this.delivery_address2
         }
         axios.put("http://localhost:3000/partner/"+mod.par_id, body)
         .then(() =>{
-          alert("Edit Finish");
+          axios.get("http://localhost:3000/partner")
+          .then((response) =>{
+            for (let comment of response.data.blogs) {
+              comment.check = false;
+              comment.checkedit = false;
+            }
+            this.blog = response.data.blogs
+          })
         })
       }
     }

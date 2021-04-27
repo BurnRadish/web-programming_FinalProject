@@ -39,7 +39,7 @@
                 <th>วิธีการชำระเงิน</th>
                 <th>สถานะการชำระ</th>
                 <th>ยอดค้างการชำระ</th>
-                <th>พนักงานผู้ดูแลธุรกรรม</th>
+                <th>สถานะการจัดส่ง</th>
             </tr>
         </thead>
         <!-- End header -->
@@ -57,7 +57,8 @@
               <td>{{tran.payment_method}}</td>
               <td>{{tran.payment_status}}</td>
               <td>{{tran.credit}}</td>
-              <td>{{tran.fname}} {{tran.lname}} </td>
+              <td v-if="tran.delivery_status === 0">ยังไม่ได้ทำการจัดส่ง</td>
+              <td v-if="tran.delivery_status === 1">จัดส่งสำเร็จ</td>
             </tr>
         </tbody>
         <!-- End tbody -->
@@ -109,7 +110,7 @@
           </div>
           <!-- End first column -->
           <div class="columns">
-            <label class="label mr-2 ml-3">ชื่อสินค้า</label>
+            <label class="label mr-2 ml-3">ชื่อสินค้า :</label>
             <select v-model="title">
               <option v-for='item in product' :key="item.pro_id" >{{item.title}}</option>
             </select>
@@ -362,42 +363,6 @@ export default {
                 console.log(err)
               })
           }
-      },
-      editTran(id){
-        this.editModel = true;
-
-        //fine id
-        function findEdit(val){
-          return val.tran_id == id
-        }
-
-        let selectedEdit = this.trans.filter(findEdit)[0]
-        console.log(selectedEdit)
-        this.edit_delivery_date = selectedEdit.delivery_date
-        this.edit_credit = selectedEdit.credit
-        this.edit_payament_method = selectedEdit.payment_method
-        this.edit_payament_status = selectedEdit.payment_status
-        this.edit_credit_due_date = selectedEdit.credit_due_date
-        this.edit_transaction_date = selectedEdit.transaction_date
-        this.edit_delivery_status = selectedEdit.delivery_status
-        this.edit_type = selectedEdit.type
-        this.edit_employee_emp_id = selectedEdit.employee_emp_id
-        this.edit_partner_par_id = selectedEdit.partner_par_id
-      },
-      saveEdit(){
-        //set up data
-        /* let updateData ={
-           delivery_date: this.edit_delivery_date,
-          credit: this.edit_credit,
-          payament_method: this.edit_payament_method,
-          payament_status: this.edit_payament_status,
-          credit_due_date: this.edit_credit_due_date,
-          transaction_date: this.edit_transaction_date,
-          delivery_status: parseInt(this.edit_delivery_status),
-          type: this.edit_type,
-          employee_emp_id: this.edit_employee_emp_id,
-          partner_par_id: this.edit_partner_par_id,
-        } */
       },
       searchTran(){
         axios

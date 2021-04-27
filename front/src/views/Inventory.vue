@@ -73,23 +73,29 @@
                   <div class="field is-narrow">
                     <div class="control">
                       <label class="radio">
-                        <input type="radio" name="member" v-model="type" value="MACHINE">
+                        <input type="radio" name="member" v-model="$v.type.$model" value="MACHINE">
                         เครื่องจักร
                       </label>
                       <label class="radio" style="margin-left: 0px;">
-                        <input type="radio" name="member" v-model="type" value="SPARE_PART" >
+                        <input type="radio" name="member" v-model="$v.type.$model" value="SPARE_PART" >
                         อะไหล่
                       </label>
                     </div>
                   </div>
                 </div>
               </div>
+              <template v-if="$v.type.$error == true">
+                      <p class="help is-danger" v-if="!$v.type.required">Please select product type</p>
+              </template>
             </div>
             <div class="column is-8"> 
               <label for="" class="label">
                 ชื่อสินค้า 
                 <input type="text" class="input" v-model="title">
               </label>
+              <template v-if="$v.title.$error == true">
+                      <p class="help is-danger" v-if="!$v.title.required">Please enter product name</p>
+              </template>
             </div>
           </div>
           <!-- End first column -->
@@ -102,11 +108,17 @@
                 ชื่อยี่ห้อสินค้า 
                 <input type="text" class="input" v-model="brand">
               </label>
+              <template v-if="$v.brand.$error == true">
+                      <p class="help is-danger" v-if="!$v.brand.required">Please enter product brand</p>
+              </template>
             </div>
             <div class="column is-4"> 
               <label for="" class="label">วันที่ผลิต 
                 <input type="date" v-model="mfd">
               </label>
+              <template v-if="$v.mfd.$error == true">
+                      <p class="help is-danger" v-if="!$v.mfd.required">Please select date</p>
+              </template>
             </div>
           </div>
           <!-- End second column -->
@@ -129,6 +141,7 @@
 <script>
 import axios from "axios";
 import navbar from "../components/Navbar.vue";
+import { required } from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
@@ -167,6 +180,8 @@ export default {
       },
       createInven(){
         /* set up data */
+        this.$v.$touch();
+        if(this.$v.$invalid == false){
         let productData = {
           type : this.type,
           mfd : this.mfd,
@@ -186,6 +201,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
+        }
       },
       searchProduct(){
         axios
@@ -204,6 +220,20 @@ export default {
   },
   components: {
     navbar,
+  },
+  validations: {
+    title:{
+      required: required
+    },
+    mfd: {
+      required: required
+    },
+    brand: {
+      required: required
+    },
+    type: {
+      required: required
+    }
   }
 };
 </script>

@@ -97,6 +97,9 @@
                   </div>
                 </div>
               </div>
+              <template v-if="$v.type.$error">
+                        <p class="help is-danger" v-if="!$v.type.required">Type is required</p>
+              </template>
             </div>
             <div class="column is-8"> 
               <label for="" class="label">วันที่ดำเนินธุรกรรม : 
@@ -108,15 +111,21 @@
           <div class="columns">
             <label class="label mr-2 ml-3">ชื่อสินค้า</label>
             <select v-model="title">
-              <option v-for='item in product' :key="item.pro_id">{{item.title}}</option>
+              <option v-for='item in product' :key="item.pro_id" >{{item.title}}</option>
             </select>
+             <template v-if="$v.title.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.title.required">Title is required</p>
+            </template>
           </div>
           <!-- second colum -->
           <div class="columns">
             <div class="column is-4"> 
               <label for="" class="label">จำนวนสินค้า 
-                <input type="number" v-model="count">
+                <input type="text" v-model="count" class='input' :class="{'is-danger': $v.count.$error}">
               </label>
+              <template v-if="$v.count.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.count.required">Amount is required</p>
+              </template>
             </div>
             <!-- Select method -->
             <div class="column is-4">
@@ -128,6 +137,9 @@
                 <option value="Creditcard">Creditcard</option>
                 <option value="Cash">Cash</option>
               </select>
+              <template v-if="$v.payament_method.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.payament_method.required">Payment method is required</p>
+            </template>
             </div>
             <div class="column is-4"> 
               <label for="" class="label">วันครบกำหนดชำระ 
@@ -150,16 +162,25 @@
                     ยังชำระไม่ครบ
                   </label>
                 </div>
+                <template v-if="$v.payament_status.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.payament_status.required">Payment status is required</p>
+                </template>
             </div>
             <div class="column is-4"> 
               <label for="">ยอดการสั่งซื้อ(บาท)</label>
-              <input type="number" v-model="price"><br>
+              <input type="number" class='input' v-model="price" :class="{'is-danger': $v.price.$error}"><br>
+              <template v-if="$v.price.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.price.required">Price is required</p>
+              </template>
             </div>
             <!-- trigger if Incomplete -->
             <div class="column is-4" v-show="payament_status == 'Incomplete' "> 
               <label for="">ยอดค้างการชำระ</label>
               <input type="number" v-model="credit"><br>
             </div>
+            <template v-if="$v.credit.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.credit.required">credit is required</p>
+            </template>
           </div>
           <!-- End column 3 -->
           <!-- column 4 -->
@@ -175,6 +196,9 @@
                     <input type="radio" name="" v-model="delivery_status" value="0" >
                     ยังไม่ได้ทำการจัดส่ง
                   </label>
+                  <template v-if="$v.delivery_status.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.delivery_status.required">This field is required</p>
+                  </template>
                 </div>
             </div>
             <div class="column is-4"> 
@@ -189,14 +213,20 @@
             <div class="field column is-4">
               <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
               <div class="control">
-                <input class="input" type="number" placeholder="" v-model="employee_emp_id">
+                <input class="input" type="number" :class="{'is-danger': $v.employee_emp_id}" placeholder="" v-model="employee_emp_id">
               </div>
+              <template v-if="$v.employee_emp_id.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.employee_emp_id.required">This field is required</p>
+              </template>
             </div>
             <div class="field column is-4">
               <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
               <div class="control">
-                <input class="input" type="number" placeholder="" v-model="partner_par_id">
+                <input class="input" type="number" :class="{'is-danger': $v.partner_par_id}" placeholder="" v-model="partner_par_id">
               </div>
+              <template v-if="$v.partner_par_id.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.partner_par_id.required">This field is required</p>
+              </template>
             </div>
           </div>
           <!-- End column 5  -->
@@ -354,6 +384,7 @@
 <script>
 import axios from "axios";
 import navbar from "../components/Navbar.vue";
+import {required, minValue} from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
@@ -373,10 +404,10 @@ export default {
         transaction_date: '',
         delivery_status: '',
         type: '',
-        employee_emp_id: 0,
-        partner_par_id: 0,
+        employee_emp_id: '',
+        partner_par_id: '',
         count: 1,
-        price: 10000,
+        price: '',
         title: '',
         /* Ene Trans ins */
         
@@ -419,47 +450,49 @@ export default {
       /*  creat Tran here  */
       creatTran(){
         /* set up data */
-        let tranData = {
-          delivery_date: this.delivery_date,
-          credit: this.credit,
-          payament_method: this.payament_method,
-          payament_status: this.payament_status,
-          credit_due_date: this.credit_due_date,
-          transaction_date: this.transaction_date,
-          delivery_status: parseInt(this.delivery_status),
-          type: this.type,
-          employee_emp_id: this.employee_emp_id,
-          partner_par_id: this.partner_par_id,
-          count: this.count,
-          price: this.price,
-          title: this.title,
-        }
-        console.log(tranData)
-        /* Request axios */
-        axios
-        .put("http://localhost:3000/trans", tranData)
-        .then((response => {
-          console.log("response: ", response)
-          console.log("Success")
-        }))
-        .catch(err => {
-          console.log(err)
-        })
-        /* reset */
-        this.newTran = false
-        this.delivery_date = '',
-        this.credit = 0,
-        this.payament_method = '',
-        this.payament_status = '',
-        this.credit_due_date = '',
-        this.transaction_date = '',
-        this.delivery_status = '',
-        this.type = '',
-        this.employee_emp_id = 0,
-        this.partner_par_id = 0,
-        this.count = 0,
-        this.price = 0,
-        this.title = ''
+        this.$v.$touch();
+        if(this.$v.$invalid == false){
+            let body = {
+              delivery_date: this.delivery_date,
+              credit: this.credit,
+              payament_method: this.payament_method,
+              payament_status: this.payament_status,
+              credit_due_date: this.credit_due_date,
+              transaction_date: this.transaction_date,
+              delivery_status: parseInt(this.delivery_status),
+              type: this.type,
+              employee_emp_id: this.employee_emp_id,
+              partner_par_id: this.partner_par_id,
+              count: this.count,
+              price: this.price,
+              title: this.title,
+            }
+
+            /* Request axios */
+            axios.put("http://localhost:3000/trans", body)
+            .then((response => {
+                console.log("response: ", response)
+                console.log("Success")
+                /* reset */
+                this.newTran = false
+                this.delivery_date = '',
+                this.credit = 0,
+                this.payament_method = '',
+                this.payament_status = '',
+                this.credit_due_date = '',
+                this.transaction_date = '',
+                this.delivery_status = '',
+                this.type = '',
+                this.employee_emp_id = 0,
+                this.partner_par_id = 0,
+                this.count = 0,
+                this.price = 0,
+                this.title = ''
+              }))
+            .catch(err => {
+                console.log(err)
+              })
+          }
       },
       editTran(id){
         this.editModel = true;
@@ -516,5 +549,38 @@ export default {
   components: {
     navbar,
   },
+  validations:{
+    type:{
+      required: required
+    },
+    title:{
+      required: required
+    },
+    count:{
+      required: required,
+      minValue: minValue(1)
+    },
+    payament_method:{
+      required: required
+    },
+    payament_status:{
+      required: required
+    },
+    price:{
+      required: required
+    },
+    delivery_status: {
+      required: required
+    },
+    employee_emp_id:{
+      required: required
+    },
+    partner_par_id:{
+      required: required
+    },
+    credit:{
+      required: required
+    }
+  }
 };
 </script>

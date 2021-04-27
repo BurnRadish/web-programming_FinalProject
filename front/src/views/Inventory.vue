@@ -122,17 +122,6 @@
             </div>
           </div>
           <!-- End second column -->
-          <div class="columns">
-              <div class="column is-4">
-                <label for="" class="label">
-                จำนวนสินค้า 
-                <input type="number" class="input" v-model="amount">
-              </label>
-              <template v-if="$v.amount.$error == true">
-                      <p class="help is-danger" v-if="!$v.amount.required">Please enter number of products</p>
-              </template>
-              </div>
-            </div>
         </section>
         <!--End comtent Body -->
         <footer class="modal-card-foot columns">
@@ -164,7 +153,6 @@ export default {
         title: '',
         brand: '',
         mfd: '',
-        amount: '',
         search: '',
     };
   },
@@ -199,7 +187,6 @@ export default {
           mfd : this.mfd,
           brand : this.brand,
           title : this.title,
-          amount: this.amount,
         }
         console.log(productData)
 
@@ -247,9 +234,6 @@ export default {
     type: {
       required: required
     },
-    amount: {
-      required: required
-    }
   }
 };
 </script>

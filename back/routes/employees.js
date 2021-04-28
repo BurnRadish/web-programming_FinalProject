@@ -99,11 +99,11 @@ router.post("/employees", async function(req, res, next) {
     let gender = req.body.gender
     //gender = gender.toUpperCase()
     let password = req.body.password
-    try {
+    /*try {
         await empSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
-    }
+    }*/
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();
@@ -152,16 +152,16 @@ const editEmpSchema = Joi.object({
 
 //edit member detail
 router.put("/employees/:id", async function(req, res, next) {
-    try {
+    /*try {
         await editEmpSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
-    }
+    }*/
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let degree = req.body.degree
-    let pos = req.body.position
+    let pos = req.body.poosition
     let salary = req.body.salary
     let address = req.body.address
     let email = req.body.email

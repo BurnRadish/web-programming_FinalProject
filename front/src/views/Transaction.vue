@@ -135,7 +135,7 @@
               <select v-model="payament_method">
                 <option disabled value="วิธีการชำระเงิน" selected>วิธีการชำระเงิน</option>
                 <option value="Cheque">Cheque</option>
-                <option value="Creditcard">Creditcard</option>
+                <option value="Creditcard">Creditcard</option>s
                 <option value="Cash">Cash</option>
               </select>
               <template v-if="$v.payament_method.$error">
@@ -277,23 +277,6 @@ export default {
         price: '',
         title: '',
         /* Ene Trans ins */
-        
-        /* for tran edit */
-        editModel: false,
-        edit_delivery_date: '',
-        edit_credit: 0,
-        edit_payament_method: '',
-        edit_payament_status: '',
-        edit_credit_due_date: '',
-        edit_transaction_date: '',
-        edit_delivery_status: '',
-        edit_type: '',
-        edit_employee_emp_id: 0,
-        edit_partner_par_id: 0,
-        /* end tran edit */
-
-        /* validations */
-
     };
   },
   mounted() {
@@ -306,8 +289,11 @@ export default {
 
         })
         .then((response) => {
+          for (let i=0; i < response.data.length; i++){
+            response.data[i].transaction_date = response.data[i].transaction_date.substring(0,response.data[i].transaction_date.indexOf('T'))
+          }
           this.trans = response.data;
-          console.log(response.data)
+          console.log(response.data[0].transaction_date)
           console.log(this.trans)
         })
         .catch((err) => {

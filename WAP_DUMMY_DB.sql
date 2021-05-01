@@ -253,7 +253,7 @@ VALUES
 ('2020-06-21', 0, 'creditcard', 'Complete', '2020-07-21', '2020-05-21', true, 'PURCHASE', 7, 4),
 ('2005-04-21', 0, 'cheque', 'Complete', '2003-10-31', '2003-01-10', true, 'PURCHASE', 8, 2),
 ('2015-06-23', 0, 'cheque', 'Complete', '2017-01-31', '2016-08-29', true, 'PURCHASE', 8, 2),
-('2022-01-01', 1000000, 'cheque', 'Incomplete', '2021-10-31', null, false, 'PURCHASE', 9, 1),
+('2022-01-01', 1000000, 'cheque', 'Incomplete', '2021-10-31','2021-10-31', null, false, 'PURCHASE', 9, 1),
 ('2013-04-13', 0, 'cheque', 'Complete', '2012-08-20', '2012-08-20', true, 'PURCHASE', 7, 5), 
 ('2021-06-13', 1283200.50, 'cheque', 'Incomplete', '2021-06-01', '2021-02-13', false, 'PURCHASE', 4, 3), 
 ('2022-06-21', 0, 'cheque', 'Complete', '2022-01-31', '2021-04-21', false, 'PURCHASE', 2, 2),

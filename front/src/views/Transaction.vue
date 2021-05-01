@@ -12,7 +12,7 @@
       <div class='column'>
         <div class="field has-addons">
           <div class="control">
-            <a class="button is-primary" @click="newTran = true">
+            <a class="button is-primary" @click="newTran = true" v-if="user.role === 'admin'">
               + เพิ่มรายการธุรกรรม
             </a>
           </div>
@@ -249,12 +249,13 @@
 
 
 <script>
-import axios from "axios";
+import axios from '@/plugins/axios'
 import navbar from "../components/Navbar.vue";
 import {required, minValue} from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
+        user:null,
         check: false,
         newTran: false,
         selectMethod: false,
@@ -280,7 +281,8 @@ export default {
     };
   },
   mounted() {
-    this.getTrans();
+    this.getTrans(),
+    this.onAuthChange()
   },
   methods: {
       getTrans(){
@@ -366,7 +368,18 @@ export default {
       },
       viewDetail(id){
         this.$router.push({ path: `/trans/${id}` });
+      },
+      onAuthChange (){
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.getUser()
       }
+    },
+    getUser () {
+      axios.get('http://localhost:3000/user/me').then(res => {
+        this.user = res.data
+      })
+    }
   },
   components: {
     navbar,

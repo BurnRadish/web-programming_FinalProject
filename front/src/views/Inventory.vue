@@ -10,7 +10,7 @@
       <div class='column'>
         <div class="field has-addons">
           <div class="control">
-            <a class="button is-primary" @click="newInven = !newInven">
+            <a class="button is-primary" @click="newInven = !newInven" v-if="user.role==='admin'">
               + เพิ่มรายการสินค้าลงคลัง
             </a>
           </div>
@@ -139,12 +139,13 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '@/plugins/axios'
 import navbar from "../components/Navbar.vue";
 import { required } from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
+        user:null,
         check: false,
         catalog : [],
         newInven: false,
@@ -157,7 +158,8 @@ export default {
     };
   },
   mounted() {
-    this.getProduct();
+    this.getProduct(),
+    this.onAuthChange()
   },
   methods: {
       getProduct(){
@@ -216,7 +218,18 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      },
+      onAuthChange (){
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.getUser()
       }
+    },
+    getUser () {
+      axios.get('/user/me').then(res => {
+        this.user = res.data
+      })
+    }
   },
   components: {
     navbar,

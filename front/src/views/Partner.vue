@@ -3,6 +3,7 @@
     <navbar />
     <h1 class="title" style="margin-top: 2%; display: inline">ค้นหาพาร์ทเนอร์ที่คุณต้องการ</h1>
     <button
+      v-if="user.role==='admin'"
       class="button is-warning"
       style="float:right"
       v-on:click="checkadd = !checkadd"
@@ -33,8 +34,8 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item" v-on:click="par.check = !par.check">Profile</a>
-            <a class="card-footer-item" v-on:click="par.checkedit = !par.checkedit">Edit</a>
-            <a class="card-footer-item" v-on:click="DeletePar(par)">Delete</a>
+            <a class="card-footer-item" v-on:click="par.checkedit = !par.checkedit" v-if="user.role==='admin'">Edit</a>
+            <a class="card-footer-item" v-on:click="DeletePar(par)" v-if="user.role==='admin'">Delete</a>
           </footer>
         </div>
       </div>
@@ -352,11 +353,12 @@
 
 <script>
 import navbar from "../components/Navbar.vue";
-import axios from "axios"
+import axios from '@/plugins/axios'
 import {required, email, maxLength} from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
+        user: null,
         check: false,
         checkadd: false,
         blog:{},
@@ -507,7 +509,21 @@ export default {
           })
         })
       }
+    },
+    onAuthChange (){
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.getUser()
+      }
+    },
+    getUser () {
+      axios.get('http://localhost:3000/user/me').then(res => {
+        this.user = res.data
+      })
     }
+  },
+  mounted(){
+    this.onAuthChange()
   },
   validations:{
       name:{

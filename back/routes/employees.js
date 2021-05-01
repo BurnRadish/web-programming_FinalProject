@@ -101,7 +101,7 @@ router.post("/employees", async function(req, res, next) {
     try {
         await empSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
-        res.status(400).json(err)
+        return res.status(400).json(err)
     }
 
     const conn = await pool.getConnection()

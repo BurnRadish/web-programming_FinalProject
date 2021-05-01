@@ -4,6 +4,11 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/token");
 const router = express.Router();
+const { isLoggedIn } = require("../middlewares");
+
+router.get("/user/me", isLoggedIn, async (req, res, next) => {
+  res.json(req.user);
+});
 
 router.post("/user/signup", async (req, res, next) => {
   // ...
@@ -28,16 +33,17 @@ router.post("/user/login", async (req, res, next) => {
 
   try {
     // Check if username is correct
-    const [users] = await conn.query("SELECT * FROM employee WHERE username=?", [
-      username,
-    ]);
+    const [users] = await conn.query(
+      "SELECT * FROM employee WHERE username=?",
+      [username]
+    );
     const user = users[0];
     if (!user) {
       throw new Error("Incorrect username or password");
     }
 
     // Check if password is correct
-    if (! await password ==  user.password) {
+    if (!(await password) == user.password) {
       throw new Error("Incorrect username or password");
     }
 

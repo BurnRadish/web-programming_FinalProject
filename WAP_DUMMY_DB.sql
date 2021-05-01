@@ -12,9 +12,17 @@ CREATE TABLE `employee` (
 	`lname` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`gender` ENUM('Female','Male','Other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`username` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
-	`password` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
+	`password` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	PRIMARY KEY (`emp_id`),
 	UNIQUE(`citizen_id`)
+);
+
+CREATE TABLE `tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tokens_UN` (`token`)
 );
 
 CREATE TABLE `partner` (
@@ -110,6 +118,11 @@ ADD CONSTRAINT partner_par_id_transaction
 FOREIGN KEY (partner_par_id)
 REFERENCES `partner` (par_id);
 
+ALTER TABLE `tokens`
+ADD CONSTRAINT tokens_fk
+FOREIGN KEY (user_id)
+REFERENCES `employee` (emp_id);
+
 ALTER TABLE `purchase`
 ADD CONSTRAINT transaction_tran_id_purchase
 FOREIGN KEY (transaction_tran_id)
@@ -145,11 +158,11 @@ ADD CONSTRAINT spare_part_pro_id_product
 FOREIGN KEY (product_pro_id)
 REFERENCES `product` (pro_id);
 
-INSERT INTO employee(`citizen_id`, `degree`, `dob`, `position`, `salary`, `address`, `email`, `phone`, `fname`, `lname`, `gender`, `username`, `password`)
+INSERT INTO employee(`citizen_id`, `degree`, `dob`, `position`, `salary`, `address`, `email`, `phone`, `fname`, `lname`, `gender`, `username`, `password`, `role`)
 VALUES
-('6035995261732', 'ประถมศึกษา', '1970-03-12', 'CEO', 50000, '1055/645 R C K Tower 31Th Floor 3122 Room Silom Road Bangkok 10322', 'taweesak@gmail.com', '0941234789', 'ทวีศักดิ์', 'เตมียชาติ', 'Male', 'taweesak1479', 'kaseewat9741'),
-('1311095773406', 'ปริญญาตรี', '1978-01-19', 'Programmer', 35000, '86 Soi Wat Nangnong Vuthakart Bang Kor Chomthong Bangkok 10328', 'tarann_nc@hotmail.com', '0845589454', 'ตรัณ', 'นิมบุญจาช', 'Male', 'taran19178', 'cAllmynaMepls%19178%'),
-('5394171469072', 'ปริญญาโท', '1983-01-23', 'Sales', 40000, '81/15 Soi Prachasanti Dindang Din Daeng Din Daeng Bangkok 10320', 'boonshern@hotmail.com', '026434136', 'บุญเชิด', 'ชื่นเจริญ', 'Male', 'Somematim', 'ou7naeJ3'),
+('6035995261732', 'ประถมศึกษา', '1970-03-12', 'CEO', 50000, '1055/645 R C K Tower 31Th Floor 3122 Room Silom Road Bangkok 10322', 'taweesak@gmail.com', '0941234789', 'ทวีศักดิ์', 'เตมียชาติ', 'Male', 'taweesak1479', 'kaseewat9741', 'admin'),
+('1311095773406', 'ปริญญาตรี', '1978-01-19', 'Programmer', 35000, '86 Soi Wat Nangnong Vuthakart Bang Kor Chomthong Bangkok 10328', 'tarann_nc@hotmail.com', '0845589454', 'ตรัณ', 'นิมบุญจาช', 'Male', 'taran19178', 'cAllmynaMepls%19178%', 'admin'),
+('5394171469072', 'ปริญญาโท', '1983-01-23', 'Sales', 40000, '81/15 Soi Prachasanti Dindang Din Daeng Din Daeng Bangkok 10320', 'boonshern@hotmail.com', '026434136', 'บุญเชิด', 'ชื่นเจริญ', 'Male', 'Somematim', 'ou7naeJ3', 'user'),
 ('1722387961019',  'ประถมศึกษา', '1977-02-27', 'Mechanic', 30000, '127/49 St Louis Soi 3 Chan Rd Thung Wat Don Sathon Bangkok 10120', 'Simp@gmail.com', '0966781234', 'ขันธ์', 'ดาบสีพาย',  'Male',  null,  null),
 ('1311056779811', 'มัธยมศึกษาตอนปลาย', '1974-10-03', 'Housekeeper', 18000, 'B 28 Soi Taladchaimongkon Ratchaprarob Thung Phyathai Ratcha Thewi Bangkok', 'Areerutt_2517@hotmail.com', '0819261814', 'อารีรัตน์', 'บัวหลวง', 'Female', null, null),
 ('5394288562111', 'มัธยมศึกษาตอนปลาย', '1974-11-28', 'Mechanic', 20000, '92/19 Soi Pattanakarn 40 Pattanakarn Road Bangkok 10250', 'Apichdee@hotmail.com', '0627229702', 'บุญเติม ', 'ทาสีเพชร', 'Male', null, null),

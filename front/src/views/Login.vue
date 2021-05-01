@@ -7,6 +7,11 @@
       >
         <div class="card-body">
           <!--<form>-->
+            <div>
+              <p v-if="error" class="px-3 py-2 mb-3 has-text-danger-dark has-background-danger-light">
+                {{ error }}
+              </p>
+            </div>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label"
                 ><strong>Username</strong></label
@@ -44,7 +49,8 @@ export default {
   data() {
     return {
       username: null,
-      password: null
+      password: null,
+      error:''
     };
   },
   methods: {

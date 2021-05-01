@@ -14,11 +14,13 @@ const empRouter = require('./routes/employees')
 const partnerRouter = require('./routes/partner')
 const invRouter = require('./routes/inventory')
 const transRouter = require('./routes/transaction')
+const userRouter = require('./routes/user')
 
 app.use(empRouter.router)
 app.use(partnerRouter.router)
 app.use(invRouter.router)
 app.use(transRouter.router)
+app.use(userRouter.router)
 
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:3000`)

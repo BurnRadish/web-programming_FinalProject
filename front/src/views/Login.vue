@@ -1,16 +1,22 @@
 <template>
   <div class="container">
-    <div class='d-flex justify-content-center'>
-      <div class="card shadow-lg bg-white rounded" style="margin: 25%; width: 30%">
+    <div class="d-flex justify-content-center">
+      <div
+        class="card shadow-lg bg-white rounded"
+        style="margin: 25%; width: 30%"
+      >
         <div class="card-body">
-          <form>
+          <!--<form>-->
             <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label"><strong>Email</strong></label>
+              <label for="exampleInputEmail1" class="form-label"
+                ><strong>Email</strong></label
+              >
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
+                v-model="username"
               />
             </div>
             <div class="mb-3">
@@ -21,10 +27,11 @@
                 type="password"
                 class="form-control"
                 id="exampleInputPassword1"
+                v-model="password"
               />
             </div>
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
-          </form>
+            <button v-on:click="submit()" type="submit" class="btn btn-primary w-100">Submit</button>
+          <!--</form>-->
         </div>
       </div>
     </div>
@@ -32,13 +39,36 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      username: null,
+      password: null
+    };
   },
+  methods: {
+    submit() {
+      const data = {
+        username: this.username,
+        password: this.password,
+      };
 
+      axios
+        .post("http://localhost:3000/user/login/", data)
+        .then((res) => {
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          this.$emit("auth-change");
+          this.$router.push({ path: "/home" });
+        })
+        .catch((error) => {
+          this.error = error.response.data;
+          console.log(error.response.data);
+        });
+    },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

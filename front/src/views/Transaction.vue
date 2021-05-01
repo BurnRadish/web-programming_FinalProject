@@ -214,7 +214,7 @@
             <div class="field column is-4">
               <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
               <div class="control">
-                <input class="input" type="number" :class="{'is-danger': $v.employee_emp_id}" placeholder="" v-model="employee_emp_id">
+                <input class="input" type="number" :class="{'is-danger': $v.employee_emp_id.$error}" placeholder="" v-model="employee_emp_id">
               </div>
               <template v-if="$v.employee_emp_id.$error">
                         <p class="help is-danger ml-2" v-if="!$v.employee_emp_id.required">This field is required</p>
@@ -223,7 +223,7 @@
             <div class="field column is-4">
               <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
               <div class="control">
-                <input class="input" type="number" :class="{'is-danger': $v.partner_par_id}" placeholder="" v-model="partner_par_id">
+                <input class="input" type="number" :class="{'is-danger': $v.partner_par_id.$error}" placeholder="" v-model="partner_par_id">
               </div>
               <template v-if="$v.partner_par_id.$error">
                         <p class="help is-danger ml-2" v-if="!$v.partner_par_id.required">This field is required</p>
@@ -325,7 +325,7 @@ export default {
             }
 
             /* Request axios */
-            axios.put("http://localhost:3000/trans", body)
+            axios.post("http://localhost:3000/trans", body)
             .then((response => {
                 console.log("response: ", response)
                 console.log("Success")
@@ -339,10 +339,10 @@ export default {
                 this.transaction_date = '',
                 this.delivery_status = '',
                 this.type = '',
-                this.employee_emp_id = 0,
-                this.partner_par_id = 0,
-                this.count = 0,
-                this.price = 0,
+                this.employee_emp_id = '',
+                this.partner_par_id = '',
+                this.count = '',
+                this.price = '',
                 this.title = ''
               }))
             .catch(err => {

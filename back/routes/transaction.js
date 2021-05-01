@@ -11,7 +11,7 @@ const transSchema = Joi.object({
     payament_status: Joi.string().required(),
     credit_due_date: Joi.date().required(),
     transaction_date: Joi.date().required(),
-    delivery_status: Joi.boolean(),
+    delivery_status: Joi.number(),
     type: Joi.string().required(),
     employee_emp_id: Joi.string().required(),
     partner_par_id: Joi.string().required(),
@@ -20,7 +20,7 @@ const transSchema = Joi.object({
     title: Joi.string().required(),
 })
 //add new transaction
-router.put("/trans", async function(req, res, next) {
+router.post("/trans", async function(req, res, next) {
     try {
         await transSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {

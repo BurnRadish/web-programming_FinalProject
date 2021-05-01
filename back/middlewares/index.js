@@ -1,4 +1,5 @@
 const pool = require("../config");
+
 async function isLoggedIn(req, res, next) {
   let authorization = req.headers.authorization;
 
@@ -20,17 +21,9 @@ async function isLoggedIn(req, res, next) {
     return res.status(401).send("You are not logged in");
   }
 
-  // Set user
-  const [
-    users,
-  ] = await pool.query(
-    "SELECT id, username, first_name, last_name, email, picture, mobile, join_date " +
-      "FROM users WHERE id = ?",
-    [token.user_id]
-  );
-  req.user = users[0];
-
-  next();
+  const [users] = await pool.query('SELECT emp_id, username, fname, lname, email, phone, role ' +'FROM employee WHERE emp_id = ?', [token.user_id])
+  req.user = users[0]
+  next()
 }
 
 module.exports = {

@@ -9,7 +9,7 @@
           <!--<form>-->
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label"
-                ><strong>Email</strong></label
+                ><strong>Username</strong></label
               >
               <input
                 type="text"

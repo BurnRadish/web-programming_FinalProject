@@ -33,7 +33,7 @@
       <div class="navbar-end">
         <div class="navbar-item navbar-end has-dropdown is-hoverable">
           <a class="navbar-link">
-            Setting
+            {{user.fname}} {{user.lname}}
           </a>
           <div class="navbar-dropdown">
             <a class="navbar-item">
@@ -50,14 +50,34 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios'
 export default {
+  data(){
+    return{
+      user: null
+    }
+  },
   methods: {
     logout() {
       localStorage.removeItem("token");
       this.user = null;
       this.$router.push({ path: "/" });
     },
+    onAuthChange (){
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.getUser()
+      }
+    },
+    getUser () {
+      axios.get('/user/me').then(res => {
+        this.user = res.data
+      })
+    }
   },
+  mounted(){
+    this.onAuthChange()
+  }
 };
 </script>
 

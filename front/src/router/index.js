@@ -34,6 +34,11 @@ const routes = [
     meta: { login: true },
     component: () => import('../views/Transaction.vue')
   },
+  {
+    path: '/trans/:id',
+    name: 'TransactionDetail',
+    component: () => import('../views/DetailTran.vue')
+  },
 ]
 
 const router = new VueRouter({

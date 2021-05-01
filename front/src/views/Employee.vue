@@ -5,6 +5,7 @@
       ค้นหาพนักงานที่คุณต้องการ
     </h1>
     <button
+      v-if="user.role === 'admin'"
       class="button is-warning"
       style="float:right"
       v-on:click="checkadd = !checkadd"
@@ -47,11 +48,13 @@
               >Profile</a
             >
             <a
+              v-if="user.role === 'admin'"
               class="card-footer-item"
               v-on:click="emp.checkedit = !emp.checkedit"
               >Edit</a
             >
             <a
+              v-if="user.role === 'admin'"
               class="card-footer-item"
               v-on:click="DeleteEmp(emp)"
               >Delete</a
@@ -401,12 +404,13 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '@/plugins/axios'
 import navbar from "../components/Navbar.vue";
 import {required, email, maxLength, integer} from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
+      user: null,
       checkadd: false,
       blog: {},
       search12: "",
@@ -568,7 +572,21 @@ export default {
           });
         })
       }
+    },
+    onAuthChange (){
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.getUser()
+      }
+    },
+    getUser () {
+      axios.get('http://localhost:3000/user/me').then(res => {
+        this.user = res.data
+      })
     }
+  },
+  mounted(){
+    this.onAuthChange()
   },
   validations:{
       name:{

@@ -73,7 +73,7 @@ const empSchema = Joi.object({
     citizen: Joi.string().required().custom(citizenValidator),
     // degree: Joi.string().required(),
     dob: Joi.date().required(),
-    pos: Joi.string().required(),
+    position: Joi.string().required(),
     salary: Joi.number().required(),
     address: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -81,7 +81,7 @@ const empSchema = Joi.object({
     fname: Joi.string().required(),
     lname: Joi.string().required(),
     gender: Joi.string().required(),
-    password: Joi.string().required().custom(passwordValidator),
+    password: Joi.string().required(),
 })
 
 //add member
@@ -97,20 +97,19 @@ router.post("/employees", async function(req, res, next) {
     let fname = req.body.fname
     let lname = req.body.lname
     let gender = req.body.gender
-    //gender = gender.toUpperCase()
     let password = req.body.password
-    /*try {
+    try {
         await empSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
-    }*/
+    }
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
         await conn.query(`
-        INSERT INTO employee(citizen_id, degree, dob, position, salary, address, email, phone, fname, lname, gender, password)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO employee(citizen_id, degree, dob, position, salary, address, email, phone, fname, lname, gender, password, role)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user')
         `, [citizen, degree, dob, position, salary, address, email, phone, fname, lname, gender, password])
         conn.commit()
         res.send('Success!');

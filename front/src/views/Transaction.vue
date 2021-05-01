@@ -50,7 +50,7 @@
         <!-- End footer table -->
         <!-- table body -->
         <tbody>
-            <tr v-for='(tran) in trans' :key='tran.tran_id'>
+            <tr v-for='(tran) in trans' :key='tran.tran_id' @click="viewDetail(tran.tran_id)">
               <td><a>#{{tran.tran_id}}</a></td>
               <td>{{tran.type}}</td>
               <td>{{tran.transaction_date}}</td>
@@ -363,8 +363,10 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      },
+      viewDetail(id){
+        this.$router.push({ path: `/trans/${id}` });
       }
-        
   },
   components: {
     navbar,

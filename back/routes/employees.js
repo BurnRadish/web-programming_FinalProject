@@ -161,7 +161,7 @@ router.put("/employees/:id", isLoggedIn, isAdmin,  async function(req, res, next
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let degree = req.body.degree
-    let pos = req.body.poosition
+    let pos = req.body.position
     let salary = req.body.salary
     let address = req.body.address
     let email = req.body.email

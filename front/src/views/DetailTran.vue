@@ -97,25 +97,22 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '@/plugins/axios'
 import navbar from "../components/Navbar.vue";
 
 export default {
   data() {
     return {
+      user: null,
       detail: {},
       total : {},
       product: {},
-      //Date
       TranDate: [],
       creditDate: [],
-      deliveryDate: [],
       tranD : 0,
       tranM : '',
       creditD : 0,
       creditM : '',
-      deliveryD: 0,
-      deliveryM: '',
       month: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
     };
   },
@@ -127,7 +124,7 @@ export default {
       axios
         .get(`http://localhost:3000/trans/${blogId}`)
         .then((response) => {
-          console.log(response.data);
+          console.log(response.data.info[0]);
           //change date form
           response.data.info[0].transaction_date = response.data.info[0].transaction_date.substring(
             0,
@@ -141,21 +138,16 @@ export default {
             0,
             response.data.info[0].delivery_date.indexOf("T")
           );
-
           //split string date
           this.TranDate = response.data.info[0].transaction_date.split('-')
           this.creditDate = response.data.info[0].credit_due_date.split('-')
-          this.deliveryDate = response.data.info[0].delivery_date.split('-')
           //convert string month to int
           this.tranM = parseInt(this.TranDate[1])
           this.creditM = parseInt(this.creditDate[1])
-          this.deliveryM = parseInt(this.deliveryDate[1])
           //convert day string to int
           this.tranD = parseInt(this.TranDate[2])
           this.creditD = parseInt(this.creditDate[2])
-          this.deliveryD = parseInt(this.deliveryDate[2])
 
-          //set up detail
           this.detail = response.data.info[0]
           this.total = response.data.total[0]
           this.product = response.data.product[0]
@@ -167,6 +159,20 @@ export default {
           console.log(err);
         });
     },
+    onAuthChange (){
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.getUser()
+      }
+    },
+    getUser () {
+      axios.get('http://localhost:3000/user/me').then(res => {
+        this.user = res.data
+      })
+    },
+  },
+  mounted(){
+    this.onAuthChange()
   },
   components: {
     navbar,

@@ -141,27 +141,6 @@
               </div>
             </div>
             <div class="columns">
-              <div class="column is-4">
-                <div class="field">
-                  <label class="label">Gender</label>
-                </div>
-                <div class="select">
-                  <select v-model="$v.gender2.$model">
-                    <option>Male</option>
-                    <option>Female</option>
-                  </select>
-                  <p class="help" v-if="$v.gender2.$error == true" style="color: red">Please Select Gender</p>
-                </div>
-              </div>
-              <div class="column is-4">
-                <div class="field">
-                  <label class="label">Birth</label>
-                </div>
-                <input class="input" v-model="$v.birth2.$model" type="date" />
-                <p class="help" v-if="$v.birth2.$error == true" style="color: red">Please Select Birth</p>
-              </div>
-            </div>
-            <div class="columns">
               <div class="column is-12">
                 <div class="field">
                   <label class="label">Position</label>
@@ -203,17 +182,6 @@
                   </div>
                 </div>
                 <div class="field">
-                  <label class="label">Password</label>
-                  <div class="control">
-                    <input
-                      class="input"
-                      type="password"
-                      v-model="$v.password2.$model"
-                    />
-                    <p class="help" v-if="$v.password2.$error == true" style="color: red">Please Fill The Correct Password</p>
-                  </div>
-                </div>
-                <div class="field">
                   <label class="label">Address</label>
                   <div class="control">
                     <input
@@ -230,16 +198,6 @@
                   <div class="control">
                     <input class="input" type="text" v-model="$v.tel2.$model" placeholder="0800000000" />
                     <p class="help" v-if="$v.tel2.$error == true" style="color: red">Please Fill Phone Number</p>
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Citizen</label>
-                  <div class="control">
-                    <input class="input" type="text" v-model="$v.citizen2.$model" placeholder="0000000000" />
-                    <template v-if="$v.citizen2.$error == true">
-                      <p class="help" v-if="$v.citizen2.required == false" style="color: red">Please Fill Citizen</p>
-                      <p class="help" v-if="$v.citizen2.integer == false" style="color: red">Please Fill Integer</p>
-                    </template>
                   </div>
                 </div>
               </div>
@@ -260,7 +218,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Modal title</p>
-          <button v-on:click="checkadd = !checkadd" class="delete" aria-label="close"></button>
+          <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
@@ -427,15 +385,11 @@ export default {
       //Edit
       name2: "",
       surname2: "",
-      gender2: "",
-      birth2: "",
       position2: "",
       salary2: "",
       email2: "",
       address2: "",
       tel2: "",
-      password2: "",
-      citizen2: "",
     };
   },
   components: {
@@ -500,14 +454,14 @@ export default {
         }
         axios.post("http://localhost:3000/employees", body)
         .then(() =>{
-          axios.get("http://localhost:3000/employees")
+          axios.get("http://localhost:3000/employees?search=" + this.search12)
           .then((response) => {
             for (let comment of response.data.blogs) {
               comment.check = false;
               comment.checkedit = false;
             }
             this.blog = response.data.blogs;
-          });
+          })
         })
       }
     },
@@ -528,32 +482,24 @@ export default {
       }
     },
     EditEmp(mod){
-      this.$v.citizen2.$touch();
       this.$v.name2.$touch();
       this.$v.surname2.$touch();
-      this.$v.gender2.$touch();
       this.$v.salary2.$touch();
       this.$v.position2.$touch();
-      this.$v.password2.$touch();
       this.$v.email2.$touch();
       this.$v.address2.$touch();
-      this.$v.birth2.$touch();
       this.$v.tel2.$touch();
-      if(this.$v.citizen2.$invalid == false && this.$v.name2.$invalid == false && this.$v.surname2.$invalid == false && this.$v.gender2.$invalid == false
-      && this.$v.position2.$invalid == false && this.$v.salary2.$invalid == false && this.$v.password2.$invalid == false && this.$v.email2.$invalid == false && this.$v.address2.$invalid == false
-      && this.$v.birth2.$invalid == false && this.$v.tel2.$invalid == false){
+      if(this.$v.name2.$invalid == false && this.$v.surname2.$invalid == false
+      && this.$v.position2.$invalid == false && this.$v.salary2.$invalid == false && this.$v.email2.$invalid == false && this.$v.address2.$invalid == false
+      && this.$v.tel2.$invalid == false){
         let body = {
           degree: "555",
-          citizen: this.citizen2,
           fname: this.name2,
           lname: this.surname2,
-          gender: this.gender2,
           position: this.position2,
           salary: this.salary2,
-          password: this.password2,
           email: this.email2,
           address: this.address2,
-          dob: this.birth2,
           phone: this.tel2
         }
         console.log(body)
@@ -585,16 +531,12 @@ export default {
     },
     EditFirstClick(emp){
       emp.checkedit = !emp.checkedit
-      this.$v.citizen2.$model = emp.citizen_id;
       this.$v.name2.$model = emp.fname;
       this.$v.surname2.$model = emp.lname;
-      this.$v.gender2.$model = emp.gender;
       this.$v.salary2.$model = emp.salary;
       this.$v.position2.$model = emp.position;
-      this.$v.password2.$model = emp.password;
       this.$v.email2.$model = emp.email;
       this.$v.address2.$model = emp.address;
-      this.$v.birth2.$model = emp.dob;
       this.$v.tel2.$model = emp.phone;
     }
   },
@@ -652,9 +594,6 @@ export default {
       gender2:{
         required: required
       },
-      birth2:{
-        required: required
-      },
       position2:{
         required: required
       },
@@ -672,12 +611,6 @@ export default {
       tel2:{
         required: required,
         maxLength: maxLength(10)
-      },
-      password2:{
-        required: required
-      },
-      citizen2:{
-        required: required,
       },
     }
 };

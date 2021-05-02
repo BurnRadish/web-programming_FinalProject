@@ -60,14 +60,14 @@ const partnerSchema = Joi.object({
     par_fname: Joi.string().required(),
     par_lname: Joi.string().required(),
     email1: Joi.string().email().required(),
-    email2: Joi.string().email(),
+    email2: Joi.string().email().allow(''),
     phone1: Joi.string().required(),
-    phone2: Joi.string(),
-    description: Joi.string()
+    phone2: Joi.string().allow(''),
+    description: Joi.string().allow('')
 })
 
 //add partner
-router.post("/partner", isLoggedIn, async function(req, res, next) {
+router.post("/partner", isLoggedIn, isAdmin, async function(req, res, next) {
     try {
         await partnerSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
@@ -104,7 +104,7 @@ router.post("/partner", isLoggedIn, async function(req, res, next) {
 });
 
 //delete partner 
-router.delete("/partner/:id", isLoggedIn, async function(req, res, next) {
+router.delete("/partner/:id", isLoggedIn, isAdmin, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -123,12 +123,12 @@ router.delete("/partner/:id", isLoggedIn, async function(req, res, next) {
 });
 
 //edit partner detail
-router.put("/partner/:id", isLoggedIn, async function(req, res, next) {
-    /*try {
+router.put("/partner/:id", isLoggedIn, isAdmin, async function(req, res, next) {
+    try { 
         await partnerSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
-    }*/
+    }
     
     const conn = await pool.getConnection()
     await conn.beginTransaction();

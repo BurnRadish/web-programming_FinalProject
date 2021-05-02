@@ -190,20 +190,43 @@ router.put("/employees/:id", async function(req, res, next) {
     }
 });
 
+const passSchema = Joi.object({
+    oldPass: Joi.string().required(),
+    newPass: Joi.string().required(),
+    conPass: Joi.string().valid(Joi.ref('newPass')).required(),
+    id: Joi.any()
+})
+
 //edit password
 router.put("/employees/:id/password", async function(req, res, next) {
+    try {
+        await passSchema.validateAsync(req.body, { abortEarly: false })
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+
+    let oldPass = req.body.oldPass
+    let newPass = req.body.newPass
+    let conPass = req.body.conPass
+    let id = req.body.id
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
+        const [users] = await conn.query('SELECT * FROM employee WHERE emp_id=?', [id])
+        const user = users[0]
+        if (!(await oldPass === user.password)){
+            throw new Error('Incorrect username or password')
+        }
+
         await conn.query(`
         UPDATE employee 
         SET password = ?
-        WHERE emp_id = ?`,[req.body.password, req.params.id])
+        WHERE emp_id = ?`,[newPass, id])
         conn.commit()
         res.send('Success!');
     } catch (err) {
         await conn.rollback();
-        return next(err)
+        res.status(400).json(err.toString())
     } finally {
         console.log('*-----END-----*')
         conn.release();

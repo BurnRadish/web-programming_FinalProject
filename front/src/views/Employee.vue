@@ -260,7 +260,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <button v-on:click="checkadd = !checkadd" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
@@ -500,7 +500,7 @@ export default {
         }
         axios.post("http://localhost:3000/employees", body)
         .then(() =>{
-          axios.get("http://localhost:3000/employees?search=" + this.search12)
+          axios.get("http://localhost:3000/employees")
           .then((response) => {
             for (let comment of response.data.blogs) {
               comment.check = false;

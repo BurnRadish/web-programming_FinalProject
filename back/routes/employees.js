@@ -72,7 +72,6 @@ const citizenValidator = (value, helpers) => {
 
 const empSchema = Joi.object({
     citizen: Joi.string().required().custom(citizenValidator),
-    // degree: Joi.string().required(),
     dob: Joi.date().required(),
     position: Joi.string().required(),
     salary: Joi.number().required(),
@@ -98,7 +97,7 @@ router.post("/employees", isLoggedIn, isAdmin, async function(req, res, next) {
     let fname = req.body.fname
     let lname = req.body.lname
     let gender = req.body.gender
-    let password = req.body.password
+    let password = await bcrypt.hash(req.body.password, 5)
     try {
         await empSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
@@ -148,7 +147,7 @@ const editEmpSchema = Joi.object({
     phone: Joi.string().required().max(10),
     fname: Joi.string().required(),
     lname: Joi.string().required(),
-    degree: Joi.string()
+    degree: Joi.string().allow('')
 })
 
 //edit member detail
@@ -156,7 +155,7 @@ router.put("/employees/:id", isLoggedIn, isAdmin,  async function(req, res, next
     try {
         await editEmpSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
-        res.status(400).json(err)
+        return res.status(400).json(err)
     }
 
     const conn = await pool.getConnection()
@@ -208,8 +207,7 @@ router.put("/employees/:id/password", isLoggedIn, async function(req, res, next)
     }
 
     let oldPass = req.body.oldPass
-    let newPass = req.body.newPass
-    let conPass = req.body.conPass
+    let newPass = await bcrypt.hash(req.body.newPass, 5)
     let id = req.body.id
     const conn = await pool.getConnection()
     await conn.beginTransaction();

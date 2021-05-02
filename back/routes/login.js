@@ -4,6 +4,7 @@ const Joi = require('joi')
 const pool = require("../config")
 const express = require("express")
 const router = express.Router();
+const bcrypt = require('bcrypt')
 
 const loginSchema = Joi.object({
     email: Joi.string().required(),
@@ -26,7 +27,7 @@ router.post('/user/login', async (req, res, next) => {
         if (!user){
             throw new Error('Incorrect email or password')
         }
-        if (!(await password === user.password)){
+        if (!(await bcrypt.compare(password, user.password))){
             throw new Error('Incorrect email or password')
         }
         const [tokens] = await conn.query('SELECT * FROM tokens WHERE user_id=?', [user.emp_id])

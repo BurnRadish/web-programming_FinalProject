@@ -3,9 +3,10 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 const Joi = require('joi')
+const { isLoggedIn, isAdmin } = require('../middlewares')
 
 //get all partner details or Search partner
-router.get("/partner", async function(req, res, next) {
+router.get("/partner", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let search = req.query.search || ''
@@ -35,7 +36,7 @@ router.get("/partner", async function(req, res, next) {
 });
 
 //get partner details
-router.get("/partner/:id", async function(req, res, next) {
+router.get("/partner/:id", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -58,18 +59,19 @@ const partnerSchema = Joi.object({
     type: Joi.string().required(),
     par_fname: Joi.string().required(),
     par_lname: Joi.string().required(),
-    email1: Joi.string().email(),
+    email1: Joi.string().email().required(),
     email2: Joi.string().email(),
-    phone1: Joi.string(),
-    phone2: Joi.string()
+    phone1: Joi.string().required(),
+    phone2: Joi.string(),
+    description: Joi.string()
 })
 
 //add partner
-router.post("/partner", async function(req, res, next) {
+router.post("/partner", isLoggedIn, async function(req, res, next) {
     try {
         await partnerSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
-        res.status(400).json(err)
+        return res.status(400).json(err)
     }
 
     const conn = await pool.getConnection()
@@ -80,7 +82,6 @@ router.post("/partner", async function(req, res, next) {
     let par_lname = req.body.par_lname
     let legal_address = req.body.legal_address
     let type = req.body.type
-    //type = type.toUpperCase()
     let email1 = req.body.email1
     let email2 = req.body.email2
     let phone1 = req.body.phone1
@@ -103,7 +104,7 @@ router.post("/partner", async function(req, res, next) {
 });
 
 //delete partner 
-router.delete("/partner/:id", async function(req, res, next) {
+router.delete("/partner/:id", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -122,7 +123,7 @@ router.delete("/partner/:id", async function(req, res, next) {
 });
 
 //edit partner detail
-router.put("/partner/:id", async function(req, res, next) {
+router.put("/partner/:id", isLoggedIn, async function(req, res, next) {
     /*try {
         await partnerSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {

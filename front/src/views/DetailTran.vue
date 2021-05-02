@@ -109,10 +109,14 @@ export default {
       product: {},
       TranDate: [],
       creditDate: [],
+      deliveryDate: [],
+      //Date
       tranD : 0,
       tranM : '',
       creditD : 0,
       creditM : '',
+      deliveryD: 0,
+      deliveryM: '',
       month: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
     };
   },
@@ -124,7 +128,7 @@ export default {
       axios
         .get(`http://localhost:3000/trans/${blogId}`)
         .then((response) => {
-          console.log(response.data.info[0]);
+          console.log(response.data);
           //change date form
           response.data.info[0].transaction_date = response.data.info[0].transaction_date.substring(
             0,
@@ -141,13 +145,16 @@ export default {
           //split string date
           this.TranDate = response.data.info[0].transaction_date.split('-')
           this.creditDate = response.data.info[0].credit_due_date.split('-')
+          this.deliveryDate = response.data.info[0].delivery_date.split('-')
           //convert string month to int
           this.tranM = parseInt(this.TranDate[1])
           this.creditM = parseInt(this.creditDate[1])
+          this.deliveryM = parseInt(this.deliveryDate[1])
           //convert day string to int
           this.tranD = parseInt(this.TranDate[2])
           this.creditD = parseInt(this.creditDate[2])
-
+          this.deliveryD = parseInt(this.deliveryDate[2])
+          //set up detail
           this.detail = response.data.info[0]
           this.total = response.data.total[0]
           this.product = response.data.product[0]

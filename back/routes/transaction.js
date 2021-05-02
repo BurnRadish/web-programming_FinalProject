@@ -4,6 +4,7 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 
+//Joi set up
 const transSchema = Joi.object({
     delivery_date: Joi.date().required(),
     credit: Joi.number().required(),
@@ -19,6 +20,7 @@ const transSchema = Joi.object({
     count: Joi.number().required(),
     title: Joi.string().required(),
 })
+
 //add new transaction
 router.post("/trans", async function(req, res, next) {
     try {

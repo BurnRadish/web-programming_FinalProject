@@ -67,12 +67,21 @@ const partnerSchema = Joi.object({
 })
 
 //add partner
+<<<<<<< Updated upstream
 router.post("/partner", isLoggedIn, async function(req, res, next) {
     try {
         await partnerSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         return res.status(400).json(err)
     }
+=======
+router.post("/partner", async function(req, res, next) {
+    /*try {
+        await partnerSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }*/
+>>>>>>> Stashed changes
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();

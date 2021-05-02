@@ -6,7 +6,7 @@ const express = require("express")
 const router = express.Router();
 
 const loginSchema = Joi.object({
-    username: Joi.string().required(),
+    email: Joi.string().required(),
     password: Joi.string().required()
 })
 router.post('/user/login', async (req, res, next) => {
@@ -15,19 +15,19 @@ router.post('/user/login', async (req, res, next) => {
     } catch (err) {
         return res.status(400).send(err)
     }
-    const username = req.body.username
+    const email = req.body.email
     const password = req.body.password
 
     const conn = await pool.getConnection()
     await conn.beginTransaction()
     try {
-        const [users] = await conn.query('SELECT * FROM employee WHERE username=?', [username])
+        const [users] = await conn.query('SELECT * FROM employee WHERE email=?', [email])
         const user = users[0]
         if (!user){
-            throw new Error('Incorrect username or password')
+            throw new Error('Incorrect email or password')
         }
         if (!(await password === user.password)){
-            throw new Error('Incorrect username or password')
+            throw new Error('Incorrect email or password')
         }
         const [tokens] = await conn.query('SELECT * FROM tokens WHERE user_id=?', [user.emp_id])
         let token = tokens[0]?.token

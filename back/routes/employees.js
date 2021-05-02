@@ -99,11 +99,11 @@ router.post("/employees", isLoggedIn, isAdmin, async function(req, res, next) {
     let lname = req.body.lname
     let gender = req.body.gender
     let password = req.body.password
-    /*try {
+    try {
         await empSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         return res.status(400).json(err)
-    }*/
+    }
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();

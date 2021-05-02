@@ -8,7 +8,7 @@ const router = express.Router();
 const transSchema = Joi.object({
     delivery_date: Joi.date().required(),
     credit: Joi.number().required(),
-    payament_method: Joi.string().required(),
+    payment_method: Joi.string().required(),
     payament_status: Joi.string().required(),
     credit_due_date: Joi.date().required(),
     transaction_date: Joi.date().required(),
@@ -31,8 +31,7 @@ router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
     await conn.beginTransaction();
     let delivery_date = req.body.delivery_date
     let credit = req.body.credit
-    let payament_method = req.body.payament_method
-    //payament_method = payament_method.toUpperCase()
+    let payment_method = req.body.payment_method
     let payament_status = req.body.payament_status
     let credit_due_date = req.body.credit_due_date
     let transaction_date = req.body.transaction_date
@@ -60,7 +59,7 @@ router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [delivery_date, 
                 credit, 
-                payament_method, 
+                payment_method, 
                 payament_status, 
                 credit_due_date, 
                 transaction_date, 

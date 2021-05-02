@@ -60,11 +60,10 @@
                   <div class="column is-6">
                     <u><h3 class="title is-4">Profile</h3></u>
                     <div class="content" style="padding-top: 3%">
-                      <h4>{{mo.type}}</h4>
+                      <h4>{{mo.company_name}}</h4>
                       <p>Name : {{mo.par_fname}} {{mo.par_lname}}</p>
                       <p>Tel : {{mo.phone1}}</p>
                       <p>Email : {{mo.email1}}</p>
-                      <p>Company : {{mo.company_name}}</p>
                     </div>
                   </div>
                 </div>
@@ -217,7 +216,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Modal title</p>
-          <button v-on:click="checkadd = !checkadd" class="delete" aria-label="close"></button>
+          <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->

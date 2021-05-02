@@ -34,13 +34,8 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item" v-on:click="par.check = !par.check">Profile</a>
-<<<<<<< Updated upstream
-            <a class="card-footer-item" v-on:click="par.checkedit = !par.checkedit" v-if="user.role==='admin'">Edit</a>
+            <a class="card-footer-item" v-on:click="EditFirstClick(par)" v-if="user.role==='admin'">Edit</a>
             <a class="card-footer-item" v-on:click="DeletePar(par)" v-if="user.role==='admin'">Delete</a>
-=======
-            <a class="card-footer-item" v-on:click="EditOpen(par)">Edit</a>
-            <a class="card-footer-item" v-on:click="DeletePar(par)">Delete</a>
->>>>>>> Stashed changes
           </footer>
         </div>
       </div>
@@ -444,6 +439,7 @@ export default {
           phone2: this.tel2,
           delivery_address: this.delivery_address
         }
+        this.checkadd = !this.checkadd;
         axios.post("http://localhost:3000/partner", body)
         .then(() =>{
           axios.get("http://localhost:3000/partner")
@@ -453,7 +449,6 @@ export default {
               comment.checkedit = false;
             }
             this.blog = response.data.blogs
-            this.checkadd = !this.checkadd;
           })
         })
       }
@@ -514,7 +509,6 @@ export default {
         })
       }
     },
-<<<<<<< Updated upstream
     onAuthChange (){
       const token = localStorage.getItem('token')
       if (token) {
@@ -525,9 +519,9 @@ export default {
       axios.get('http://localhost:3000/user/me').then(res => {
         this.user = res.data
       })
-=======
-    EditOpen(par){
-      par.checkedit = !par.checkedit
+    },
+    EditFirstClick(par){
+      par.checkedit = !par.checkedit;
       this.$v.name2.$model = par.par_fname;
       this.$v.surname2.$model = par.par_lname;
       this.$v.type2.$model = par.type;
@@ -536,7 +530,6 @@ export default {
       this.$v.legal_address2.$model = par.legal_address;
       this.$v.delivery_address2.$model = par.delivery_address;
       this.$v.tel12.$model = par.phone1;
->>>>>>> Stashed changes
     }
   },
   mounted(){

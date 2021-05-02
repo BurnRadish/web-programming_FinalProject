@@ -50,7 +50,7 @@
             <a
               v-if="user.role === 'admin'"
               class="card-footer-item"
-              v-on:click="emp.checkedit = !emp.checkedit"
+              v-on:click="EditFirstClick(emp)"
               >Edit</a
             >
             <a
@@ -582,6 +582,20 @@ export default {
       axios.get('http://localhost:3000/user/me').then(res => {
         this.user = res.data
       })
+    },
+    EditFirstClick(emp){
+      emp.checkedit = !emp.checkedit
+      this.$v.citizen2.$model = emp.citizen_id;
+      this.$v.name2.$model = emp.fname;
+      this.$v.surname2.$model = emp.lname;
+      this.$v.gender2.$model = emp.gender;
+      this.$v.salary2.$model = emp.salary;
+      this.$v.position2.$model = emp.position;
+      this.$v.password2.$model = emp.password;
+      this.$v.email2.$model = emp.email;
+      this.$v.address2.$model = emp.address;
+      this.$v.birth2.$model = emp.dob;
+      this.$v.tel2.$model = emp.phone;
     }
   },
   mounted(){

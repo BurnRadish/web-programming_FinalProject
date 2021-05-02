@@ -63,7 +63,7 @@
       <div class="columns">
         <div class="column">
           <p v-if="detail.delivery_status === 1"><b>สถานะการจัดส่ง :</b> จัดส่งสำเร็จ</p>
-          <p v-if="detail.delivery_status === 0"><b>สถานะการจัดส่ง :</b> อยู่ระหว่างการจัดส่ง</p>
+          <p v-if="detail.delivery_status === 0"><b>สถานะการจัดส่ง :</b> ยังไม่ได้ทำการจัดส่ง</p>
         </div>
         <div class="column" v-if="detail.delivery_status === 0">
           <b>วันที่จัดส่ง :</b> {{deliveryD}} {{month[deliveryM - 1]}} {{deliveryDate[0]}}

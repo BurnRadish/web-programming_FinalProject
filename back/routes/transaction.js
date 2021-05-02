@@ -1,10 +1,10 @@
 const express = require("express");
 const Joi = require("joi");
 const path = require("path")
+const { isLoggedIn, isAdmin } = require('../middlewares')
 const pool = require("../config");
 const router = express.Router();
 
-//Joi set up
 const transSchema = Joi.object({
     delivery_date: Joi.date().required(),
     credit: Joi.number().required(),
@@ -20,9 +20,8 @@ const transSchema = Joi.object({
     count: Joi.number().required(),
     title: Joi.string().required(),
 })
-
 //add new transaction
-router.post("/trans", async function(req, res, next) {
+router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
     try {
         await transSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
@@ -33,9 +32,7 @@ router.post("/trans", async function(req, res, next) {
     let delivery_date = req.body.delivery_date
     let credit = req.body.credit
     let payament_method = req.body.payment_medthod
-    //payament_method = payament_method.toUpperCase()
     let payament_status = req.body.payament_status
-    //payament_status = payament_status.toUpperCase()
     let credit_due_date = req.body.credit_due_date
     let transaction_date = req.body.transaction_date
     let delivery_status = req.body.delivery_status
@@ -127,7 +124,7 @@ router.post("/trans", async function(req, res, next) {
 });
 
 //get all transaction or search transation
-router.get("/trans", async function(req, res, next) {
+router.get("/trans", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let search = req.query.search || ''
@@ -156,7 +153,7 @@ router.get("/trans", async function(req, res, next) {
 });
 
 //get transaction details
-router.get("/trans/:id", async function(req, res, next) {
+router.get("/trans/:id", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {

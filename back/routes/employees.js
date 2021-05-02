@@ -3,10 +3,11 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 const Joi = require('joi')
+const { isLoggedIn, isAdmin } = require('../middlewares')
 const bcrypt = require('bcrypt')
 
 //get all member details or Search member
-router.get("/employees", async function(req, res, next) {
+router.get("/employees", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let search = req.query.search || ''
@@ -36,7 +37,7 @@ router.get("/employees", async function(req, res, next) {
 });
 
 //get member details
-router.get("/employees/:id", async function(req, res, next) {
+router.get("/employees/:id", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -85,7 +86,7 @@ const empSchema = Joi.object({
 })
 
 //add member
-router.post("/employees", async function(req, res, next) {
+router.post("/employees", isLoggedIn, isAdmin, async function(req, res, next) {
     let citizen = req.body.citizen
     let degree = req.body.degree
     let dob = req.body.dob
@@ -123,7 +124,7 @@ router.post("/employees", async function(req, res, next) {
 });
 
 //delete member 
-router.delete("/employees/:id", async function(req, res, next) {
+router.delete("/employees/:id", isLoggedIn, isAdmin, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -150,7 +151,7 @@ const editEmpSchema = Joi.object({
 })
 
 //edit member detail
-router.put("/employees/:id", async function(req, res, next) {
+router.put("/employees/:id", isLoggedIn, isAdmin,  async function(req, res, next) {
     /*try {
         await editEmpSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
@@ -198,7 +199,7 @@ const passSchema = Joi.object({
 })
 
 //edit password
-router.put("/employees/:id/password", async function(req, res, next) {
+router.put("/employees/:id/password", isLoggedIn, async function(req, res, next) {
     try {
         await passSchema.validateAsync(req.body, { abortEarly: false })
     } catch (err) {
@@ -215,7 +216,7 @@ router.put("/employees/:id/password", async function(req, res, next) {
         const [users] = await conn.query('SELECT * FROM employee WHERE emp_id=?', [id])
         const user = users[0]
         if (!(await oldPass === user.password)){
-            throw new Error('Incorrect username or password')
+            throw new Error('Incorrect password')
         }
 
         await conn.query(`

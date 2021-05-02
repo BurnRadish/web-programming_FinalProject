@@ -3,9 +3,9 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 const Joi = require('joi')
-
+const { isLoggedIn, isAdmin } = require('../middlewares')
 //get all items information or search item
-router.get("/products", async function(req, res, next) {
+router.get("/products", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let search = req.query.search || ''
@@ -33,7 +33,7 @@ router.get("/products", async function(req, res, next) {
 });
 
 //get product details
-router.get("/products/:id", async function(req, res, next) {
+router.get("/products/:id", isLoggedIn, async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -64,7 +64,7 @@ const productSchema = Joi.object({
 })
 
 //add new product
-router.post("/products", async function(req, res, next) {
+router.post("/products", isLoggedIn, isAdmin, async function(req, res, next) {
     try {
         await productSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {

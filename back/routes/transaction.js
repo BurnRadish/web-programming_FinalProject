@@ -8,7 +8,7 @@ const router = express.Router();
 const transSchema = Joi.object({
     delivery_date: Joi.date().required(),
     credit: Joi.number().required(),
-    payament_method: Joi.string().required(),
+    payment_method: Joi.string().required(),
     payament_status: Joi.string().required(),
     credit_due_date: Joi.date().required(),
     transaction_date: Joi.date().required(),
@@ -130,13 +130,11 @@ router.get("/trans", isLoggedIn, async function(req, res, next) {
     let search = req.query.search || ''
     try {
         /* ยิง Postman ด้วย param ผ่านแล้ว!!! */
-        if(search.length > 0){
+        if(search != ''){
             let sql = `SELECT * FROM transaction WHERE tran_id LIKE ? OR type LIKE ? OR payment_method LIKE ? OR payment_status LIKE ?`
             let cond = [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
             let info = await pool.query(sql, cond);
-            res.json({
-                info : info[0]
-            })
+            res.send(info[0])
         } else {
             let info = await conn.query("SELECT * FROM transaction")
             conn.commit()

@@ -527,7 +527,15 @@ export default {
           },
         })
         .then((response) => {
-          this.trans = response.data.info;
+          for (let i = 0; i < response.data.length; i++) {
+            response.data[i].transaction_date = response.data[
+              i
+            ].transaction_date.substring(
+              0,
+              response.data[i].transaction_date.indexOf("T")
+            );
+          }
+          this.trans = response.data;
           console.log(response.data);
         })
         .catch((err) => {

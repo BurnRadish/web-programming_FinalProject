@@ -8,7 +8,7 @@ const router = express.Router();
 const transSchema = Joi.object({
     delivery_date: Joi.date().required(),
     credit: Joi.number().required(),
-    payment_method: Joi.string().required(),
+    payament_method: Joi.string().required(),
     payament_status: Joi.string().required(),
     credit_due_date: Joi.date().required(),
     transaction_date: Joi.date().required(),

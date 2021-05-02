@@ -41,25 +41,34 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Change password</p>
-          <button class="delete" aria-label="close" @click="modal = false"></button>
+          <button class="delete" aria-label="close" @click="clear"></button>
         </header>
         <section class="modal-card-body">
-          <!-- Content ... -->
           <div>
               <p v-if="error" class="px-3 py-2 mb-3 has-text-danger-dark has-background-danger-light">
                 {{ error }}
               </p>
           </div>
           <label ><strong><p>Old password</p></strong></label>
-          <input class="input" type="text" placeholder="Text input" v-model='oldPass'>
+          <input class="input" type="text" placeholder="enter your password" v-model='oldPass'>
+          <template v-if="$v.oldPass.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.oldPass.required">This field is required</p>
+          </template>
           <label class="mt-3"><strong><p>New password</p></strong></label>
-          <input class="input" type="text" placeholder="Text input" v-model="newPass">
+          <input class="input" type="text" placeholder="enter new password" v-model="newPass">
+          <template v-if="$v.newPass.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.newPass.required">This field is required</p>
+          </template>
           <label class="mt-3"><strong><p>Confirm new password</p></strong></label>
-          <input class="input" type="text" placeholder="Text input" v-model="conPass">
+          <input class="input" type="text" placeholder="confirm password" v-model="conPass">
+          <template v-if="$v.conPass.$error">
+                        <p class="help is-danger ml-2" v-if="!$v.conPass.required">This field is required</p>
+                        <p class="help is-danger ml-2" v-if="!$v.conPass.sameAs">password not match!</p>
+          </template>
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success" @click="submit">Save changes</button>
-          <button class="button" @click="modal = false">Cancel</button>
+          <button class="button" @click="clear">Cancel</button>
         </footer>
       </div>
     </div>
@@ -68,6 +77,7 @@
 
 <script>
 import axios from "@/plugins/axios";
+import { required, sameAs } from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
@@ -97,7 +107,9 @@ export default {
       });
     },
     submit(){
-      let body = {
+      this.$v.$touch();
+      if(this.$v.$invalid == false){
+        let body = {
         oldPass: this.oldPass,
         newPass: this.newPass,
         conPass: this.conPass,
@@ -110,17 +122,38 @@ export default {
         this.newPass = ''
         this.conPass = ''
         this.error = ''
+        alert("Success!")
         this.logout()
       })
       .catch((error) => {
           this.error = error.response.data;
           console.log(error.response.data);
         });
+      }
+    },
+    clear(){
+      this.modal = false
+      this.oldPass = ''
+      this.newPass = ''
+      this.conPass = ''
+      this.error = ''
     }
   },
   mounted() {
     this.onAuthChange();
   },
+  validations:{
+    oldPass:{
+      required: required
+    },
+    newPass:{
+      required: required
+    },
+    conPass:{
+      required: required,
+      sameAs: sameAs('newPass')
+    }
+  }
 };
 </script>
 

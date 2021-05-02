@@ -31,7 +31,7 @@ router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
     await conn.beginTransaction();
     let delivery_date = req.body.delivery_date
     let credit = req.body.credit
-    let payment_method = req.body.payment_method
+    let payament_method = req.body.payament_method
     let payament_status = req.body.payament_status
     let credit_due_date = req.body.credit_due_date
     let transaction_date = req.body.transaction_date
@@ -59,7 +59,7 @@ router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `, [delivery_date, 
                 credit, 
-                payment_method, 
+                payament_method, 
                 payament_status, 
                 credit_due_date, 
                 transaction_date, 

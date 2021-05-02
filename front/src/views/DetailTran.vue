@@ -138,16 +138,16 @@ export default {
             0,
             response.data.info[0].credit_due_date.indexOf("T")
           );
-          response.data.info[0].delivery_date = response.data.info[0].delivery_date.substring(
-            0,
-            response.data.info[0].delivery_date.indexOf("T")
-          );
           //split string date
           this.TranDate = response.data.info[0].transaction_date.split('-')
           this.creditDate = response.data.info[0].credit_due_date.split('-')
          
 
           if(response.data.info[0].delivery_date != null){
+            response.data.info[0].delivery_date = response.data.info[0].delivery_date.substring(
+            0,
+            response.data.info[0].delivery_date.indexOf("T")
+          );
             this.deliveryDate = response.data.info[0].delivery_date.split('-')
             this.deliveryM = parseInt(this.deliveryDate[1])
             this.deliveryD = parseInt(this.deliveryDate[2])

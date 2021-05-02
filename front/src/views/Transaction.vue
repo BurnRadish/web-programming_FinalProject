@@ -39,7 +39,7 @@
     </div>
     <!--End button -->
 
-    <table class="table is-hoverable is-bordered">
+    <table class="table is-hoverable is-bordered" style="font-size: 20px;">
       <!-- header -->
       <thead class="has-text-centered">
         <tr>

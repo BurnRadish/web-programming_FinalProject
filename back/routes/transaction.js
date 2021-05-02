@@ -130,7 +130,7 @@ router.get("/trans", isLoggedIn, async function(req, res, next) {
     let search = req.query.search || ''
     try {
         /* ยิง Postman ด้วย param ผ่านแล้ว!!! */
-        if(search != ''){
+        if(search.length > 0){
             let sql = `SELECT * FROM transaction WHERE tran_id LIKE ? OR type LIKE ? OR payment_method LIKE ? OR payment_status LIKE ?`
             let cond = [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`]
             let info = await pool.query(sql, cond);

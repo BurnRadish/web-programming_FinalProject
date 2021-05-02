@@ -214,7 +214,7 @@ router.put("/employees/:id/password", isLoggedIn, async function(req, res, next)
     try {
         const [users] = await conn.query('SELECT * FROM employee WHERE emp_id=?', [id])
         const user = users[0]
-        if (!(await oldPass === user.password)){
+        if (!(await bcrypt.compare(oldPass, user.password))){
             throw new Error('Incorrect password')
         }
 

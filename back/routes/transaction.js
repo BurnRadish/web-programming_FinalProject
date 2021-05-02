@@ -158,9 +158,15 @@ router.get("/trans/:id", async function(req, res, next) {
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
-        let info = await conn.query("SELECT * FROM transaction WHERE tran_id = ?", [req.params.id])
+        let info = await conn.query("select t.*, e.fname, e.lname, p.company_name, p.par_fname, p.par_lname from transaction t join employee e on (t.employee_emp_id = e.emp_id) join partner p  on (t.partner_par_id = p.par_id) where t.tran_id = ?", [req.params.id])
+        let total = await conn.query("SELECT transaction_tran_id, sum(price*count) as 'price' FROM product_transaction where transaction_tran_id = ?", [req.params.id])
+        let product = await conn.query("select p.title, pt.count, (pt.price*pt.count) as total, pt.price as price from product p join product_transaction pt on p.pro_id = pt.product_pro_id where pt.transaction_tran_id = ?", [req.params.id])
         conn.commit()
-        res.send(info[0]);
+        res.send({
+            info : info[0],
+            total : total[0],
+            product : product
+        })
     } catch (err) {
         await conn.rollback();
         return next(err)

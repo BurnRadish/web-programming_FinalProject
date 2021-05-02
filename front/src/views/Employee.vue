@@ -73,8 +73,8 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <p class="modal-card-title">Employee</p>
+          <button v-on:click="mo.check = !mo.check" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
@@ -98,7 +98,6 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Save changes</button>
           <button class="button" v-on:click="mo.check = !mo.check">
             Cancel
           </button>
@@ -115,8 +114,8 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <p class="modal-card-title">Employee</p>
+          <button v-on:click="mod.checkedit = !mod.checkedit" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->

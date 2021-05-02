@@ -34,8 +34,13 @@
           </div>
           <footer class="card-footer">
             <a class="card-footer-item" v-on:click="par.check = !par.check">Profile</a>
+<<<<<<< Updated upstream
             <a class="card-footer-item" v-on:click="par.checkedit = !par.checkedit" v-if="user.role==='admin'">Edit</a>
             <a class="card-footer-item" v-on:click="DeletePar(par)" v-if="user.role==='admin'">Delete</a>
+=======
+            <a class="card-footer-item" v-on:click="EditOpen(par)">Edit</a>
+            <a class="card-footer-item" v-on:click="DeletePar(par)">Delete</a>
+>>>>>>> Stashed changes
           </footer>
         </div>
       </div>
@@ -45,8 +50,8 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <p class="modal-card-title">Partner</p>
+          <button v-on:click="mo.check = !mo.check" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
@@ -70,7 +75,6 @@
               </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Save changes</button>
           <button class="button" v-on:click="mo.check = !mo.check">Cancel</button>
         </footer>
       </div>
@@ -80,8 +84,8 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <p class="modal-card-title">Partner</p>
+          <button v-on:click="mod.checkedit = !mod.checkedit" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <div class="container">
@@ -510,6 +514,7 @@ export default {
         })
       }
     },
+<<<<<<< Updated upstream
     onAuthChange (){
       const token = localStorage.getItem('token')
       if (token) {
@@ -520,6 +525,18 @@ export default {
       axios.get('http://localhost:3000/user/me').then(res => {
         this.user = res.data
       })
+=======
+    EditOpen(par){
+      par.checkedit = !par.checkedit
+      this.$v.name2.$model = par.par_fname;
+      this.$v.surname2.$model = par.par_lname;
+      this.$v.type2.$model = par.type;
+      this.$v.company_name2.$model = par.company_name;
+      this.$v.email12.$model = par.email1;
+      this.$v.legal_address2.$model = par.legal_address;
+      this.$v.delivery_address2.$model = par.delivery_address;
+      this.$v.tel12.$model = par.phone1;
+>>>>>>> Stashed changes
     }
   },
   mounted(){

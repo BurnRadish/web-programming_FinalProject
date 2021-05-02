@@ -50,17 +50,17 @@
               </p>
           </div>
           <label ><strong><p>Old password</p></strong></label>
-          <input class="input" type="text" placeholder="enter your password" v-model='oldPass'>
+          <input class="input" type="password" placeholder="enter your password" v-model='oldPass'>
           <template v-if="$v.oldPass.$error">
                         <p class="help is-danger ml-2" v-if="!$v.oldPass.required">This field is required</p>
           </template>
           <label class="mt-3"><strong><p>New password</p></strong></label>
-          <input class="input" type="text" placeholder="enter new password" v-model="newPass">
+          <input class="input" type="password" placeholder="enter new password" v-model="newPass">
           <template v-if="$v.newPass.$error">
                         <p class="help is-danger ml-2" v-if="!$v.newPass.required">This field is required</p>
           </template>
           <label class="mt-3"><strong><p>Confirm new password</p></strong></label>
-          <input class="input" type="text" placeholder="confirm password" v-model="conPass">
+          <input class="input" type="password" placeholder="confirm password" v-model="conPass">
           <template v-if="$v.conPass.$error">
                         <p class="help is-danger ml-2" v-if="!$v.conPass.required">This field is required</p>
                         <p class="help is-danger ml-2" v-if="!$v.conPass.sameAs">password not match!</p>

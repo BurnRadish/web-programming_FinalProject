@@ -65,7 +65,7 @@
           <p v-if="detail.delivery_status === 1"><b>สถานะการจัดส่ง :</b> จัดส่งสำเร็จ</p>
           <p v-if="detail.delivery_status === 0"><b>สถานะการจัดส่ง :</b> ยังไม่ได้ทำการจัดส่ง</p>
         </div>
-        <div class="column" v-if="detail.delivery_status === 0">
+        <div class="column" v-if="detail.delivery_status === 1">
           <b>วันที่จัดส่ง :</b> {{deliveryD}} {{month[deliveryM - 1]}} {{deliveryDate[0]}}
         </div>
       </div>
@@ -145,15 +145,21 @@ export default {
           //split string date
           this.TranDate = response.data.info[0].transaction_date.split('-')
           this.creditDate = response.data.info[0].credit_due_date.split('-')
-          this.deliveryDate = response.data.info[0].delivery_date.split('-')
+         
+
+          if(response.data.info[0].delivery_date != null){
+            this.deliveryDate = response.data.info[0].delivery_date.split('-')
+            this.deliveryM = parseInt(this.deliveryDate[1])
+            this.deliveryD = parseInt(this.deliveryDate[2])
+          }
           //convert string month to int
           this.tranM = parseInt(this.TranDate[1])
           this.creditM = parseInt(this.creditDate[1])
-          this.deliveryM = parseInt(this.deliveryDate[1])
+          
           //convert day string to int
           this.tranD = parseInt(this.TranDate[2])
           this.creditD = parseInt(this.creditDate[2])
-          this.deliveryD = parseInt(this.deliveryDate[2])
+          
           //set up detail
           this.detail = response.data.info[0]
           this.total = response.data.total[0]

@@ -327,7 +327,7 @@
                 </template>
               </div>
             </div>
-            <div class="column is-4">
+            <div class="column is-4" v-if="delivery_status === '1'">
               <label for="" class="label"
                 >วันที่จัดส่งสินค้า
                 <input type="date" v-model="delivery_date" />
@@ -335,7 +335,7 @@
               <template v-if="$v.delivery_date.$error">
                 <p
                   class="help is-danger ml-2"
-                  v-if="!$v.delivery_date.required"
+                  v-if="!$v.delivery_date.requiredIf"
                 >
                   Please select delivery date
                 </p>
@@ -413,7 +413,7 @@
 <script>
 import axios from "@/plugins/axios";
 import navbar from "../components/Navbar.vue";
-import { required, minValue } from "vuelidate/lib/validators";
+import { required, minValue, requiredIf } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -475,6 +475,9 @@ export default {
       /* set up data */
       this.$v.$touch();
       if (this.$v.$invalid == false) {
+        if (this.delivery_status === "0") {
+          this.delivery_date = null;
+        }
         let body = {
           delivery_date: this.delivery_date,
           credit: this.credit,
@@ -496,22 +499,22 @@ export default {
           .post("http://localhost:3000/trans", body)
           .then((response) => {
             console.log("response: ", response);
-            console.log("Success")
-            this.getTrans()
+            console.log("Success");
+            this.getTrans();
             /* reset */
             this.newTran = false;
-            this.delivery_date = ""
-            this.credit = 0
-            this.payament_method = ""
-            this.payament_status = ""
-            this.credit_due_date = ""
-            this.transaction_date = ""
-            this.delivery_status = ""
-            this.type = ""
-            this.employee_emp_id = ""
-            this.partner_par_id = ""
-            this.count = ""
-            this.price = ""
+            this.delivery_date = "";
+            this.credit = 0;
+            this.payament_method = "";
+            this.payament_status = "";
+            this.credit_due_date = "";
+            this.transaction_date = "";
+            this.delivery_status = "";
+            this.type = "";
+            this.employee_emp_id = "";
+            this.partner_par_id = "";
+            this.count = "";
+            this.price = "";
             this.title = "";
           })
           .catch((err) => {
@@ -596,7 +599,13 @@ export default {
       required: required,
     },
     delivery_date: {
-      required: required,
+      requiredIf: requiredIf(function() {
+        if ((this.delivery_date === "" && this.delivery_status === '0') || this.delivery_date != '' || this.delivery_date === null) {
+          return false;
+        } else {
+          return true;
+        }
+      }),
     },
     transaction_date: {
       required: required,

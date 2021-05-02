@@ -6,9 +6,9 @@ const pool = require("../config");
 const router = express.Router();
 
 const transSchema = Joi.object({
-    delivery_date: Joi.date().required(),
+    delivery_date: Joi.date().allow(null).required(),
     credit: Joi.number().required(),
-    payment_method: Joi.string().required(),
+    payament_method: Joi.string().required(),
     payament_status: Joi.string().required(),
     credit_due_date: Joi.date().required(),
     transaction_date: Joi.date().required(),
@@ -25,7 +25,7 @@ router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
     try {
         await transSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
-        res.status(400).json(err)
+        return res.status(400).json(err)
     }
     const conn = await pool.getConnection()
     await conn.beginTransaction();

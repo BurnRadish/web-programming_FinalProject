@@ -106,10 +106,10 @@ export default {
       detail: {},
       total : {},
       product: {},
+      //Date
       TranDate: [],
       creditDate: [],
       deliveryDate: [],
-      //ate
       tranD : 0,
       tranM : '',
       creditD : 0,

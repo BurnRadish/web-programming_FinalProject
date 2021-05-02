@@ -45,7 +45,8 @@
                 <td><b><a>{{ index + 1}}</a></b></td>
                 <td><a>{{ product.title }}</a></td>
                 <td>{{ product.type}}</td>
-                <td><a>{{product.brand}}</a></td>
+                <td v-if="product.brand != null"><a>{{product.brand}}</a></td>
+                <td v-if="product.brand === null">ไม่สามารถระบุยี่ห้อได้</td>
                 <td>{{product.amount}}</td>
             </tr> 
         </tbody>

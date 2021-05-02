@@ -282,7 +282,7 @@
               <label for="">ยอดค้างการชำระ</label>
               <input type="number" v-model="credit" /><br />
               <template v-if="$v.credit.$error">
-              <p class="help is-danger ml-2" v-if="!$v.credit.required || !$v.credit.minValue">
+              <p class="help is-danger ml-2" v-if="!$v.credit.required">
                 Please enter credit
               </p>
             </template>
@@ -456,7 +456,21 @@ export default {
           }
           this.trans = response.data;
           console.log(response.data[0].transaction_date);
+          console.log(response.data)
           console.log(this.trans);
+          (this.delivery_date = ""),
+              (this.credit = 0),
+              (this.payament_method = ""),
+              (this.payament_status = ""),
+              (this.credit_due_date = ""),
+              (this.transaction_date = ""),
+              (this.delivery_status = ""),
+              (this.type = ""),
+              (this.employee_emp_id = ""),
+              (this.partner_par_id = ""),
+              (this.count = ""),
+              (this.price = ""),
+              (this.title = "");
         })
         .catch((err) => {
           console.log(err);
@@ -492,21 +506,9 @@ export default {
           .then((response) => {
             console.log("response: ", response);
             console.log("Success");
+            this.getTrans()
             /* reset */
             this.newTran = false;
-            (this.delivery_date = ""),
-              (this.credit = 0),
-              (this.payament_method = ""),
-              (this.payament_status = ""),
-              (this.credit_due_date = ""),
-              (this.transaction_date = ""),
-              (this.delivery_status = ""),
-              (this.type = ""),
-              (this.employee_emp_id = ""),
-              (this.partner_par_id = ""),
-              (this.count = ""),
-              (this.price = ""),
-              (this.title = "");
           })
           .catch((err) => {
             console.log(err);
@@ -577,7 +579,6 @@ export default {
     },
     credit: {
       required: required,
-      minValue: minValue(1),
     },
     credit_due_date: {
       required: required,

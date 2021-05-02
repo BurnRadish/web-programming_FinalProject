@@ -141,27 +141,28 @@ router.delete("/employees/:id", isLoggedIn, isAdmin, async function(req, res, ne
 });
 
 const editEmpSchema = Joi.object({
-    pos: Joi.string().required(),
+    position: Joi.string().required(),
     salary: Joi.number().required(),
     address: Joi.string().required(),
     email: Joi.string().email().required(),
     phone: Joi.string().required().max(10),
     fname: Joi.string().required(),
     lname: Joi.string().required(),
+    degree: Joi.string()
 })
 
 //edit member detail
 router.put("/employees/:id", isLoggedIn, isAdmin,  async function(req, res, next) {
-    /*try {
+    try {
         await editEmpSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
-    }*/
+    }
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     let degree = req.body.degree
-    let pos = req.body.position
+    let position = req.body.position
     let salary = req.body.salary
     let address = req.body.address
     let email = req.body.email
@@ -179,7 +180,7 @@ router.put("/employees/:id", isLoggedIn, isAdmin,  async function(req, res, next
             phone = ?,
             fname = ?,
             lname = ? 
-        WHERE emp_id = ?`,[degree, pos, salary, address, email, phone, fname, lname, req.params.id])
+        WHERE emp_id = ?`,[degree, position, salary, address, email, phone, fname, lname, req.params.id])
         conn.commit()
         res.send('Success!');
     } catch (err) {

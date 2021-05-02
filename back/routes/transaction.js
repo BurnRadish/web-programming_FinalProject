@@ -31,7 +31,8 @@ router.post("/trans", isLoggedIn, isAdmin, async function(req, res, next) {
     await conn.beginTransaction();
     let delivery_date = req.body.delivery_date
     let credit = req.body.credit
-    let payament_method = req.body.payment_medthod
+    let payament_method = req.body.payament_method
+    //payament_method = payament_method.toUpperCase()
     let payament_status = req.body.payament_status
     let credit_due_date = req.body.credit_due_date
     let transaction_date = req.body.transaction_date

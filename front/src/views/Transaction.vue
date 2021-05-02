@@ -147,21 +147,25 @@
                 />
               </label>
               <template v-if="$v.transaction_date.$error">
-              <p class="help is-danger ml-2" v-if="!$v.transaction_date.required">
-                Please enter transaction date
-              </p>
-            </template>
+                <p
+                  class="help is-danger ml-2"
+                  v-if="!$v.transaction_date.required"
+                >
+                  Please enter transaction date
+                </p>
+              </template>
             </div>
           </div>
           <!-- End first column -->
           <div class="columns">
             <div class="column">
-              <label class="label mr-2 ml-3">ชื่อสินค้า :
-              <select v-model="title">
-                <option v-for="item in product" :key="item.pro_id">{{
-                  item.title
-                }}</option>
-              </select>
+              <label class="label mr-2 ml-3"
+                >ชื่อสินค้า :
+                <select v-model="title">
+                  <option v-for="item in product" :key="item.pro_id">{{
+                    item.title
+                  }}</option>
+                </select>
               </label>
               <template v-if="$v.title.$error">
                 <p class="help is-danger ml-2" v-if="!$v.title.required">
@@ -282,10 +286,10 @@
               <label for="">ยอดค้างการชำระ</label>
               <input type="number" v-model="credit" /><br />
               <template v-if="$v.credit.$error">
-              <p class="help is-danger ml-2" v-if="!$v.credit.required">
-                Please enter credit
-              </p>
-            </template>
+                <p class="help is-danger ml-2" v-if="!$v.credit.required">
+                  Please enter credit
+                </p>
+              </template>
             </div>
           </div>
           <!-- End column 3 -->
@@ -333,7 +337,7 @@
                   class="help is-danger ml-2"
                   v-if="!$v.delivery_date.required"
                 >
-                   Please select delivery date
+                  Please select delivery date
                 </p>
               </template>
             </div>
@@ -444,7 +448,7 @@ export default {
   methods: {
     getTrans() {
       axios
-        .get("http://localhost:3000/trans", {})
+        .get("http://localhost:3000/trans")
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             response.data[i].transaction_date = response.data[
@@ -456,21 +460,8 @@ export default {
           }
           this.trans = response.data;
           console.log(response.data[0].transaction_date);
-          console.log(response.data)
+          console.log(response.data);
           console.log(this.trans);
-          (this.delivery_date = ""),
-              (this.credit = 0),
-              (this.payament_method = ""),
-              (this.payament_status = ""),
-              (this.credit_due_date = ""),
-              (this.transaction_date = ""),
-              (this.delivery_status = ""),
-              (this.type = ""),
-              (this.employee_emp_id = ""),
-              (this.partner_par_id = ""),
-              (this.count = ""),
-              (this.price = ""),
-              (this.title = "");
         })
         .catch((err) => {
           console.log(err);
@@ -505,10 +496,23 @@ export default {
           .post("http://localhost:3000/trans", body)
           .then((response) => {
             console.log("response: ", response);
-            console.log("Success");
+            console.log("Success")
             this.getTrans()
             /* reset */
             this.newTran = false;
+            this.delivery_date = ""
+            this.credit = 0
+            this.payament_method = ""
+            this.payament_status = ""
+            this.credit_due_date = ""
+            this.transaction_date = ""
+            this.delivery_status = ""
+            this.type = ""
+            this.employee_emp_id = ""
+            this.partner_par_id = ""
+            this.count = ""
+            this.price = ""
+            this.title = "";
           })
           .catch((err) => {
             console.log(err);
@@ -584,10 +588,10 @@ export default {
       required: required,
     },
     delivery_date: {
-      required : required
+      required: required,
     },
     transaction_date: {
-      required : required
+      required: required,
     },
   },
 };

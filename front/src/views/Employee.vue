@@ -218,7 +218,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <button v-on:click="checkadd = !checkadd" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
@@ -285,7 +285,7 @@
                       class="input"
                       type="text"
                       v-model="$v.salary.$model"
-                      placeholder="Data Engineer"
+                      placeholder="50000"
                     />
                     <template v-if="$v.salary.$error == true">
                       <p class="help" v-if="$v.salary.required == false" style="color: red">Please Fill Salary</p>
@@ -312,6 +312,7 @@
                       class="input"
                       type="password"
                       v-model="$v.password.$model"
+                      placeholder="xxxxxx"
                     />
                     <p class="help" v-if="$v.password.$error == true" style="color: red">Please Fill The Correct Password</p>
                   </div>
@@ -338,7 +339,7 @@
                 <div class="field">
                   <label class="label">Citizen</label>
                   <div class="control">
-                    <input class="input" type="text" v-model="$v.citizen.$model" placeholder="0000000000" />
+                    <input class="input" type="text" v-model="$v.citizen.$model" placeholder="0000000000000" />
                     <template v-if="$v.citizen.$error == true">
                       <p class="help" v-if="$v.citizen.required == false" style="color: red">Please Fill Citizen</p>
                       <p class="help" v-if="$v.citizen.integer == false" style="color: red">Please Fill Integer</p>

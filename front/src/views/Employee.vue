@@ -2,34 +2,42 @@
   <div class="container-fluid px-0">
     <div class="container">
       <navbar />
-      <h1 class="title" style="margin-top: 2%;display: inline">
+      <div class="box mt-3 pt-2">
+        <h1 class="title" style="display: inline">
         ค้นหาพนักงานที่คุณต้องการ
       </h1>
-      <button
-        v-if="user.role === 'admin'"
-        class="button is-warning"
-        style="float:right"
-        v-on:click="checkadd = !checkadd"
-      >
-        +Add New Employee
-      </button>
-      <div class="box mt-3 pt-2">
-        <div class="field">
-          <label class="label">ชื่อพนักงาน</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="search12"
-              placeholder="Sompong Chobhee"
-            />
+      <div class="columns mt-5">
+        <div class="column">
+          <div class="field has-addons">
+            <div class="control">
+              <a
+                class="button is-warning"
+                v-on:click="checkadd = !checkadd"
+                v-if="user.role === 'admin'"
+              >
+                + เพิ่มพนักงาน
+              </a>
+            </div>
+            <div class="control is-expanded">
+              <input
+                class="input"
+                type="text"
+                placeholder="ค้นหาพนักงาน"
+                v-model="search12"
+              />
+            </div>
+            <div class="control">
+              <a class="button is-info" v-on:click="search()">
+                ค้นหา
+              </a>
+            </div>
           </div>
         </div>
-        <button class="button is-primary is-rounded" v-on:click="search()">
-          Find
-        </button>
       </div>
-      <u><h1 class="title has-text-centered">รายชื่อพนักงาน</h1></u>
+      
+      </div>
+      <div class="box">
+          <u><h1 class="title has-text-centered">รายชื่อพนักงาน</h1></u>
       <div class="columns is-multiline" style="padding-top: 5%">
         <div class="column is-3" v-for="emp in blog" :key="emp.id">
           <div class="card">
@@ -63,6 +71,7 @@
             </footer>
           </div>
         </div>
+      </div>
       </div>
       <!--Modal with v-for-->
       <div
@@ -291,7 +300,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Modal title</p>
+            <p class="modal-card-title">เพิ่มรายชื่อพนักงาน</p>
             <button
               v-on:click="checkadd = !checkadd"
               class="delete"

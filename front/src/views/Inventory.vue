@@ -5,8 +5,7 @@
       <br>
       <div class="box">
         <h1 class="title has-text-centered is-2">คลังสินค้า(Inventory)</h1>
-      </div>
-      <!-- button -->
+        <!-- button -->
       <div class="columns">
         <div class="column">
           <div class="field has-addons">
@@ -36,6 +35,7 @@
         </div>
       </div>
       <!--End button -->
+      </div>
       <!-- table products -->
       <table class="table is-hoverable">
         <!-- header -->

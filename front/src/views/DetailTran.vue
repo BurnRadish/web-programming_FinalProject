@@ -1,8 +1,7 @@
 <template>
   <div class="container">
     <navbar />
-    <br>
-    <div class="box">
+    <div class="box mt-5">
       <h1 class="title has-text-centered is-2">
         รายละเอียดธุรกรรมหมายเลข {{ detail.tran_id }}
       </h1>
@@ -71,10 +70,10 @@
         </div>
       </div>
     </div>
-    <div class="title">
+    <div class="box" style="font-size: 26px;">
+      <div class="title">
       รายการสินค้า
     </div>
-    <div class="box" style="font-size: 26px;">
       <table class="table is-hoverable is-bordered">
         <thead class="has-text-centered">
           <tr>

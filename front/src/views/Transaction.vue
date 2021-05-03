@@ -1,418 +1,422 @@
 <template>
-  <div class="container">
-    <navbar />
-    <h1 class="title has-text-centered is-1">TRANSACTION</h1>
-    <br />
+  <div class="container-fluid px-0">
+    <div class="container">
+      <navbar />
+      <h1 class="title has-text-centered is-1">TRANSACTION</h1>
+      <br />
 
-    <div class="notification">
-      <h1 class="title has-text-centered is-2">ประวัติการดำเนินธุรกรรม</h1>
-    </div>
+      <div class="notification">
+        <h1 class="title has-text-centered is-2">ประวัติการดำเนินธุรกรรม</h1>
+      </div>
 
-    <!-- button -->
-    <div class="columns">
-      <div class="column">
-        <div class="field has-addons">
-          <div class="control">
-            <a
-              class="button is-primary"
-              @click="newTran = true"
-              v-if="user.role === 'admin'"
-            >
-              + เพิ่มรายการธุรกรรม
-            </a>
-          </div>
-          <div class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              placeholder="ค้นหาประวัติธุรกรรม"
-              v-model="searchT"
-            />
-          </div>
-          <div class="control">
-            <a class="button is-info" @click="searchTran()">
-              ค้นหา
-            </a>
+      <!-- button -->
+      <div class="columns">
+        <div class="column">
+          <div class="field has-addons">
+            <div class="control">
+              <a
+                class="button is-primary"
+                @click="newTran = true"
+                v-if="user.role === 'admin'"
+              >
+                + เพิ่มรายการธุรกรรม
+              </a>
+            </div>
+            <div class="control is-expanded">
+              <input
+                class="input"
+                type="text"
+                placeholder="ค้นหาประวัติธุรกรรม"
+                v-model="searchT"
+              />
+            </div>
+            <div class="control">
+              <a class="button is-info" @click="searchTran()">
+                ค้นหา
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!--End button -->
+      <!--End button -->
 
-    <table class="table is-hoverable is-bordered" style="font-size: 20px;">
-      <!-- header -->
-      <thead class="has-text-centered">
-        <tr>
-          <th>หมายเลขธุรกรรม</th>
-          <th>ประเภทธุรกรรม</th>
-          <th>วันที่ดำเนินธุรกรรม</th>
-          <th>วิธีการชำระเงิน</th>
-          <th>สถานะการชำระ</th>
-          <th>ยอดค้างการชำระ</th>
-          <th>สถานะการจัดส่ง</th>
-        </tr>
-      </thead>
-      <!-- End header -->
-      <!-- footer -->
-      <tfoot></tfoot>
-      <!-- End footer table -->
-      <!-- table body -->
-      <tbody>
-        <tr
-          v-for="tran in trans"
-          :key="tran.tran_id"
-          @click="viewDetail(tran.tran_id)"
-        >
-          <td>
-            <a>#{{ tran.tran_id }}</a>
-          </td>
-          <td>{{ tran.type }}</td>
-          <td>{{ tran.transaction_date }}</td>
-          <td>{{ tran.payment_method }}</td>
-          <td>{{ tran.payment_status }}</td>
-          <td>{{ tran.credit }}</td>
-          <td v-if="tran.delivery_status === 0">ยังไม่ได้ทำการจัดส่ง</td>
-          <td v-if="tran.delivery_status === 1">จัดส่งสำเร็จ</td>
-        </tr>
-      </tbody>
-      <!-- End tbody -->
-    </table>
-    <br />
-    <progress
-      class="progress is-small is-info"
-      value="100"
-      max="100"
-    ></progress>
+      <table class="table is-hoverable is-bordered" style="font-size: 20px;">
+        <!-- header -->
+        <thead class="has-text-centered">
+          <tr>
+            <th>หมายเลขธุรกรรม</th>
+            <th>ประเภทธุรกรรม</th>
+            <th>วันที่ดำเนินธุรกรรม</th>
+            <th>วิธีการชำระเงิน</th>
+            <th>สถานะการชำระ</th>
+            <th>ยอดค้างการชำระ</th>
+            <th>สถานะการจัดส่ง</th>
+          </tr>
+        </thead>
+        <!-- End header -->
+        <!-- footer -->
+        <tfoot></tfoot>
+        <!-- End footer table -->
+        <!-- table body -->
+        <tbody>
+          <tr
+            v-for="tran in trans"
+            :key="tran.tran_id"
+            @click="viewDetail(tran.tran_id)"
+          >
+            <td>
+              <a>#{{ tran.tran_id }}</a>
+            </td>
+            <td>{{ tran.type }}</td>
+            <td>{{ tran.transaction_date }}</td>
+            <td>{{ tran.payment_method }}</td>
+            <td>{{ tran.payment_status }}</td>
+            <td>{{ tran.credit }}</td>
+            <td v-if="tran.delivery_status === 0">ยังไม่ได้ทำการจัดส่ง</td>
+            <td v-if="tran.delivery_status === 1">จัดส่งสำเร็จ</td>
+          </tr>
+        </tbody>
+        <!-- End tbody -->
+      </table>
+      <br />
+      <progress
+        class="progress is-small is-info"
+        value="100"
+        max="100"
+      ></progress>
 
-    <!-- Tran modal -->
-    <!-- for creat new transaction -->
-    <div class="modal" v-bind:class="{ 'is-active': newTran }">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head has-text-centered">
-          <p class="modal-card-title">เพิ่มรายการประวัติธุรกรรม</p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="newTran = false"
-          ></button>
-        </header>
-        <section class="modal-card-body">
-          <!-- Content ... -->
-          <div class="columns">
-            <!-- first column -->
-            <div class="column is-4">
-              <div class="field is-horizontal">
-                <div class="field-label">
-                  <label class="label">ประเภท</label>
-                </div>
-                <div class="field-body">
-                  <div class="field is-narrow">
-                    <div class="control">
-                      <label class="radio">
-                        <input
-                          type="radio"
-                          name="member"
-                          v-model="type"
-                          value="PURCHASE"
-                        />
-                        ซื้อ
-                      </label>
-                      <label class="radio">
-                        <input
-                          type="radio"
-                          name="member"
-                          v-model="type"
-                          value="SALE"
-                        />
-                        ขาย
-                      </label>
+      <!-- Tran modal -->
+      <!-- for creat new transaction -->
+      <div class="modal" v-bind:class="{ 'is-active': newTran }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head has-text-centered">
+            <p class="modal-card-title">เพิ่มรายการประวัติธุรกรรม</p>
+            <button
+              class="delete"
+              aria-label="close"
+              @click="newTran = false"
+            ></button>
+          </header>
+          <section class="modal-card-body">
+            <!-- Content ... -->
+            <div class="columns">
+              <!-- first column -->
+              <div class="column is-4">
+                <div class="field is-horizontal">
+                  <div class="field-label">
+                    <label class="label">ประเภท</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field is-narrow">
+                      <div class="control">
+                        <label class="radio">
+                          <input
+                            type="radio"
+                            name="member"
+                            v-model="type"
+                            value="PURCHASE"
+                          />
+                          ซื้อ
+                        </label>
+                        <label class="radio">
+                          <input
+                            type="radio"
+                            name="member"
+                            v-model="type"
+                            value="SALE"
+                          />
+                          ขาย
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <template v-if="$v.type.$error">
+                  <p class="help is-danger" v-if="!$v.type.required">
+                    Type is required
+                  </p>
+                </template>
               </div>
-              <template v-if="$v.type.$error">
-                <p class="help is-danger" v-if="!$v.type.required">
-                  Type is required
-                </p>
-              </template>
-            </div>
-            <div class="column is-8">
-              <label for="" class="label"
-                >วันที่ดำเนินธุรกรรม :
-                <input
-                  type="date"
-                  style="margin-left: 15px;"
-                  v-model="transaction_date"
-                />
-              </label>
-              <template v-if="$v.transaction_date.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.transaction_date.required"
-                >
-                  Please enter transaction date
-                </p>
-              </template>
-            </div>
-          </div>
-          <!-- End first column -->
-          <div class="columns">
-            <div class="column">
-              <label class="label mr-2 ml-3"
-                >ชื่อสินค้า :
-                <select v-model="title">
-                  <option v-for="item in product" :key="item.pro_id">{{
-                    item.title
-                  }}</option>
-                </select>
-              </label>
-              <template v-if="$v.title.$error">
-                <p class="help is-danger ml-2" v-if="!$v.title.required">
-                  Please select product
-                </p>
-              </template>
-            </div>
-          </div>
-          <!-- second colum -->
-          <div class="columns">
-            <div class="column is-4">
-              <label for="" class="label"
-                >จำนวนสินค้า
-                <input
-                  type="text"
-                  v-model="count"
-                  class="input"
-                  :class="{ 'is-danger': $v.count.$error }"
-                />
-              </label>
-              <template v-if="$v.count.$error">
-                <p class="help is-danger ml-2" v-if="!$v.count.required">
-                  Amount is required
-                </p>
-                <p class="help is-danger ml-2" v-if="!$v.count.minValue">
-                  need at least 1 product
-                </p>
-              </template>
-            </div>
-            <!-- Select method -->
-            <div class="column is-4">
-              <label class="label">วิธีการชำระเงิน</label>
-              <!-- ENUM('Cash', 'Cheque', 'Creditcard') -->
-              <select v-model="payament_method">
-                <option disabled value="วิธีการชำระเงิน" selected
-                  >วิธีการชำระเงิน</option
-                >
-                <option value="Cheque">Cheque</option>
-                <option value="Creditcard">Creditcard</option
-                >s
-                <option value="Cash">Cash</option>
-              </select>
-              <template v-if="$v.payament_method.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.payament_method.required"
-                >
-                  Payment method is required
-                </p>
-              </template>
-            </div>
-            <div class="column is-4">
-              <label for="" class="label"
-                >วันครบกำหนดชำระ
-                <input type="date" v-model="credit_due_date" />
-              </label>
-              <template v-if="$v.credit_due_date.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.credit_due_date.required"
-                >
-                  credit date is required
-                </p>
-              </template>
-            </div>
-          </div>
-          <!-- End second column -->
-          <!-- column 3 -->
-          <div class="columns">
-            <div class="column is-4">
-              <!-- payment status -->
-              <label for=""><b>สถานะการชำระ</b></label>
-              <div class="control" style="margin-left: 0.5em;">
-                <label class="radio">
+              <div class="column is-8">
+                <label for="" class="label"
+                  >วันที่ดำเนินธุรกรรม :
                   <input
-                    type="radio"
-                    name=""
-                    v-model="payament_status"
-                    value="Complete"
+                    type="date"
+                    style="margin-left: 15px;"
+                    v-model="transaction_date"
                   />
-                  ชำระครบถ้วน
                 </label>
-                <label class="radio" style="margin-left: 0em;">
-                  <input
-                    type="radio"
-                    name=""
-                    v-model="payament_status"
-                    value="Incomplete"
-                  />
-                  ยังชำระไม่ครบ
-                </label>
-              </div>
-              <template v-if="$v.payament_status.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.payament_status.required"
-                >
-                  Please select payment status
-                </p>
-              </template>
-            </div>
-            <div class="column is-4">
-              <label for="">ยอดการสั่งซื้อ(บาท)</label>
-              <input
-                type="number"
-                class="input"
-                v-model="price"
-                :class="{ 'is-danger': $v.price.$error }"
-              /><br />
-              <template v-if="$v.price.$error">
-                <p class="help is-danger ml-2" v-if="!$v.price.required">
-                  Please enter product price
-                </p>
-              </template>
-            </div>
-            <!-- trigger if Incomplete -->
-            <div class="column is-4" v-show="payament_status == 'Incomplete'">
-              <label for="">ยอดค้างการชำระ</label>
-              <input type="number" v-model="credit" /><br />
-              <template v-if="$v.credit.$error">
-                <p class="help is-danger ml-2" v-if="!$v.credit.required">
-                  Please enter credit
-                </p>
-              </template>
-            </div>
-          </div>
-          <!-- End column 3 -->
-          <!-- column 4 -->
-          <div class="columns">
-            <div class="column is-4">
-              <!-- deliverly status -->
-              <label for=""><b>สถานะการจัดส่ง</b></label>
-              <div class="control" style="margin-left: 0.5em;">
-                <label class="radio">
-                  <input
-                    type="radio"
-                    name=""
-                    v-model="delivery_status"
-                    value="1"
-                  />
-                  จัดส่งสำเร็จ
-                </label>
-                <label class="radio" style="margin-left: 0em;">
-                  <input
-                    type="radio"
-                    name=""
-                    v-model="delivery_status"
-                    value="0"
-                  />
-                  ยังไม่ได้ทำการจัดส่ง
-                </label>
-                <template v-if="$v.delivery_status.$error">
+                <template v-if="$v.transaction_date.$error">
                   <p
                     class="help is-danger ml-2"
-                    v-if="!$v.delivery_status.required"
+                    v-if="!$v.transaction_date.required"
                   >
-                    Please select delivery status
+                    Please enter transaction date
                   </p>
                 </template>
               </div>
             </div>
-            <div class="column is-4" v-if="delivery_status === '1'">
-              <label for="" class="label"
-                >วันที่จัดส่งสินค้า
-                <input type="date" v-model="delivery_date" />
-              </label>
-              <template v-if="$v.delivery_date.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.delivery_date.requiredIf"
-                >
-                  Please select delivery date
-                </p>
-              </template>
-            </div>
-          </div>
-          <!-- End column 4 -->
-          <!-- colum 5 -->
-          <div class="columns">
-            <div class="field column is-4">
-              <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
-              <div class="control">
-                <input
-                  class="input"
-                  type="number"
-                  :class="{ 'is-danger': $v.employee_emp_id.$error }"
-                  placeholder=""
-                  v-model="employee_emp_id"
-                />
+            <!-- End first column -->
+            <div class="columns">
+              <div class="column">
+                <label class="label mr-2 ml-3"
+                  >ชื่อสินค้า :
+                  <select v-model="title">
+                    <option v-for="item in product" :key="item.pro_id">{{
+                      item.title
+                    }}</option>
+                  </select>
+                </label>
+                <template v-if="$v.title.$error">
+                  <p class="help is-danger ml-2" v-if="!$v.title.required">
+                    Please select product
+                  </p>
+                </template>
               </div>
-              <template v-if="$v.employee_emp_id.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.employee_emp_id.required"
-                >
-                  Please enter employee id
-                </p>
-              </template>
             </div>
-            <div class="field column is-4">
-              <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
-              <div class="control">
-                <input
-                  class="input"
-                  type="number"
-                  :class="{ 'is-danger': $v.partner_par_id.$error }"
-                  placeholder=""
-                  v-model="partner_par_id"
-                />
+            <!-- second colum -->
+            <div class="columns">
+              <div class="column is-4">
+                <label for="" class="label"
+                  >จำนวนสินค้า
+                  <input
+                    type="text"
+                    v-model="count"
+                    class="input"
+                    :class="{ 'is-danger': $v.count.$error }"
+                  />
+                </label>
+                <template v-if="$v.count.$error">
+                  <p class="help is-danger ml-2" v-if="!$v.count.required">
+                    Amount is required
+                  </p>
+                  <p class="help is-danger ml-2" v-if="!$v.count.minValue">
+                    need at least 1 product
+                  </p>
+                </template>
               </div>
-              <template v-if="$v.partner_par_id.$error">
-                <p
-                  class="help is-danger ml-2"
-                  v-if="!$v.partner_par_id.required"
-                >
-                  Please enter partner id
-                </p>
-              </template>
+              <!-- Select method -->
+              <div class="column is-4">
+                <label class="label">วิธีการชำระเงิน</label>
+                <!-- ENUM('Cash', 'Cheque', 'Creditcard') -->
+                <select v-model="payament_method">
+                  <option disabled value="วิธีการชำระเงิน" selected
+                    >วิธีการชำระเงิน</option
+                  >
+                  <option value="Cheque">Cheque</option>
+                  <option value="Creditcard">Creditcard</option
+                  >s
+                  <option value="Cash">Cash</option>
+                </select>
+                <template v-if="$v.payament_method.$error">
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.payament_method.required"
+                  >
+                    Payment method is required
+                  </p>
+                </template>
+              </div>
+              <div class="column is-4">
+                <label for="" class="label"
+                  >วันครบกำหนดชำระ
+                  <input type="date" v-model="credit_due_date" />
+                </label>
+                <template v-if="$v.credit_due_date.$error">
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.credit_due_date.required"
+                  >
+                    credit date is required
+                  </p>
+                </template>
+              </div>
             </div>
-          </div>
-          <!-- End column 5  -->
-        </section>
-        <!--End comtent Body -->
-        <footer class="modal-card-foot columns">
-          <div class="column is-6">
-            <button class="button is-info is-fullwidth" @click="creatTran()">
-              เพิ่ม
-            </button>
-          </div>
-          <div class="column is-6">
-            <button
-              class="button is-fullwidth is-danger"
-              @click="newTran = false"
-            >
-              ยกเลิก
-            </button>
-          </div>
-        </footer>
+            <!-- End second column -->
+            <!-- column 3 -->
+            <div class="columns">
+              <div class="column is-4">
+                <!-- payment status -->
+                <label for=""><b>สถานะการชำระ</b></label>
+                <div class="control" style="margin-left: 0.5em;">
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name=""
+                      v-model="payament_status"
+                      value="Complete"
+                    />
+                    ชำระครบถ้วน
+                  </label>
+                  <label class="radio" style="margin-left: 0em;">
+                    <input
+                      type="radio"
+                      name=""
+                      v-model="payament_status"
+                      value="Incomplete"
+                    />
+                    ยังชำระไม่ครบ
+                  </label>
+                </div>
+                <template v-if="$v.payament_status.$error">
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.payament_status.required"
+                  >
+                    Please select payment status
+                  </p>
+                </template>
+              </div>
+              <div class="column is-4">
+                <label for="">ยอดการสั่งซื้อ(บาท)</label>
+                <input
+                  type="number"
+                  class="input"
+                  v-model="price"
+                  :class="{ 'is-danger': $v.price.$error }"
+                /><br />
+                <template v-if="$v.price.$error">
+                  <p class="help is-danger ml-2" v-if="!$v.price.required">
+                    Please enter product price
+                  </p>
+                </template>
+              </div>
+              <!-- trigger if Incomplete -->
+              <div class="column is-4" v-show="payament_status == 'Incomplete'">
+                <label for="">ยอดค้างการชำระ</label>
+                <input type="number" v-model="credit" /><br />
+                <template v-if="$v.credit.$error">
+                  <p class="help is-danger ml-2" v-if="!$v.credit.required">
+                    Please enter credit
+                  </p>
+                </template>
+              </div>
+            </div>
+            <!-- End column 3 -->
+            <!-- column 4 -->
+            <div class="columns">
+              <div class="column is-4">
+                <!-- deliverly status -->
+                <label for=""><b>สถานะการจัดส่ง</b></label>
+                <div class="control" style="margin-left: 0.5em;">
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name=""
+                      v-model="delivery_status"
+                      value="1"
+                    />
+                    จัดส่งสำเร็จ
+                  </label>
+                  <label class="radio" style="margin-left: 0em;">
+                    <input
+                      type="radio"
+                      name=""
+                      v-model="delivery_status"
+                      value="0"
+                    />
+                    ยังไม่ได้ทำการจัดส่ง
+                  </label>
+                  <template v-if="$v.delivery_status.$error">
+                    <p
+                      class="help is-danger ml-2"
+                      v-if="!$v.delivery_status.required"
+                    >
+                      Please select delivery status
+                    </p>
+                  </template>
+                </div>
+              </div>
+              <div class="column is-4" v-if="delivery_status === '1'">
+                <label for="" class="label"
+                  >วันที่จัดส่งสินค้า
+                  <input type="date" v-model="delivery_date" />
+                </label>
+                <template v-if="$v.delivery_date.$error">
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.delivery_date.requiredIf"
+                  >
+                    Please select delivery date
+                  </p>
+                </template>
+              </div>
+            </div>
+            <!-- End column 4 -->
+            <!-- colum 5 -->
+            <div class="columns">
+              <div class="field column is-4">
+                <label class="label">รหัสพนักงานผู้ดำเนินการ</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="number"
+                    :class="{ 'is-danger': $v.employee_emp_id.$error }"
+                    placeholder=""
+                    v-model="employee_emp_id"
+                  />
+                </div>
+                <template v-if="$v.employee_emp_id.$error">
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.employee_emp_id.required"
+                  >
+                    Please enter employee id
+                  </p>
+                </template>
+              </div>
+              <div class="field column is-4">
+                <label class="label">รหัสคู่ค้าที่ทำธุรกรรม</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="number"
+                    :class="{ 'is-danger': $v.partner_par_id.$error }"
+                    placeholder=""
+                    v-model="partner_par_id"
+                  />
+                </div>
+                <template v-if="$v.partner_par_id.$error">
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.partner_par_id.required"
+                  >
+                    Please enter partner id
+                  </p>
+                </template>
+              </div>
+            </div>
+            <!-- End column 5  -->
+          </section>
+          <!--End comtent Body -->
+          <footer class="modal-card-foot columns">
+            <div class="column is-6">
+              <button class="button is-info is-fullwidth" @click="creatTran()">
+                เพิ่ม
+              </button>
+            </div>
+            <div class="column is-6">
+              <button
+                class="button is-fullwidth is-danger"
+                @click="newTran = false"
+              >
+                ยกเลิก
+              </button>
+            </div>
+          </footer>
+        </div>
       </div>
+      <!-- End Model -->
     </div>
-    <!-- End Model -->
+    <down/>
   </div>
 </template>
 
 <script>
 import axios from "@/plugins/axios";
 import navbar from "../components/Navbar.vue";
+import down from "../components/Footer.vue";
 import { required, minValue, requiredIf } from "vuelidate/lib/validators";
 export default {
   data() {
@@ -562,6 +566,7 @@ export default {
   },
   components: {
     navbar,
+    down
   },
   validations: {
     type: {
@@ -600,7 +605,11 @@ export default {
     },
     delivery_date: {
       requiredIf: requiredIf(function() {
-        if ((this.delivery_date === "" && this.delivery_status === '0') || this.delivery_date != '' || this.delivery_date === null) {
+        if (
+          (this.delivery_date === "" && this.delivery_status === "0") ||
+          this.delivery_date != "" ||
+          this.delivery_date === null
+        ) {
           return false;
         } else {
           return true;

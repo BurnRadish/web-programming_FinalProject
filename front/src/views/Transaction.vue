@@ -1,14 +1,13 @@
 <template>
   <div class="container-fluid px-0">
+    <img src="../assets/3.jpg" id="bg">
+    <navbar />
     <div class="container">
-      <navbar />
       <br />
 
       <div class="box">
         <h1 class="title has-text-centered is-2">ประวัติการดำเนินธุรกรรม(Transaction)</h1>
-      </div>
-
-      <!-- button -->
+        <!-- button -->
       <div class="columns">
         <div class="column">
           <div class="field has-addons">
@@ -37,9 +36,11 @@
           </div>
         </div>
       </div>
+      </div>
       <!--End button -->
 
-      <table class="table is-hoverable is-bordered" style="font-size: 20px;">
+      <div class="box">
+        <table class="table is-hoverable is-bordered" style="font-size: 20px;">
         <!-- header -->
         <thead class="has-text-centered">
           <tr>
@@ -79,11 +80,12 @@
       </table>
       <br />
       <progress
-        class="progress is-small is-info"
+        class="progress is-small"
         value="100"
         max="100"
       ></progress>
 
+      </div>
       <!-- Tran modal -->
       <!-- for creat new transaction -->
       <div class="modal" v-bind:class="{ 'is-active': newTran }">
@@ -161,11 +163,13 @@
               <div class="column">
                 <label class="label mr-2 ml-3"
                   >ชื่อสินค้า :
-                  <select v-model="title">
+                  <div class="select is-small">
+                    <select v-model="title">
                     <option v-for="item in product" :key="item.pro_id">{{
                       item.title
                     }}</option>
                   </select>
+                  </div>
                 </label>
                 <template v-if="$v.title.$error">
                   <p class="help is-danger ml-2" v-if="!$v.title.required">
@@ -284,7 +288,7 @@
               <!-- trigger if Incomplete -->
               <div class="column is-4" v-show="payament_status == 'Incomplete'">
                 <label for="">ยอดค้างการชำระ</label>
-                <input type="number" v-model="credit" /><br />
+                <input type="number" class="input" v-model="credit" /><br />
                 <template v-if="$v.credit.$error">
                   <p class="help is-danger ml-2" v-if="!$v.credit.required">
                     Please enter credit
@@ -621,3 +625,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#bg {
+  position: fixed; 
+  top: 0%; 
+  left: 0%; 
+  width: 200%; 
+  height: 200%;
+  opacity: 0.1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+</style>

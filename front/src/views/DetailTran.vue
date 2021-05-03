@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+<div class="container-fluid px-0">
+    <img src="../assets/3.jpg" id="bg">
     <navbar />
-    <div class="box mt-5">
+  <div class="container">
+    <div class="box mt-5" style="font-size: 26px;">
       <h1 class="title has-text-centered is-2">
         รายละเอียดธุรกรรมหมายเลข {{ detail.tran_id }}
       </h1>
-    </div>
-    <div class="box" style="font-size: 26px;">
       <!-- column 1 -->
-      <div class="columns">
+      <div class="columns mt-5">
         <div class="column">
           <p v-if="detail.type === 'SALE'"> <b>ประเภทธุรกรรม : </b> ขาย</p>
           <p v-if="detail.type === 'PURCHASE'"> <b>ประเภทธุรกรรม : </b> ซื้อ</p>
@@ -94,6 +94,7 @@
       </table>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -192,3 +193,23 @@ export default {
   },
 };
 </script>
+<style scoped>
+#bg {
+  position: fixed; 
+  top: 0%; 
+  left: 0%; 
+  width: 200%; 
+  height: 200%;
+  opacity: 0.1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+</style>

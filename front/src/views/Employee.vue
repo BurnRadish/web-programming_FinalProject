@@ -1,7 +1,8 @@
 <template>
   <div class="container-fluid px-0">
+    <img src="../assets/3.jpg" id="bg">
+    <navbar />
     <div class="container">
-      <navbar />
       <div class="box mt-3 pt-2">
         <h1 class="title" style="display: inline">
         ค้นหาพนักงานที่คุณต้องการ
@@ -11,7 +12,7 @@
           <div class="field has-addons">
             <div class="control">
               <a
-                class="button is-warning"
+                class="button is-primary"
                 v-on:click="checkadd = !checkadd"
                 v-if="user.role === 'admin'"
               >
@@ -826,4 +827,23 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#bg {
+  position: fixed; 
+  top: 0%; 
+  left: 0%; 
+  width: 200%; 
+  height: 200%;
+  opacity: 0.1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+</style>

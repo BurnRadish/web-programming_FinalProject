@@ -2,9 +2,9 @@
   <div class="container-fluid px-0">
     <div class="container">
       <navbar />
-      <h1 class="title has-text-centered">INVENTORY</h1>
-      <div class="notification">
-        <h1 class="title has-text-centered is-2">คลังสินค้า</h1>
+      <br>
+      <div class="box">
+        <h1 class="title has-text-centered is-2">คลังสินค้า(Inventory)</h1>
       </div>
       <!-- button -->
       <div class="columns">

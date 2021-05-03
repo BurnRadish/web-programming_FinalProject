@@ -2,11 +2,10 @@
   <div class="container-fluid px-0">
     <div class="container">
       <navbar />
-      <h1 class="title has-text-centered is-1">TRANSACTION</h1>
       <br />
 
-      <div class="notification">
-        <h1 class="title has-text-centered is-2">ประวัติการดำเนินธุรกรรม</h1>
+      <div class="box">
+        <h1 class="title has-text-centered is-2">ประวัติการดำเนินธุรกรรม(Transaction)</h1>
       </div>
 
       <!-- button -->

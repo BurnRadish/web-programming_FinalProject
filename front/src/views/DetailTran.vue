@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <navbar />
-    <div class="notification">
+    <br>
+    <div class="box">
       <h1 class="title has-text-centered is-2">
         รายละเอียดธุรกรรมหมายเลข {{ detail.tran_id }}
       </h1>

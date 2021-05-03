@@ -2,7 +2,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="/home">
-        <img src="../assets/WAP_LOGO.png" width="53" height="52" class="pr-3" />
+        <img src="../assets/WAP_LOGO.png" width="63" height="62" class="pr-3" style="max-height: unset;"/>
         WAP MACHINERY
       </a>
 

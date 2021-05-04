@@ -84,7 +84,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Employee</p>
+            <p class="modal-card-title">{{ mo.fname }} {{ mo.lname }}</p>
             <button
               v-on:click="mo.check = !mo.check"
               class="delete"
@@ -101,12 +101,12 @@
                   />
                 </div>
                 <div class="column is-6">
-                  <u><h3 class="title is-4">Profile</h3></u>
                   <div class="content" style="padding-top: 3%">
-                    <h4>{{ mo.position }}</h4>
-                    <p>Name : {{ mo.fname }} {{ mo.lname }}</p>
-                    <p>Tel : {{ mo.phone }}</p>
-                    <p>Email : {{ mo.email }}</p>
+                    <h4><strong>Name :</strong> {{ mo.fname }} {{ mo.lname }}</h4>
+                    <p><strong>Id :</strong> {{ mo.emp_id }}</p>
+                    <p><strong>Position : </strong>{{ mo.position }}</p>
+                    <p><strong>Tel :</strong> {{ mo.phone }}</p>
+                    <p><strong>Email :</strong> {{ mo.email }}</p>
                   </div>
                 </div>
               </div>

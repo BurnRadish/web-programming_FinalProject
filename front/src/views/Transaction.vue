@@ -62,17 +62,18 @@
             v-for="tran in trans"
             :key="tran.tran_id"
             @click="viewDetail(tran.tran_id)"
+            style="cursor: pointer;"
           >
             <td>
-              <a>#{{ tran.tran_id }}</a>
+              <a>#{{ tran.tran_id }}</a> 
             </td>
-            <td>{{ tran.type }}</td>
-            <td>{{ tran.transaction_date }}</td>
-            <td>{{ tran.payment_method }}</td>
-            <td>{{ tran.payment_status }}</td>
-            <td>{{ tran.credit }}</td>
-            <td v-if="tran.delivery_status === 0">ยังไม่ได้ทำการจัดส่ง</td>
-            <td v-if="tran.delivery_status === 1">จัดส่งสำเร็จ</td>
+            <td> <a >{{ tran.type }}</a></td>
+            <td> <a>{{ tran.transaction_date }}</a></td>
+            <td><a>{{ tran.payment_method }}</a></td>
+            <td><a>{{ tran.payment_status }}</a></td>
+            <td><a>{{ tran.credit }}</a></td>
+            <td v-if="tran.delivery_status === 0"><a>ยังไม่ได้ทำการจัดส่ง</a></td>
+            <td v-if="tran.delivery_status === 1"><a>จัดส่งสำเร็จ</a></td>
           </tr>
         </tbody>
         <!-- End tbody -->

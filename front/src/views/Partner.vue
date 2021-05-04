@@ -1,36 +1,44 @@
 <template>
   <div class="container-fluid px-0">
+    <img src="../assets/3.jpg" id="bg">
+    <navbar />
     <div class="container">
-      <navbar />
-      <h1 class="title" style="margin-top: 2%; display: inline">
+      <div class="box">
+          <h1 class="title" style="margin-top: 2%; display: inline">
         ค้นหาพาร์ทเนอร์ที่คุณต้องการ
       </h1>
-      <button
-        v-if="user.role === 'admin'"
-        class="button is-warning"
-        style="float:right"
-        v-on:click="checkadd = !checkadd"
-      >
-        +Add New Partner
-      </button>
-      <form class="box mt-3 pt-2">
-        <div class="field">
-          <label class="label">ชื่อพาร์ทเนอร์</label>
-          <div class="control">
-            <input
-              class="input"
-              v-model="search12"
-              type="email"
-              placeholder="Sompong Chobhee"
-            />
+      <div class="columns mt-5">
+        <div class="column">
+          <div class="field has-addons">
+            <div class="control">
+              <a
+                class="button is-primary"
+                v-on:click="checkadd = !checkadd"
+                v-if="user.role === 'admin'"
+              >
+                + เพิ่มพาร์ทเนอร์
+              </a>
+            </div>
+            <div class="control is-expanded">
+              <input
+                class="input"
+                type="text"
+                placeholder="ค้นหาพาร์ทเนอร์"
+                v-model="search12"
+              />
+            </div>
+            <div class="control">
+              <a class="button is-info" v-on:click="search()">
+                ค้นหา
+              </a>
+            </div>
           </div>
         </div>
-        <button class="button is-primary is-rounded" v-on:click="search()">
-          Find
-        </button>
-      </form>
-      <u><h1 class="title has-text-centered">รายชื่อพาร์ทเนอร์</h1></u>
-      <div class="columns is-multiline" style="padding-top: 5%">
+      </div>
+      </div>
+      <div class="box">
+          <u><h1 class="title has-text-centered">รายชื่อพาร์ทเนอร์</h1></u>
+          <div class="columns is-multiline" style="padding-top: 5%">
         <div class="column is-3" v-for="par in blog" :key="par.id">
           <div class="card">
             <div class="card-image">
@@ -66,6 +74,7 @@
           </div>
         </div>
       </div>
+      </div>
       <!--Modal with v-for-->
       <div
         class="modal"
@@ -76,7 +85,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Partner</p>
+            <p class="modal-card-title"><b>{{ mo.company_name }}</b></p>
             <button
               v-on:click="mo.check = !mo.check"
               class="delete"
@@ -93,12 +102,12 @@
                   />
                 </div>
                 <div class="column is-6">
-                  <u><h3 class="title is-4">Profile</h3></u>
                   <div class="content" style="padding-top: 3%">
-                    <h4>{{ mo.company_name }}</h4>
-                    <p>Name : {{ mo.par_fname }} {{ mo.par_lname }}</p>
-                    <p>Tel : {{ mo.phone1 }}</p>
-                    <p>Email : {{ mo.email1 }}</p>
+                    <h4>Company : {{ mo.company_name }}</h4>
+                    <p><strong>Name :</strong> {{ mo.par_fname }} {{ mo.par_lname }}</p>
+                    <p><strong>Tel :</strong> {{ mo.phone1 }}</p>
+                    <p><strong>Email :</strong> {{ mo.email1 }}</p>
+                    <p>{{mo.description}}</p>
                   </div>
                 </div>
               </div>
@@ -336,7 +345,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Modal title</p>
+            <p class="modal-card-title">เพิ่มรายชื่อพาร์ทเนอร์</p>
             <button
               v-on:click="checkadd = !checkadd"
               class="delete"
@@ -812,4 +821,23 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#bg {
+  position: fixed; 
+  top: 0%; 
+  left: 0%; 
+  width: 200%; 
+  height: 200%;
+  opacity: 0.1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+</style>

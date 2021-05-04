@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid px-0">
+    <img src="../assets/3.jpg" id="bg">
+    <navbar />
     <div class="container">
-      <navbar />
       <br>
       <div class="box">
         <h1 class="title has-text-centered is-2">คลังสินค้า(Inventory)</h1>
-      </div>
-      <!-- button -->
+        <!-- button -->
       <div class="columns">
         <div class="column">
           <div class="field has-addons">
@@ -36,7 +36,9 @@
         </div>
       </div>
       <!--End button -->
-      <!-- table products -->
+      </div>
+      <div class="box">
+        <!-- table products -->
       <table class="table is-hoverable">
         <!-- header -->
         <thead>
@@ -71,6 +73,7 @@
         <!-- End tbody -->
       </table>
       <!-- End table -->
+      </div>
       <!-- add modal -->
       <div class="modal" v-bind:class="{ 'is-active': newInven }">
         <div class="modal-background"></div>
@@ -305,3 +308,23 @@ export default {
   },
 };
 </script>
+<style scoped>
+#bg {
+  position: fixed; 
+  top: 0%; 
+  left: 0%; 
+  width: 200%; 
+  height: 200%;
+  opacity: 0.1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+</style>

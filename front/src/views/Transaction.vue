@@ -193,7 +193,7 @@
                 </label>
                 <template v-if="$v.count.$error">
                   <p class="help is-danger ml-2" v-if="!$v.count.required">
-                    Amount is required
+                    Please enter number of products
                   </p>
                   <p class="help is-danger ml-2" v-if="!$v.count.minValue">
                     need at least 1 product
@@ -218,7 +218,7 @@
                     class="help is-danger ml-2"
                     v-if="!$v.payament_method.required"
                   >
-                    Payment method is required
+                    Please select payment method
                   </p>
                 </template>
               </div>
@@ -233,6 +233,12 @@
                     v-if="!$v.credit_due_date.required"
                   >
                     credit date is required
+                  </p>
+                  <p
+                    class="help is-danger ml-2"
+                    v-if="!$v.credit_due_date.checkDate"
+                  >
+                    Please select date after transaction date
                   </p>
                 </template>
               </div>
@@ -393,7 +399,7 @@
             </div>
             <!-- End column 5  -->
           </section>
-          <!--End comtent Body -->
+          <!--End content Body -->
           <footer class="modal-card-foot columns">
             <div class="column is-6">
               <button class="button is-info is-fullwidth" @click="creatTran()">
@@ -422,6 +428,17 @@ import axios from "@/plugins/axios";
 import navbar from "../components/Navbar.vue";
 import down from "../components/Footer.vue";
 import { required, minValue, requiredIf } from "vuelidate/lib/validators";
+
+
+function checkDate(value){
+  if (value >= this.transaction_date){
+    return true
+  }
+  else{
+    return false
+  }
+}
+
 export default {
   data() {
     return {
@@ -606,6 +623,7 @@ export default {
     },
     credit_due_date: {
       required: required,
+      checkDate : checkDate
     },
     delivery_date: {
       requiredIf: requiredIf(function() {

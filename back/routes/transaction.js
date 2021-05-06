@@ -10,7 +10,7 @@ const transSchema = Joi.object({
     credit: Joi.number().required(),
     payament_method: Joi.string().required(),
     payament_status: Joi.string().required(),
-    credit_due_date: Joi.date().required(),
+    credit_due_date: Joi.date().min(Joi.ref('transaction_date')).required(),
     transaction_date: Joi.date().required(),
     delivery_status: Joi.number(),
     type: Joi.string().required(),

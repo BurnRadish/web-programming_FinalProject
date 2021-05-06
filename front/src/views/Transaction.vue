@@ -141,12 +141,11 @@
                 </template>
               </div>
               <div class="column is-8">
-                <label for="" class="label"
-                  >วันที่ดำเนินธุรกรรม :
+                <label for="" class="label">วันที่ดำเนินธุรกรรม :
                   <input
                     type="date"
-                    style="margin-left: 15px;"
                     v-model="transaction_date"
+                    class='input w-50 is-small'
                   />
                 </label>
                 <template v-if="$v.transaction_date.$error">
@@ -162,7 +161,7 @@
             <!-- End first column -->
             <div class="columns">
               <div class="column">
-                <label class="label mr-2 ml-3"
+                <label class="label"
                   >ชื่อสินค้า :
                   <div class="select is-small">
                     <select v-model="title">
@@ -204,7 +203,7 @@
               <div class="column is-4">
                 <label class="label">วิธีการชำระเงิน</label>
                 <!-- ENUM('Cash', 'Cheque', 'Creditcard') -->
-                <select v-model="payament_method">
+                <select v-model="payament_method" class="select is-small w-100">
                   <option disabled value="วิธีการชำระเงิน" selected
                     >วิธีการชำระเงิน</option
                   >
@@ -225,7 +224,7 @@
               <div class="column is-4">
                 <label for="" class="label"
                   >วันครบกำหนดชำระ
-                  <input type="date" v-model="credit_due_date" />
+                  <input type="date" class='input' v-model="credit_due_date" />
                 </label>
                 <template v-if="$v.credit_due_date.$error">
                   <p
@@ -341,7 +340,7 @@
               <div class="column is-4" v-if="delivery_status === '1'">
                 <label for="" class="label"
                   >วันที่จัดส่งสินค้า
-                  <input type="date" v-model="delivery_date" />
+                  <input type="date" class='input' v-model="delivery_date" />
                 </label>
                 <template v-if="$v.delivery_date.$error">
                   <p

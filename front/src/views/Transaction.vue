@@ -203,7 +203,8 @@
               <div class="column is-4">
                 <label class="label">วิธีการชำระเงิน</label>
                 <!-- ENUM('Cash', 'Cheque', 'Creditcard') -->
-                <select v-model="payament_method" class="select is-small w-100">
+                <div class="select is-small w-100">
+                  <select v-model="payament_method" class="w-100">
                   <option disabled value="วิธีการชำระเงิน" selected
                     >วิธีการชำระเงิน</option
                   >
@@ -212,6 +213,8 @@
                   >s
                   <option value="Cash">Cash</option>
                 </select>
+                </div>
+                
                 <template v-if="$v.payament_method.$error">
                   <p
                     class="help is-danger ml-2"

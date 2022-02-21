@@ -13,6 +13,7 @@ CREATE TABLE `employee` (
 	`gender` ENUM('Female','Male','Other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`username` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`password` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
+    `role` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	PRIMARY KEY (`emp_id`),
 	UNIQUE(`citizen_id`)
 );
@@ -163,13 +164,13 @@ VALUES
 ('6035995261732', 'ประถมศึกษา', '1970-03-12', 'CEO', 50000, '1055/645 R C K Tower 31Th Floor 3122 Room Silom Road Bangkok 10322', 'taweesak@gmail.com', '0941234789', 'ทวีศักดิ์', 'เตมียชาติ', 'Male', 'taweesak1479', 'kaseewat9741', 'admin'),
 ('1311095773406', 'ปริญญาตรี', '1978-01-19', 'Programmer', 35000, '86 Soi Wat Nangnong Vuthakart Bang Kor Chomthong Bangkok 10328', 'tarann_nc@hotmail.com', '0845589454', 'ตรัณ', 'นิมบุญจาช', 'Male', 'taran19178', 'cAllmynaMepls%19178%', 'admin'),
 ('5394171469072', 'ปริญญาโท', '1983-01-23', 'Sales', 40000, '81/15 Soi Prachasanti Dindang Din Daeng Din Daeng Bangkok 10320', 'boonshern@hotmail.com', '026434136', 'บุญเชิด', 'ชื่นเจริญ', 'Male', 'Somematim', 'ou7naeJ3', 'user'),
-('1722387961019',  'ประถมศึกษา', '1977-02-27', 'Mechanic', 30000, '127/49 St Louis Soi 3 Chan Rd Thung Wat Don Sathon Bangkok 10120', 'Simp@gmail.com', '0966781234', 'ขันธ์', 'ดาบสีพาย',  'Male',  null,  null),
-('1311056779811', 'มัธยมศึกษาตอนปลาย', '1974-10-03', 'Housekeeper', 18000, 'B 28 Soi Taladchaimongkon Ratchaprarob Thung Phyathai Ratcha Thewi Bangkok', 'Areerutt_2517@hotmail.com', '0819261814', 'อารีรัตน์', 'บัวหลวง', 'Female', null, null),
-('5394288562111', 'มัธยมศึกษาตอนปลาย', '1974-11-28', 'Mechanic', 20000, '92/19 Soi Pattanakarn 40 Pattanakarn Road Bangkok 10250', 'Apichdee@hotmail.com', '0627229702', 'บุญเติม ', 'ทาสีเพชร', 'Male', null, null),
-('6034558981011', 'ปริญญาตรี', '1979-05-31', 'Admin', 42000, '567/18-9 Soi Wat Maiphiren Issarapharp Wat Thapra Bangkok Yai Bangkok 10600', 'Apitchadee_bl@gmail.com', '0867056612', 'ศศิธร', 'แสงพิมา', 'Male', 'Apcd315', 'ApicH@d1'),
-('1231322456546', 'ปริญญาตรี', '1983-01-23', 'Head Mechanic', 40000, '2328/40 Ramkamhaeng 52/2 Huamark 10240', 'odds4loif@gmail.com', '0123874563', 'อภิชดี ', 'บุญเรือง', 'Male', null, null),
-('3306525383066', 'มัธยมศึกษาตอนต้น', '1982-08-02', 'Accountant', 25000, '61/2 Soi Sai Nam Thip Sukhumvit Soi 22 Bangkok 10110', 'orakrawee42@hotmail.com', '0822597138', 'อรกวี', 'เมืองทอง', 'Female', 'orakrawee', '9QNUA5KzAt5N'),
-('6034225190623', 'ปริญญาตรี', '1994-7-21', 'Mechanic', '27000' ,'Maha Ploed Tharam Bang Rak', 'pl_jom68l@gmail.com', '0827656649', 'ไพโรจน์', 'จอมดำสิงห์', 'Male', null, null);
+('1722387961019',  'ประถมศึกษา', '1977-02-27', 'Mechanic', 30000, '127/49 St Louis Soi 3 Chan Rd Thung Wat Don Sathon Bangkok 10120', 'Simp@gmail.com', '0966781234', 'ขันธ์', 'ดาบสีพาย',  'Male',  null,  null, 'user'),
+('1311056779811', 'มัธยมศึกษาตอนปลาย', '1974-10-03', 'Housekeeper', 18000, 'B 28 Soi Taladchaimongkon Ratchaprarob Thung Phyathai Ratcha Thewi Bangkok', 'Areerutt_2517@hotmail.com', '0819261814', 'อารีรัตน์', 'บัวหลวง', 'Female', null, null, 'user'),
+('5394288562111', 'มัธยมศึกษาตอนปลาย', '1974-11-28', 'Mechanic', 20000, '92/19 Soi Pattanakarn 40 Pattanakarn Road Bangkok 10250', 'Apichdee@hotmail.com', '0627229702', 'บุญเติม ', 'ทาสีเพชร', 'Male', null, null, 'user'),
+('6034558981011', 'ปริญญาตรี', '1979-05-31', 'Admin', 42000, '567/18-9 Soi Wat Maiphiren Issarapharp Wat Thapra Bangkok Yai Bangkok 10600', 'Apitchadee_bl@gmail.com', '0867056612', 'ศศิธร', 'แสงพิมา', 'Male', 'Apcd315', 'ApicH@d1', 'user'),
+('1231322456546', 'ปริญญาตรี', '1983-01-23', 'Head Mechanic', 40000, '2328/40 Ramkamhaeng 52/2 Huamark 10240', 'odds4loif@gmail.com', '0123874563', 'อภิชดี ', 'บุญเรือง', 'Male', null, null, 'user'),
+('3306525383066', 'มัธยมศึกษาตอนต้น', '1982-08-02', 'Accountant', 25000, '61/2 Soi Sai Nam Thip Sukhumvit Soi 22 Bangkok 10110', 'orakrawee42@hotmail.com', '0822597138', 'อรกวี', 'เมืองทอง', 'Female', 'orakrawee', '9QNUA5KzAt5N', 'user'),
+('6034225190623', 'ปริญญาตรี', '1994-7-21', 'Mechanic', '27000' ,'Maha Ploed Tharam Bang Rak', 'pl_jom68l@gmail.com', '0827656649', 'ไพโรจน์', 'จอมดำสิงห์', 'Male', null, null, 'user');
 
 INSERT INTO product( `title`, `mfd`, `brand` ,`type`, `amount`)
 VALUES
@@ -238,26 +239,26 @@ Since 1969, it has designed, manufactured and marketed a comprehensive range of 
 
 INSERT INTO transaction(`delivery_date`, `credit`, `payment_method`, `payment_status`, `credit_due_date`, `transaction_date`, `delivery_status`, `type`, `employee_emp_id`, `partner_par_id`)
 VALUES 
-('2021-06-15', 0, 'cheque', 'Complete', '2021-04-01', '2021-02-26', false, 'Sale', 1, 7),
+('2021-06-15', 0, 'cheque', 'Complete', '2021-04-01', '2021-02-26', false, 'SALE', 1, 7),
 ('2020-03-19', 0, 'cheque', 'Complete', '2020-01-31', '2020-01-03', true, 'SALE', 6, 9),
 ('2021-08-02', 15.69, 'cheque', 'Incomplete', '2021-10-31', '2021-05-03', false, 'SALE', 9, 8),
 ('2020-07-14', 0, 'cheque', 'Complete', '2020-12-14', '2020-03-07', true, 'SALE', 6, 9), 
-('2021-05-01', 15000000, 'cheque', 'Incomplete', '2021-07-30', '2021-07-29', false, 'Sale', 4, 10),
-('2022-08-12', 1822830.50, 'cheque', 'Incomplete', '2022-04-10', '2018-12-24', false, 'Sale',  10, 11),
+('2021-05-01', 15000000, 'cheque', 'Incomplete', '2021-07-30', '2021-07-29', false, 'SALE', 4, 10),
+('2022-08-12', 1822830.50, 'cheque', 'Incomplete', '2022-04-10', '2018-12-24', false, 'SALE',  10, 11),
 ('2019-10-11', 0, 'cheque', 'Complete', '2019-07-31', '2019-02-23', true, 'SALE', 2, 10),
 ('2011-04-14', 0, 'cheque', 'Complete', '2012-06-16', '2011-01-06', true, 'SALE', 3, 8), 
-('2016-11-01', 127220, 'cheque', 'Incomplete', '2015-10-30', '2015-02-20', true, 'Sale', 3, 8),
+('2016-11-01', 127220, 'cheque', 'Incomplete', '2015-10-30', '2015-02-20', true, 'SALE', 3, 8),
 ('2020-05-07', 10000000, 'cheque', 'Incomplete', '2021-11-07', '2020-03-07', true, 'SALE', 7, 10),
 ('2020-12-14', 0, 'cheque', 'Complete', '2019-06-16', '2019-01-18', true, 'PURCHASE', 1, 6), 
 ('2021-08-22', 10, 'cheque', 'Incomplete', '2021-10-31', '2021-07-13', false, 'PURCHASE', 9, 3),
 ('2020-06-21', 0, 'creditcard', 'Complete', '2020-07-21', '2020-05-21', true, 'PURCHASE', 7, 4),
 ('2005-04-21', 0, 'cheque', 'Complete', '2003-10-31', '2003-01-10', true, 'PURCHASE', 8, 2),
-('2015-06-23', 0, 'cheque', 'Complete', '2017-01-31', '2016-08-29', true, 'PURCHASE', 8, 2),
-('2022-01-01', 1000000, 'cheque', 'Incomplete', '2021-10-31','2021-10-31', null, false, 'PURCHASE', 9, 1),
+('2015-06-23', 0, 'cheque', 'Complete', '2017-01-31', '2016-08-29', true, 'PURCHASE', 9, 2),
+('2022-01-01', 1000000, 'cheque', 'Incomplete', '2021-10-31','2021-10-31', false, 'PURCHASE', 9, 1),
 ('2013-04-13', 0, 'cheque', 'Complete', '2012-08-20', '2012-08-20', true, 'PURCHASE', 7, 5), 
 ('2021-06-13', 1283200.50, 'cheque', 'Incomplete', '2021-06-01', '2021-02-13', false, 'PURCHASE', 4, 3), 
 ('2022-06-21', 0, 'cheque', 'Complete', '2022-01-31', '2021-04-21', false, 'PURCHASE', 2, 2),
-(null, 100, 'cash', 'Incomplete', '2019-12-31', '2019-05-31', false, 'PURCHASE', 2, 6);
+('2018-06-21', 100, 'cash', 'Incomplete', '2019-12-31', '2019-05-31', false, 'PURCHASE', 2, 6);
 
 INSERT INTO sale(`transaction_tran_id`, `test_status`)
 VALUES 

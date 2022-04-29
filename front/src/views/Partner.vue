@@ -43,7 +43,7 @@
           <div class="card">
             <div class="card-image">
               <img
-                src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg"
+                :src="par.photo"
               />
             </div>
             <div class="card-content">
@@ -326,6 +326,16 @@
                       />
                     </div>
                   </div>
+                  <div class="field">
+                    <label class="label">Photo</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="file"
+                        @change="Onselectedfile"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -542,6 +552,16 @@
                       />
                     </div>
                   </div>
+                  <div class="field">
+                    <label class="label">Photo</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="file"
+                        @change="Onselectedfile"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -569,6 +589,7 @@ import { required, email, maxLength } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
+      select: null,
       user: null,
       check: false,
       checkadd: false,
@@ -627,7 +648,32 @@ export default {
           });
       }
     },
+    Onselectedfile(event){
+      //console.log(event)
+      this.select = event.target.files[0]
+      console.log(this.select)
+    },
+    imagesend(){
+      let form = new FormData();
+      form.append("image", this.select)
+      axios.put("http://localhost:3000/testupload", form).then((res)=>{
+        console.log(res.data)
+      })
+    },
+    imagesendEdit(mod){
+      let form = new FormData();
+      form.append("image", this.select)
+      axios.put("http://localhost:3000/testuploadEdit?num_id="+mod, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res)=>{
+        console.log(res.data)
+      })
+    },
     AddPar() {
+      //let form = new FormData();
+      //form.append("image", this.select, this.select.name)
       this.$v.name.$touch();
       this.$v.surname.$touch();
       this.$v.type.$touch();
@@ -658,9 +704,11 @@ export default {
           phone1: this.tel1,
           phone2: this.tel2,
           delivery_address: this.delivery_address,
+          photo: null
         };
         this.checkadd = !this.checkadd;
         axios.post("http://localhost:3000/partner", body).then(() => {
+          this.imagesend()
           axios.get("http://localhost:3000/partner").then((response) => {
             for (let comment of response.data.blogs) {
               comment.check = false;
@@ -723,6 +771,7 @@ export default {
         axios
           .put("http://localhost:3000/partner/" + mod.par_id, body)
           .then(() => {
+            this.imagesendEdit(mod.par_id)
             axios.get("http://localhost:3000/partner").then((response) => {
               for (let comment of response.data.blogs) {
                 comment.check = false;

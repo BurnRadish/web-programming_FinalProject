@@ -6,6 +6,7 @@ app.use(cors())
 
 // Statics
 app.use(express.static('static'))
+//app.use(express.static('images'))
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 

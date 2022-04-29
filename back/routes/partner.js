@@ -3,7 +3,19 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 const Joi = require('joi')
+const multer = require('multer')
 const { isLoggedIn, isAdmin } = require('../middlewares')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb)=>{
+        cb(null, './static/images')
+    },
+    filename: (req, file, cb)=>{
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({storage: storage})
 
 //get all partner details or Search partner
 router.get("/partner", isLoggedIn, async function(req, res, next) {
@@ -68,11 +80,11 @@ const partnerSchema = Joi.object({
 
 //add partner
 router.post("/partner", isLoggedIn, isAdmin, async function(req, res, next) {
-    try {
-        await partnerSchema.validateAsync(req.body,  { abortEarly: false })
-    } catch (err) {
-        return res.status(400).json(err)
-    }
+    // try {
+    //     await partnerSchema.validateAsync(req.body,  { abortEarly: false })
+    // } catch (err) {
+    //     return res.status(400).json(err)
+    // }
 
     const conn = await pool.getConnection()
     await conn.beginTransaction();
@@ -87,11 +99,12 @@ router.post("/partner", isLoggedIn, isAdmin, async function(req, res, next) {
     let phone1 = req.body.phone1
     let phone2 = req.body.phone2
     let description = req.body.description
+    let photo = req.body.photo
     try {
         let edit = await conn.query(`
-        INSERT INTO partner(delivery_address, company_name, par_fname, par_lname, legal_address, type, email1, email2, phone1, phone2, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [deliverly_address, company_name, par_fname, par_lname, legal_address, type, email1, email2, phone1, phone2, description])
+        INSERT INTO partner(delivery_address, company_name, par_fname, par_lname, legal_address, type, email1, email2, phone1, phone2, description, photo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [deliverly_address, company_name, par_fname, par_lname, legal_address, type, email1, email2, phone1, phone2, description, photo])
         conn.commit()
         res.send('Success!');
     } catch (err) {
@@ -121,6 +134,53 @@ router.delete("/partner/:id", isLoggedIn, isAdmin, async function(req, res, next
         conn.release();
     }
 });
+
+router.put("/testupload", upload.single("image"),isLoggedIn, isAdmin, async function(req, res, next){
+    let file = 'http://localhost:3000/images/'+req.file.filename
+    let file2 = req.file.path;
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
+    try {
+        let num = await conn.query("SELECT MAX(par_id) FROM partner")
+        await conn.query(`UPDATE partner 
+        SET photo = ?
+        WHERE par_id = ?`,[file, Object.values(num[0][0])])
+        conn.commit()
+        //let result = Object.values(num[0][0])
+        // let result = null
+        res.send("Success");
+    } catch (err) {
+        await conn.rollback();
+        return next(err)
+    } finally {
+        console.log('finally')
+        conn.release();
+    }
+})
+
+router.put("/testuploadEdit", upload.single("image"),isLoggedIn, isAdmin, async function(req, res, next){
+    let id = req.query.num_id
+    let file = 'http://localhost:3000/images/'+req.file.filename
+    console.log(req.file)
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
+    try {
+        //let num = await conn.query("SELECT MAX(par_id) FROM partner")
+        await conn.query(`UPDATE partner 
+        SET photo = ?
+        WHERE par_id = ?`,[file, id])
+        conn.commit()
+        //let result = Object.values(num[0][0])
+        // let result = null
+        res.send("Success");
+    } catch (err) {
+        await conn.rollback();
+        return next(err)
+    } finally {
+        console.log('finally')
+        conn.release();
+    }
+})
 
 //edit partner detail
 router.put("/partner/:id", isLoggedIn, isAdmin, async function(req, res, next) {

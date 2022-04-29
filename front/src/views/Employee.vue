@@ -43,8 +43,11 @@
         <div class="column is-3" v-for="emp in blog" :key="emp.id">
           <div class="card">
             <div class="card-image">
-              <img
+              <img v-if="emp.photo == null"
                 src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg"
+              />
+              <img v-if="emp.photo != null"
+                :src="emp.photo"
               />
             </div>
             <div class="card-content">
@@ -280,6 +283,16 @@
                       >
                         Please Fill Phone Number
                       </p>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">Photo</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="file"
+                        @change="Onselectedfile"
+                      />
                     </div>
                   </div>
                 </div>
@@ -532,6 +545,16 @@
                       </template>
                     </div>
                   </div>
+                  <div class="field">
+                    <label class="label">Photo</label>
+                    <div class="control">
+                      <input
+                        class="input"
+                        type="file"
+                        @change="Onselectedfile"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -559,6 +582,7 @@ import { required, email, maxLength, integer } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
+      select: null,
       user: null,
       checkadd: false,
       blog: {},
@@ -603,6 +627,25 @@ export default {
     });
   },
   methods: {
+    Onselectedfile(event){
+      //console.log(event)
+      this.select = event.target.files[0]
+      console.log(this.select)
+    },
+    imagesend(){
+      let form = new FormData();
+      form.append("image", this.select)
+      axios.put("http://localhost:3000/testuploadEm", form).then((res)=>{
+        console.log(res.data)
+      })
+    },
+    imagesendmod(num){
+      let form = new FormData();
+      form.append("image", this.select)
+      axios.put("http://localhost:3000/testuploadEditEm?num_id="+num, form).then((res)=>{
+        console.log(res.data)
+      })
+    },
     search() {
       if (this.search12 != " ") {
         axios
@@ -654,8 +697,10 @@ export default {
           address: this.address,
           dob: this.birth,
           phone: this.tel,
+          degree: "ม.เต็มกระด๋อย"
         };
         axios.post("http://localhost:3000/employees", body).then(() => {
+          //this.imagesend();
           axios
             .get("http://localhost:3000/employees?search=" + this.search12)
             .then((response) => {
@@ -718,6 +763,7 @@ export default {
         axios
           .put("http://localhost:3000/employees/" + mod.emp_id, body)
           .then(() => {
+            this.imagesendmod(mod.emp_id);
             mod.checkedit = !mod.checkedit;
             axios.get("http://localhost:3000/employees").then((response) => {
               for (let comment of response.data.blogs) {

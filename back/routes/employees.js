@@ -3,8 +3,20 @@ const path = require("path")
 const pool = require("../config");
 const router = express.Router();
 const Joi = require('joi')
+const multer = require('multer')
 const { isLoggedIn, isAdmin } = require('../middlewares')
 const bcrypt = require('bcrypt')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb)=>{
+        cb(null, './static/images')
+    },
+    filename: (req, file, cb)=>{
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({storage: storage})
 
 //get all member details or Search member
 router.get("/employees", isLoggedIn, async function(req, res, next) {
@@ -86,6 +98,8 @@ const empSchema = Joi.object({
 
 //add member
 router.post("/employees", isLoggedIn, isAdmin, async function(req, res, next) {
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
     let citizen = req.body.citizen
     let degree = req.body.degree
     let dob = req.body.dob
@@ -97,20 +111,18 @@ router.post("/employees", isLoggedIn, isAdmin, async function(req, res, next) {
     let fname = req.body.fname
     let lname = req.body.lname
     let gender = req.body.gender
-    let password = await bcrypt.hash(req.body.password, 5)
+    //let password = await bcrypt.hash(req.body.password, 5)
+    let password = req.body.password
     try {
         await empSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         return res.status(400).json(err)
-    }
-
-    const conn = await pool.getConnection()
-    await conn.beginTransaction();
+    }    
     try {
         await conn.query(`
-        INSERT INTO employee(citizen_id, degree, dob, position, salary, address, email, phone, fname, lname, gender, password, role)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'user')
-        `, [citizen, degree, dob, position, salary, address, email, phone, fname, lname, gender, password])
+        INSERT INTO employee(citizen_id, degree, dob, position, salary, address, email, phone, fname, lname, gender, password, role, photo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [citizen, degree, dob, position, salary, address, email, phone, fname, lname, gender, password, 'user', null])
         conn.commit()
         res.send('Success!');
     } catch (err) {
@@ -232,5 +244,53 @@ router.put("/employees/:id/password", isLoggedIn, async function(req, res, next)
         conn.release();
     }
 });
+
+router.put("/testuploadEm", upload.single("image"),isLoggedIn, isAdmin, async function(req, res, next){
+    let file = 'http://localhost:3000/images/'+req.file.filename
+    let file2 = req.file.path;
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
+    try {
+        let num = await conn.query("SELECT MAX(emp_id) FROM employee")
+        await conn.query(`UPDATE employee 
+        SET photo = ?
+        WHERE emp_id = ?`,[file, Object.values(num[0][0])])
+        conn.commit()
+        //let result = Object.values(num[0][0])
+        // let result = null
+        res.send("Success");
+    } catch (err) {
+        await conn.rollback();
+        return next(err)
+    } finally {
+        console.log('finally')
+        conn.release();
+    }
+})
+
+router.put("/testuploadEditEm", upload.single("image"),isLoggedIn, isAdmin, async function(req, res, next){
+    let id = req.query.num_id
+    let file = 'http://localhost:3000/images/'+req.file.filename
+    console.log(req.file)
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
+    try {
+        //let num = await conn.query("SELECT MAX(par_id) FROM partner")
+        await conn.query(`UPDATE employee 
+        SET photo = ?
+        WHERE emp_id = ?`,[file, id])
+        conn.commit()
+        //let result = Object.values(num[0][0])
+        // let result = null
+        res.send("Success");
+    } catch (err) {
+        await conn.rollback();
+        return next(err)
+    } finally {
+        console.log('finally')
+        conn.release();
+    }
+})
+
 
 exports.router = router;

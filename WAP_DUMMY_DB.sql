@@ -14,6 +14,7 @@ CREATE TABLE `employee` (
 	`username` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`password` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
     `role` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
+	`photo` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	PRIMARY KEY (`emp_id`),
 	UNIQUE(`citizen_id`)
 );
@@ -40,6 +41,7 @@ CREATE TABLE `partner` (
 	`phone1` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`phone2` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	`description` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
+	`photo` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
 	PRIMARY KEY (`par_id`)
 );
 

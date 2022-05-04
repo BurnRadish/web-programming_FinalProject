@@ -302,7 +302,7 @@ VALUES
 (18, null),
 (20, null);
 
-INSERT INTO PRODUCT_TRANSACTION(`product_pro_id`, `transaction_tran_id`, `price`, `count`)
+INSERT INTO product_transaction(`product_pro_id`, `transaction_tran_id`, `price`, `count`)
 VALUES
 (1, 1, 4000000, 2),
 (3, 1, 1865000, 1),
